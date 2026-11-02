@@ -259,7 +259,7 @@ export function AdminApp(){
               <div><span>٣</span><p><b>استماع ومراجعة</b><small>تسمع وتتأكد من النطق واللهجة</small></p></div>
               <div><span>٤</span><p><b>موافقة ونشر</b><small>يظهر للطالب فقط بعد اعتمادك</small></p></div>
             </div></div>
-            <div className="ad-panel"><div className="ad-bullet-title"><ShieldCheck size={20}/><b>خصوصية الحساب</b></div><p className="ad-muted">مفتاح Gemini محفوظ بمهمة التوليد الخاصة بالمشروع. ما يظهر لطلابك أو بالمتصفح. كل محاولة قد تُحسب من حصتك المتاحة.</p></div>
+            <div className="ad-panel"><div className="ad-bullet-title"><ShieldCheck size={20}/><b>خصوصية الحساب</b></div><p className="ad-muted">مفتاح Gemini محفوظ بإعدادات المشروع ولا يظهر للطلاب أو داخل هذه اللوحة. كل محاولة قد تُحسب من حصتك المتاحة.</p></div>
           </aside>
         </div>}
         {page==='review'&&<div className="ad-two-columns review-layout">
