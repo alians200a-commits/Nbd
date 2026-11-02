@@ -164,3 +164,34 @@ button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{o
 }
 @media(max-width:370px){.nabd-action-grid{grid-template-columns:1fr}.nabd-action-card{min-height:142px}.nabd-bottom-link{font-size:10px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* Learning roadmap: courses are steps, not inventory cards. */
+.nabd-course-page{max-width:1050px;margin-inline:auto;padding-bottom:25px}
+.nabd-course-head{background:#eaf2fc;border:1px solid #dae6f7;border-radius:24px;padding:27px 29px;margin-bottom:22px}
+.nabd-course-head h1{font-size:clamp(24px,3vw,34px);font-weight:900;color:var(--nabd-ink);margin:7px 0 8px;line-height:1.4}
+.nabd-course-head p{font-size:14px;color:#52647b;line-height:2;margin:0;max-width:650px}
+.nabd-course-overview{display:inline-flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:18px;padding:10px 14px;border-radius:13px;background:#fff;color:#17695f;border:1px solid #d6e9e3;font-size:13px}
+.nabd-course-overview span{color:#52647b}
+.nabd-course-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.nabd-course-row{display:flex;align-items:center;gap:15px;border:1px solid var(--nabd-line);border-radius:18px;background:#fff;box-shadow:var(--nabd-shadow);padding:16px 19px;min-height:112px}
+.nabd-course-number{font:800 15px/1.4 'IBM Plex Sans Arabic',Tahoma,sans-serif;color:#8294a9;width:30px;flex:0 0 30px;direction:ltr}
+.nabd-course-illustration{width:62px;height:62px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex:0 0 62px}
+.nabd-course-illustration.tone-blue{background:#e8f1ff;color:#2055a6}
+.nabd-course-illustration.tone-violet{background:#f0ebfa;color:#62509e}
+.nabd-course-illustration.tone-orange{background:#fff0e6;color:#955020}
+.nabd-course-illustration.tone-mint{background:#e6f5f1;color:#096c64}
+.nabd-course-illustration.tone-rose{background:#fff0f3;color:#a34e66}
+.nabd-course-illustration.tone-sky{background:#e9f6fd;color:#1e668a}
+.nabd-course-title{min-width:0;flex:1}
+.nabd-course-title span{font-size:11px;color:#52647b}
+.nabd-course-title strong{display:block;font-size:16px;font-weight:900;color:var(--nabd-ink);margin:3px 0}
+.nabd-course-title p{font-size:12px;line-height:1.7;color:#52647b;margin:0}
+.nabd-course-buttons{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nabd-course-buttons button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;padding:9px 13px;border-radius:12px;font-size:12px;font-weight:900;white-space:nowrap}
+.nabd-course-study{background:var(--nabd-blue);border:1px solid var(--nabd-blue);color:#fff}
+.nabd-course-study:hover{background:#1a448c}
+.nabd-course-lab{background:#fff;border:1px solid #bfcfe3;color:var(--nabd-blue)}
+.nabd-course-lab:hover{background:#edf4ff}
+.nabd-course-done{display:flex;align-items:center;gap:4px;font-size:11px;color:#176b60;font-weight:800}
+@media(max-width:860px){.nabd-course-row{flex-wrap:wrap}.nabd-course-buttons{width:100%;justify-content:flex-start;padding-inline-start:45px}.nabd-course-number{width:26px;flex-basis:26px}}
+@media(max-width:540px){.nabd-course-head{padding:22px 18px}.nabd-course-head p{font-size:13px}.nabd-course-row{gap:10px;padding:14px}.nabd-course-number{display:none}.nabd-course-illustration{width:55px;height:55px;flex-basis:55px}.nabd-course-buttons{padding-inline-start:0}.nabd-course-buttons button{flex:1}.nabd-course-done{width:100%}}
