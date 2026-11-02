@@ -1,38 +1,40 @@
-name: Verify Ionic UI and teacher B playback
+name: Verify Ionic student interface
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 jobs:
-  check:
+  ui-static-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: JavaScript syntax
-        run: |
-          node --check assets/nabd-ionic.js
-          node --check assets/nabd-voice-center.js
-          node --check assets/nabd-voice-player.js
-      - name: Verify app files and controls
+      - name: Check JavaScript syntax
+        run: node --check assets/nabd-ionic.js
+      - name: Verify required UI files, elements and medical icons
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
-          app=Path("index.html").read_text(encoding="utf8")
-          center=Path("voice_production.html").read_text(encoding="utf8")
-          js=Path("assets/nabd-voice-center.js").read_text(encoding="utf8")
-          player=Path("assets/nabd-voice-player.js").read_text(encoding="utf8")
-          mainids=set(re.findall(r'id="([^"]+)"',app))
-          studioids=set(re.findall(r'id="([^"]+)"',center))
-          playerids=set(re.findall(r'\$\("([^"]+)"\)',player))
-          studiojsids=set(re.findall(r'\$\("([^"]+)"\)',js))
-          assert playerids <= mainids, f"Main UI missing: {playerids-mainids}"
-          assert studiojsids <= studioids, f"Voice studio UI missing: {studiojsids-studioids}"
-          assert Path("assets/healthicons-anatomy.svg").exists()
-          assert 'href="voice_production.html"' in app
-          assert 'assets/nabd-voice-player.js' in app
-          assert 'speechSynthesis.speak' not in player + js
-          assert 'new SpeechSynthesisUtterance' not in player + js
-          print("Voice B-only UI files and controls verified")
+          html=Path('index.html').read_text()
+          js=Path('assets/nabd-ionic.js').read_text()
+          icons=Path('assets/healthicons-anatomy.svg').read_text()
+          required=[
+            'assets/nabd-ionic.css',
+            'assets/nabd-ionic.js',
+            'assets/healthicons-anatomy.svg',
+            'OPEN_SOURCE_SOURCES.md',
+            'tabler-archive.html',
+          ]
+          for file in required:
+              assert Path(file).is_file(),f'Missing: {file}'
+          ids=set(re.findall(r'id="([^"]+)"',html))
+          references=set(re.findall(r'\$\("([^"]+)"\)',js))
+          assert not references-ids,f'Missing UI elements: {references-ids}'
+          icon_symbols=set(re.findall(r'<symbol id="an-([^"]+)"',icons))
+          for expected in ['nerve','skeleton','arm','intestine','lungs','kidneys','eye','ear','thyroid','dna']:
+              assert expected in icon_symbols,f'Missing Health Icon: {expected}'
+          assert '@ionic/core@9.0.8' in html and 'ion-tab-bar' in html
+          assert 'model-viewer' in html and 'Ionicons' in html
+          print('V9 static source and element checks passed')
           PY
