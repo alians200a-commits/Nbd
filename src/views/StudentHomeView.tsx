@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { ArrowLeft, BookOpenText, CalendarDays, CheckCircle2, ChevronLeft, ClipboardCheck, Clock3, Headphones, Microscope, RotateCcw, Sparkles, Trophy } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { TABLER_CHAPTERS } from '../data/tablerData';
+import { useManagedContent,safeMediaUrl } from '../content/useManagedContent';
 import type { TabType } from '../components/Sidebar';
 
 interface Props { onNavigateTab: (tab: TabType, params?: { chapter?: number }) => void }
@@ -12,6 +13,7 @@ const days = ['سبت','أحد','إثن','ثلا','أرب','خمي','جمع'];
 
 export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
   const { state } = useApp();
+  const managed=useManagedContent();
   const completed = Object.keys(state.finishedTopics || {}).filter(k => state.finishedTopics[k]).length;
   const mistakes = Object.keys(state.mistakes || {}).length;
   const tests = state.tests || [];
@@ -40,6 +42,10 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
   const recentCourses = TABLER_CHAPTERS.slice(0, 3);
 
   return <div className="nabd-journey" dir="rtl">
+    {managed.announcements.filter(a=>a.visible).sort((a,b)=>a.order-b.order).map(a=><aside className="nabd-managed-announcement" key={a.id}>
+      {safeMediaUrl(a.image)&&<img src={safeMediaUrl(a.image)} alt="" loading="lazy"/>}
+      <div><strong>{a.title}</strong><p>{a.text}</p></div>
+    </aside>)}
     <div className="nabd-journey-grid">
       <section className="nabd-welcome-phone" aria-label="ابدأ رحلة الأحياء">
         <div className="nabd-welcome-illustration" aria-hidden="true">
