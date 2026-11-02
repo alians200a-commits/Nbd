@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, BookOpen, CheckCircle2, ChevronLeft, ClipboardCheck, FlaskConical, Headphones, RotateCcw, Sparkles } from 'lucide-react';
+import { ArrowLeft, BookOpen, BookOpenText, CheckCircle2, ChevronLeft, ClipboardCheck, FlaskConical, Headphones, Microscope, RotateCcw, Sparkles } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { TABLER_CHAPTERS } from '../data/tablerData';
 import type { TabType } from '../components/Sidebar';
@@ -9,10 +9,10 @@ const artBase = import.meta.env.BASE_URL + 'nabd-art/';
 const artForChapter = ['brain','bone','arm','intestine','heart','lungs','kidneys','dna','eye','thyroid','cell-nuclei'];
 
 const studyActions = [
-  { label: 'دروسي', description: 'شرح وفهم كل فصل', artwork: 'books', tint: 'lilac', action: 'chapters' as TabType },
-  { label: 'المختبر', description: 'شوف العضو وتفاعل وياه', artwork: 'microscope', tint: 'mint', action: 'lab' as TabType },
-  { label: 'اختبرني', description: 'أسئلة تثبّت المعلومة', artwork: 'trophy', tint: 'peach', action: 'quiz' as TabType },
-  { label: 'المراجعة', description: 'ارجع للأسئلة الصعبة', artwork: 'brain', tint: 'sky', action: 'vault' as TabType },
+  { label: 'دروسي', description: 'شرح وفهم كل فصل', icon: BookOpenText, tint: 'lilac', action: 'chapters' as TabType },
+  { label: 'المختبر', description: 'شوف العضو وتفاعل وياه', icon: Microscope, tint: 'mint', action: 'lab' as TabType },
+  { label: 'اختبرني', description: 'أسئلة تثبّت المعلومة', icon: ClipboardCheck, tint: 'peach', action: 'quiz' as TabType },
+  { label: 'المراجعة', description: 'ارجع للأسئلة الصعبة', icon: RotateCcw, tint: 'sky', action: 'vault' as TabType },
 ];
 
 export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
@@ -46,9 +46,9 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         </button>
       </div>
       <div className="student-hero-art">
-        <div className="student-hero-orbit student-hero-orbit-a" aria-hidden="true" />
-        <div className="student-hero-orbit student-hero-orbit-b" aria-hidden="true" />
-        <img src={artBase + 'brain.svg'} alt="رسم الدماغ الأصلي من مكتبة Fluent Emoji المفتوحة المصدر" />
+        
+        
+        <img src={artBase + 'brain.svg'} alt="رسم توضيحي للدماغ" />
       </div>
     </section>
 
@@ -58,7 +58,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
     <section className="student-actions-grid" aria-label="الأقسام التعليمية">
       {studyActions.map(action =>
         <button type="button" key={action.label} className={'student-action-card student-tint-' + action.tint} onClick={() => onNavigateTab(action.action)}>
-          <span className="student-action-art"><img src={artBase + action.artwork + '.svg'} alt="" /></span>
+          <span className="student-action-art"><action.icon size={34} strokeWidth={1.8} aria-hidden="true" /></span>
           <strong>{action.label}</strong>
           <small>{action.description}</small>
           <ChevronLeft size={16} className="student-action-chevron" aria-hidden="true" />
