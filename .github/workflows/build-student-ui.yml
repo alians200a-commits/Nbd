@@ -6,6 +6,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   student-ui:
     runs-on: ubuntu-latest
@@ -54,3 +57,23 @@ jobs:
           name: nabd-student-ui-dist
           path: dist/
           retention-days: 7
+      - name: Upload complete website to site-build branch in this GitHub repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -eu
+          test -f dist/index.html
+          test -f dist/nabd-art/brain.svg
+          touch dist/.nojekyll
+          mkdir -p /tmp/nabd-site-publication
+          cp -a dist/. /tmp/nabd-site-publication/
+          cd /tmp/nabd-site-publication
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -qb site-build
+          git add -A
+          git commit -qm "Publish NABD website from ${GITHUB_SHA}"
+          git remote add destination "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push --force destination HEAD:refs/heads/site-build
