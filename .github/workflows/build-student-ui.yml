@@ -28,11 +28,12 @@ jobs:
           mkdir -p dist/assets dist/data
           cp -R assets/. dist/assets/
           cp -R data/. dist/data/
-          find . -maxdepth 1 -type f -name '*.html' ! -name 'index.html' -exec cp {} dist/ \;
+          find . -maxdepth 1 -type f -name '*.html' ! -name 'index.html' ! -name 'admin.html' -exec cp {} dist/ \;
           # Only playback-ready voice is public; editing, imports and metadata are admin-only.
           rm -f dist/voice_production.html dist/audio-library.html
           rm -f dist/assets/nabd-voice-center.js dist/assets/nabd-ch1-audio.js dist/assets/nabd-voice-player.js
           rm -f dist/nabd-voice/manifest.json
+          test -s dist/admin.html
           test ! -e dist/voice_production.html
           test ! -e dist/audio-library.html
           test ! -e dist/nabd-voice/manifest.json
@@ -55,6 +56,7 @@ jobs:
               assert Path('dist/nabd-art/'+name+'.svg').is_file(),name
           for name in ('learn.html','simulations.html','exam-bank.html','materials.html'):
               assert Path('dist/'+name).is_file(),name
+          assert Path('dist/admin.html').is_file(), 'Missing built-in administration entry'
           assert Path('dist/assets/nabd-learn.js').is_file()
           assert Path('dist/data/nabd-curriculum.js').is_file()
           print('React app, original artwork, core routes and legacy learning pages verified')
