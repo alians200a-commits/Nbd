@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#ffffff"><meta name="description" content="دروس الأحياء للثالث المتوسط العراقي، فصول علمية ومراجعة وبطاقات ومطابقة وصوت المعلمة B">
+<meta name="theme-color" content="#ffffff"><meta name="description" content="دروس الأحياء للثالث المتوسط العراقي، فصول علمية ومراجعة وبطاقات ومطابقة وشرح صوتي معتمد">
 <title>دروسي | نَبْض</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/css/ionic.bundle.css">
 <link rel="stylesheet" href="assets/nabd-ionic.css">
@@ -11,27 +11,25 @@
 <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.js"></script>
 <script defer src="data/nabd-curriculum.js"></script>
 <script defer src="assets/nabd-learn.js"></script>
-<script defer src="assets/nabd-ch1-audio.js"></script>
 </head>
 <body>
 <ion-app mode="md">
  <ion-header class="ion-no-border"><ion-toolbar>
    <ion-buttons slot="start"><ion-button id="back-home" href="index.html" aria-label="العودة إلى نَبْض"><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon></ion-button></ion-buttons>
    <ion-title>مكتبة الأحياء</ion-title>
-   <ion-buttons slot="end"><ion-button href="materials.html" aria-label="فتح الكتاب والملزمة الأصلية"><ion-icon slot="icon-only" name="document-text-outline"></ion-icon></ion-button><ion-button id="open-voice" aria-label="إعداد الصوت"><ion-icon slot="icon-only" name="volume-high-outline"></ion-icon></ion-button></ion-buttons>
+   <ion-buttons slot="end"><ion-button href="materials.html" aria-label="فتح الكتاب والملزمة الأصلية"><ion-icon slot="icon-only" name="document-text-outline"></ion-icon></ion-button></ion-buttons>
  </ion-toolbar></ion-header>
  <ion-content>
   <main class="study-container">
    <header class="study-header"><ion-chip color="secondary" outline="true"><ion-icon name="school-outline"></ion-icon><ion-label>الثالث المتوسط · العراق</ion-label></ion-chip><h1>الدروس اللي تفهمها تبقى وياك.</h1><p>شرح مبسط لكل فصل، صور تشريحية من المصادر المفتوحة، أسئلة للفهم، وبطاقات للمراجعة.</p></header>
    <div class="study-action-row"><ion-button href="simulations.html" fill="outline" color="secondary"><ion-icon name="body-outline" slot="start"></ion-icon> مختبر الفقرات</ion-button> <ion-button href="exam-bank.html" fill="outline"><ion-icon name="reader-outline" slot="start"></ion-icon> بنك أسئلة الملزمة</ion-button></div>
-   <div class="study-action-row"><ion-button href="audio-library.html" fill="outline" color="primary"><ion-icon name="headset-outline" slot="start"></ion-icon> مكتبة الكتاب والملزمة الصوتية</ion-button></div>
+   <ion-card style="margin:12px 0;border:1px solid #d1e9e3;border-radius:16px"><ion-card-content><h2 style="font-weight:800;font-size:18px">اسمع شرح المعلّمة — الخلية العصبية</h2><p class="secondary">استمع إلى التسجيل المعتمد، وكمّل الدرس والأسئلة بعدها.</p><audio controls preload="metadata" style="width:100%" src="nabd-voice/neuron-baghdad-sulafat.wav" aria-label="شرح الخلية العصبية"></audio></ion-card-content></ion-card>
    <ion-segment id="study-menu" scrollable value="lessons" aria-label="أقسام المكتبة">
     <ion-segment-button value="lessons"><ion-label>الدروس</ion-label></ion-segment-button>
     <ion-segment-button value="flash"><ion-label>بطاقات الحفظ</ion-label></ion-segment-button>
     <ion-segment-button value="matching"><ion-label>لعبة المطابقة</ion-label></ion-segment-button>
     <ion-segment-button value="coach"><ion-label>اسأل المساعد</ion-label></ion-segment-button>
     <ion-segment-button value="parent"><ion-label>ولي الأمر</ion-label></ion-segment-button>
-    <ion-segment-button value="chapter-audio"><ion-label>أصوات الفصل الأول</ion-label></ion-segment-button>
    </ion-segment>
 
    <section id="study-lessons" class="study-view active">
@@ -69,27 +67,6 @@
     </ion-card-content></ion-card>
    </section>
 
-   <section id="study-chapter-audio" class="study-view" aria-label="التسجيلات المرسلة للفصل الأول">
-  <div class="study-header-small"><h2>مكتبة تسجيلات الفصل الأول</h2><ion-chip color="secondary"><ion-label id="chapter-audio-count">0 / 6</ion-label></ion-chip></div>
-  <p class="secondary">هذه التسجيلات الستة أرسلها صاحب المشروع عن أمراض الجهاز العصبي. تُحفظ محلياً على جهازك وتظهر هنا بعد استيراد الحزمة الخاصة. الصوت المرجعي B لا يُستخدم كشرح بديل.</p>
-  <ion-card><ion-card-content>
-    <label for="chapter-audio-import" class="field-label">استيراد التسجيلات الستة دفعة واحدة</label>
-    <input type="file" id="chapter-audio-import" accept=".json,application/json" aria-label="استيراد حزمة تسجيلات الفصل الأول">
-    <p id="chapter-audio-import-status" class="secondary" role="status">لم تُستورد تسجيلات الفصل الأول على هذا الجهاز بعد.</p>
-  </ion-card-content></ion-card>
-  <div class="study-header-small"><h2>استمع ورتّب التسجيلات</h2></div>
-  <ion-card><ion-list id="chapter-audio-list" lines="full"></ion-list></ion-card>
-  <ion-card class="ion-margin-top"><ion-card-content>
-    <h3>تدقيق ضروري قبل نشر التسجيلات للطلاب</h3>
-    <p class="secondary">التسجيلات تتناول ذات السحايا، وشلل الأطفال، والكزاز، وبعض الأمراض النفسية. ترتيب كل ملف بحسب الموضوع لم يُثبت بعد؛ حدده بعد الاستماع. يحتوي النص المرفق معلومات علاجية ولقاحية تحتاج تدقيقاً مستقلاً قبل الاعتماد.</p>
-    <ion-list lines="inset">
-      <ion-item><ion-label class="ion-text-wrap"><h3>شلل الأطفال</h3><p>لا تعتمد جدول الجرعات المذكور بالتسجيل كجدول موحّد لكل بلد؛ يتغير بحسب نوع اللقاح والبرنامج الوطني.</p></ion-label></ion-item>
-      <ion-item><ion-label class="ion-text-wrap"><h3>الكزاز</h3><p>المصل أو اللقاح بعد الجروح يُحدد حسب نوع الجرح وتاريخ التطعيم؛ يحتاج تقييم طبي.</p></ion-label></ion-item>
-      <ion-item><ion-label class="ion-text-wrap"><h3>الصحة النفسية</h3><p>الاكتئاب اضطراب نفسي متعدد العوامل، وليس مرادفاً للكسل أو نتيجة حتمية لأسلوب الحياة.</p></ion-label></ion-item>
-    </ion-list>
-    <p class="secondary">مراجع التحقق: منظمة الصحة العالمية ومراكز مكافحة الأمراض. هذا قسم تعليم ومراجعة وليس وصفة علاجية.</p>
-  </ion-card-content></ion-card>
-</section>
 <section id="study-parent" class="study-view">
     <div class="study-header-small"><h2>متابعة ولي الأمر</h2></div>
     <ion-card><ion-card-content>
@@ -107,22 +84,6 @@
    </section>
   </main>
  </ion-content>
- <ion-modal id="voice-modal">
-  <ion-header class="ion-no-border"><ion-toolbar><ion-title>صوت المعلّمة B</ion-title><ion-buttons slot="end"><ion-button id="voice-modal-close"><ion-icon slot="icon-only" name="close-outline"></ion-icon></ion-button></ion-buttons></ion-toolbar></ion-header>
-  <ion-content><div class="voice-settings">
-   <ion-chip color="secondary"><ion-icon name="shield-checkmark-outline"></ion-icon><ion-label>صوت B فقط</ion-label></ion-chip>
-   <h2>هوية صوتية واحدة لكل دروس نَبْض</h2>
-   <p>التسجيل المرجعي يحتوي شرح فيزياء بصوت B. نستخدمه للمقارنة والتحقق، **مو كشرح أحياء**. لا نستخدم تحويل النص إلى كلام بصوت مختلف أو صوت المتحدث A.</p>
-   <label class="field-label" for="voice-ref-input">استورد تسجيل B المرجعي إلى جهازك</label>
-   <input type="file" id="voice-ref-input" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg">
-   <div class="secondary small" id="voice-reference-state">لم يتم استيراد المرجع على هذا الجهاز.</div>
-   <audio controls id="voice-reference-player" preload="none" hidden></audio>
-   <p class="voice-warning">لإنتاج الشروحات الجديدة بنفس الصوت نحتاج محرك استنساخ مرخّصاً وتسجيلات يتم فحصها بعد التوليد. لا تُنشر العينة الشخصية في مستودع GitHub العام تلقائياً.</p>
-   <h3>تسجيلات الأحياء</h3>
-   <div id="lesson-voice-status">لا توجد تسجيلات دروس B معتمدة بعد.</div><label class="field-label" for="voice-batch-input">استيراد حزمة دروس صوتية جديدة بصوت B بعد توليدها ومراجعتها</label><input type="file" id="voice-batch-input" accept=".json,application/json"><p class="secondary small" id="voice-batch-state">الحزمة الخاصة تُحفظ محلياً على هذا الجهاز ولا تُرسل إلى GitHub.</p><a href="https://github.com/alians200a-commits/Nbd/blob/main/notebooks/NABD_B_44_COLAB.ipynb" target="_blank" rel="noopener noreferrer">دفتر إنتاج 44 تسجيل درس بصوت B على كولاب</a>
-   <p class="secondary">داخل كل درس تگدر ترفع تسجيله الناتج من B بعد فحصه سمعياً. قبل الرفع يبقى النص مكتوباً، وما ينطق التطبيق بصوت بديل.</p>
-  </div></ion-content>
- </ion-modal>
- <ion-toast id="learn-toast" duration="2600" position="bottom"></ion-toast>
+<ion-toast id="learn-toast" duration="2600" position="bottom"></ion-toast>
 </ion-app>
 </body></html>
