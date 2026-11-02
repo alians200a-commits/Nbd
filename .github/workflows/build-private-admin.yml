@@ -49,6 +49,18 @@ jobs:
           html=re.sub(r'<link[^>]+rel="manifest"[^>]*>', '',html)
           html=html.replace('</head>', '<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"></head>')
           html=html.replace('ما ينحفظ الرمز', 'ما ينحفظ الرمز')
+          # A plain inline script in <head> executes immediately, before React's
+          # <div id="admin-root"> exists. Move the entire inline bundle AFTER root.
+          embedded=re.search(r'<script>(.*?)</script>',html,re.S)
+          assert embedded, 'Inlined JS is missing'
+          bundle=embedded.group(0)
+          html=html[:embedded.start()]+html[embedded.end():]
+          root_tag='<body><div id="admin-root"></div>'
+          assert html.count(root_tag)==1,'React root is missing or duplicated'
+          html=html.replace(root_tag,root_tag+'\\n'+bundle,1)
+          assert html.index('<div id="admin-root"') < html.index('<script>')
+          assert html.index('<script>') < html.index('</body>')
+          assert html.count('<script>')==1
           assert 'src="./assets/' not in html
           assert len(html)>100000
           out=Path('NABD_ADMIN_PRIVATE.html')
