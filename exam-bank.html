@@ -12,7 +12,13 @@
 <div class="filters"><ion-select id="chapter-filter" interface="popover" label="اختر الفصل" label-placement="stacked" value="all"><ion-select-option value="all">جميع الفصول</ion-select-option></ion-select><ion-searchbar id="question-search" placeholder="ابحث في السؤال" debounce="150"></ion-searchbar></div>
 <ion-segment value="all" id="question-filter" scrollable><ion-segment-button value="all"><ion-label>كل الأسئلة</ion-label></ion-segment-button><ion-segment-button value="marked"><ion-label>صفحات فيها سنوات</ion-label></ion-segment-button><ion-segment-button value="needs"><ion-label>أولوية التدقيق</ion-label></ion-segment-button></ion-segment>
 <div class="question-nav"><ion-button id="prev" fill="outline"><ion-icon name="arrow-forward-outline" slot="start"></ion-icon>السابق</ion-button><span id="progress" class="quiz-score"></span><ion-button id="next" fill="outline">التالي<ion-icon name="arrow-back-outline" slot="end"></ion-icon></ion-button></div>
-<div id="question-text" class="question" aria-live="polite"></div><p id="years-note" class="help"></p><div class="controls"><ion-button id="reveal" color="secondary">أظهر الجواب المستخرج</ion-button><ion-button id="open-page" fill="outline">صفحة المصدر PDF</ion-button><ion-button id="open-topic-lab" fill="outline">شاهد المختبر المرتبط بالفصل</ion-button></div>
+<div id="question-text" class="question" aria-live="polite"></div>
+<div id="inline-practice" class="section hidden" aria-label="فروع السؤال التي يتضمن مصدرها الإجابات">
+ <h3 style="font-size:17px">تدريب الفروع الأصلية للسؤال المركب</h3>
+ <p class="help">المصدر يطبع بعض الأجوبة داخل فروع السؤال نفسه. أخفينا الأجوبة هنا لتختبر معلوماتك، وما غيّرنا العدد الأصلي للأسئلة. هذه تدريبات ذاتية وليست تصحيحاً وزارياً.</p>
+ <div id="inline-practice-items"></div>
+ <span id="inline-practice-progress" class="quiz-score"></span>
+</div><p id="years-note" class="help"></p><div class="controls"><ion-button id="reveal" color="secondary">أظهر الجواب المستخرج</ion-button><ion-button id="open-page" fill="outline">صفحة المصدر PDF</ion-button><ion-button id="open-topic-lab" fill="outline">شاهد المختبر المرتبط بالفصل</ion-button></div>
 <div class="answer hidden" id="answer"></div><div id="review-warning" class="warn"></div>
 <div class="controls"><ion-button id="self-correct" fill="outline" color="success"><ion-icon name="checkmark-outline" slot="start"></ion-icon>عرفت جوابه</ion-button><ion-button id="self-wrong" fill="outline" color="danger"><ion-icon name="bookmark-outline" slot="start"></ion-icon>أعيد مراجعته</ion-button></div>
 <p class="help" id="score-note">هذا تقييم ذاتي، وليس تصحيحاً وزارياً آلياً.</p><div class="controls"><ion-button id="manual-review" color="secondary" fill="outline">علّم السؤال: قارنته بالأصل</ion-button><ion-button id="download-audit" fill="clear">صدّر قائمة التدقيق</ion-button></div><p class="help" id="manual-review-note">العلامة شخصية للتنظيم فقط، وليست شهادة تدقيق معتمدة.</p>
