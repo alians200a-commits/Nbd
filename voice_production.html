@@ -1,0 +1,70 @@
+<!doctype html><html lang="ar" dir="rtl">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#ffffff">
+<title>نَبْض | صوت المعلّمة B</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/css/ionic.bundle.css">
+<link rel="stylesheet" href="assets/nabd-ionic.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.js"></script>
+<script defer src="assets/nabd-voice-center.js"></script>
+<style>
+.voice-wrap{max-width:860px;margin:auto;padding:20px 15px 90px}
+.voice-wrap h1{font-weight:800;font-size:clamp(22px,4vw,29px);margin:12px 0 8px}
+.voice-wrap p{line-height:1.9;color:#60758b;font-size:13px}
+.voice-section{margin:16px 0;padding:20px}
+.voice-label{display:block;color:#30465f;font-size:13px;font-weight:800;margin:13px 0 8px}
+.voice-input,.voice-select{width:100%;border:1px solid #d4deea;border-radius:10px;padding:12px;background:white;color:#273a50;font:inherit;font-size:14px;box-sizing:border-box}
+.voice-select{height:50px}
+.voice-clip{display:flex;align-items:center;gap:13px;border-top:1px solid #e6ebf2;padding:11px 0}
+.voice-clip:first-child{border-top:0}
+.voice-clip span{flex:1;font-size:12px;line-height:1.7}
+.voice-clip button{flex-shrink:0}
+.voice-status{padding:12px 14px;border-radius:10px;background:#f0f6fc;color:#265273;margin:12px 0;font-size:13px;line-height:1.9}
+.voice-note{border-inline-start:3px solid #c68937;padding:10px 14px;background:#fff8ed;color:#765523;border-radius:8px;font-size:12px;line-height:1.9;margin:15px 0}
+.voice-wrap audio{width:100%;margin-top:9px}
+.voice-check{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#40576e;margin:12px 0}
+.voice-check input{margin-top:6px;accent-color:#2257ad}
+.voice-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.voice-actions ion-button{min-height:44px}
+.voice-small{font-size:11px;color:#75889c}
+</style>
+</head><body><ion-app mode="md">
+<ion-header class="ion-no-border"><ion-toolbar>
+<ion-buttons slot="start"><ion-button fill="clear" href="index.html" aria-label="الرجوع إلى تطبيق نَبْض"><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon></ion-button></ion-buttons>
+<ion-title>صوت المعلّمة B</ion-title>
+</ion-toolbar></ion-header>
+<ion-content>
+<main class="voice-wrap">
+<div class="kicker">الهوية الصوتية التي اخترتها</div>
+<h1>نفس صوت B، أو بدون صوت.</h1>
+<p>هذا المركز مخصص لملفات المعلّمة التي اعتمدتها. <strong>ماكو استبدال بصوت المتصفح</strong>، ولا يتم وصف تسجيل جديد بأنه صوت B إلا بعد تدقيقه.</p>
+<div class="voice-note"><strong>مهم:</strong> الملف اللي أرسلته من NotebookLM بيه متحدثين. هنا ارفع <strong>عينة مفصولة من صوت B فقط</strong>، مو الحوار الكامل. حفظ التسجيلات محلي على جهازك، ولا تُرفع تلقائياً إلى GitHub أو إلى خادم.</div>
+<ion-card class="voice-section">
+ <h2 style="font-size:18px;font-weight:800">1. صوت المعلّمة المرجعي</h2>
+ <p>تسجيل B الأصلي للمقارنة مع كل شرح جديد.</p>
+ <div id="reference-state" class="voice-status" role="status">جارٍ فحص المرجع الصوتي المحفوظ…</div>
+ <label class="voice-label" for="reference-file">اختَر عينة B بصيغة MP3 أو WAV أو M4A</label>
+ <input id="reference-file" class="voice-input" type="file" accept=".mp3,.wav,.m4a,audio/*">
+ <div class="voice-actions"><ion-button id="save-reference" size="small"><ion-icon name="save-outline" slot="start"></ion-icon>حفظ صوت B</ion-button><ion-button id="delete-reference" size="small" color="medium" fill="outline">مسح المرجع من الجهاز</ion-button></div>
+ <audio id="reference-player" controls preload="none" aria-label="الاستماع إلى صوت B المرجعي"></audio>
+</ion-card>
+<ion-card class="voice-section">
+ <h2 style="font-size:18px;font-weight:800">2. تسجيلات الشرح بصوت B</h2>
+ <p>لكل فقرة تسجيل خاص. يمكنك اعتماد تسجيلات صوتية أنتجتها خارج المتصفح، وتسمعها داخل الدرس مباشرة.</p>
+ <label class="voice-label" for="lesson-select">اختر الدرس أو النموذج</label>
+ <select id="lesson-select" class="voice-select"></select>
+ <label class="voice-label" for="lesson-file">ارفع تسجيل شرح جديد لنفس الموضوع</label>
+ <input id="lesson-file" class="voice-input" type="file" accept=".mp3,.wav,.m4a,audio/*">
+ <label class="voice-check"><input id="approved-b" type="checkbox"><span>استمعت للملف وتأكدت أنه بصوت B وحده، ويشرح الموضوع المحدد، وأن استخدامه مسموح.</span></label>
+ <div class="voice-actions"><ion-button id="save-lesson"><ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>اعتماد التسجيل للدرس</ion-button><ion-button id="delete-lesson" fill="outline" color="danger">حذف تسجيل الدرس</ion-button></div>
+ <audio id="lesson-player" controls preload="none" aria-label="معاينة شرح الدرس بصوت B"></audio>
+ <div id="lesson-status" class="voice-status" role="status">اختَر موضوعاً لفحص تسجيله المعتمد.</div>
+</ion-card>
+<ion-card class="voice-section">
+ <h2 style="font-size:18px;font-weight:800">3. مكتبة الصوت المعتمد</h2>
+ <div id="approved-list"></div>
+ <p class="voice-small">التخزين عبر IndexedDB داخل المتصفح؛ إذا حذفت بيانات الموقع تنحذف التسجيلات. نشر الواجهة العامة على GitHub لا يرفع الملفات الصوتية الخاصة.</p>
+</ion-card>
+<div class="voice-note"><strong>ما الذي لم يكتمل؟</strong> استنساخ صوت B لقراءة أي سؤال جديد بشكل لحظي، والمحادثة الصوتية المباشرة، يحتاجان محرك توليد صوت متصلاً ومختبراً. هذه الصفحة تدير التسجيلات الحقيقية فقط.</div>
+</main>
+</ion-content><ion-toast id="voice-toast" duration="3000" position="bottom"></ion-toast></ion-app>
+</body></html>
