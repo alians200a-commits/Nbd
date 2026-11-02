@@ -71,10 +71,10 @@ export function AdminApp(){
         client.request<{name:string;type:string}[]>('/contents/src/views?ref=main')
       ]);
       if(appCode.encoding==='base64'){
-        const bin=atob(appCode.content.replace(/\\s/g,''));
+        const bin=atob(appCode.content.replace(/\s/g,''));
         const bytes=Uint8Array.from(bin,x=>x.charCodeAt(0));
         const source=new TextDecoder().decode(bytes);
-        const ids=[...source.matchAll(/\\bcase\\s+['"]([a-zA-Z0-9]+)['"]\\s*:/g)].map(x=>x[1]);
+        const ids=[...source.matchAll(/\bcase\s+['"]([a-zA-Z0-9]+)['"]\s*:/g)].map(x=>x[1]);
         if(ids.length){
           const known=new Map(studentFeatures.map(x=>[x.id,x]));
           setLiveFeatures([...new Set(ids)].map(id=>known.get(id)||{id,title:id,enabled:true}));
