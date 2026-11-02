@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BookOpen, BookOpenText, Brain, CalendarDays, ChevronLeft, ClipboardCheck, FlaskConical, Gamepad2, HeartPulse, Home, LibraryBig, Menu, Microscope, RotateCcw, Sparkles, Users, Volume2, X } from 'lucide-react';
+import { BookOpen, BookOpenText, Brain, CalendarDays, ChevronLeft, ClipboardCheck, FlaskConical, Gamepad2, HeartPulse, Home, LibraryBig, Menu, Microscope, RotateCcw, Sparkles, Users, X } from 'lucide-react';
 import type { TabType } from './Sidebar';
 import type { LucideIcon } from 'lucide-react';
 import { useApp } from '../context/AppContext';
@@ -21,8 +21,6 @@ const extras: {label:string;detail:string;icon: LucideIcon; art:string; tab?:Tab
   {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,art:'open-book',tab:'curriculum'},
   {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,art:'microscope',href:'simulations.html'},
   {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,art:'quiz-memo',href:'exam-bank.html'},
-  {label:'المعلّمة B',detail:'إدارة التسجيلات الصوتية المرجعية',icon:Volume2,art:'teacher-microphone',href:'learn.html?voice=1'},
-  {label:'استوديو الصوت البغدادي',detail:'إعداد نص الشرح وتوليده بصوت أنثوي جديد',icon:Volume2,art:'study-headphones',href:'voice_production.html'},
   {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,art:'game-controller',tab:'games'},
   {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,art:'study-calendar',tab:'planner'},
   {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,art:'family-group',tab:'parents'},
