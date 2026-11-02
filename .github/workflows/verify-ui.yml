@@ -44,7 +44,7 @@ jobs:
           assert 'NABD_PRIVATE_QUESTION_BANK_V1' in exam
           assert 'self_check_until_verified' in Path('data/nabd-curriculum.js').read_text() or 'تقييم ذاتي' in Path('exam-bank.html').read_text()
           assert 'window.speechSynthesis' not in Path('assets/nabd-learn.js').read_text()
-          assert 'simulations.html' in Path('index.html').read_text()
-          assert 'exam-bank.html' in Path('index.html').read_text()
+          assert 'simulations.html' in Path('assets/nabd-ionic.js').read_text()
+          assert 'exam-bank.html' in Path('assets/nabd-ionic.js').read_text()
           print('NABD source and question-bank UI checks passed')
           PY
