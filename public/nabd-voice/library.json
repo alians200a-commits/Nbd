@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "description": "تسجيلات الدروس التي وافق عليها مدير نَبْض فقط. لا تحتوي مفاتيح أو إعدادات توليد.",
+  "clips": {
+    "chapter1/lesson/01": {
+      "title": "الخلية العصبية",
+      "file": "neuron-baghdad-sulafat.wav",
+      "voice": "Sulafat",
+      "approved": true
+    }
+  }
+}
