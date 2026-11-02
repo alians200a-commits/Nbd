@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ArrowLeft, BookOpenText, CalendarDays, CheckCircle2, ChevronLeft, ClipboardCheck, Clock3, Headphones, Microscope, RotateCcw, Sparkles, Star, Trophy } from 'lucide-react';
+import { ArrowLeft, BookOpenText, CalendarDays, CheckCircle2, ChevronLeft, ClipboardCheck, Clock3, Headphones, Microscope, RotateCcw, Sparkles, Trophy } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { TABLER_CHAPTERS } from '../data/tablerData';
 import type { TabType } from '../components/Sidebar';
@@ -8,7 +8,7 @@ interface Props { onNavigateTab: (tab: TabType, params?: { chapter?: number }) =
 const artBase = import.meta.env.BASE_URL + 'nabd-art/';
 const artMap = ['brain','bone','arm','intestine','heart','lungs','kidneys','books','eye','thyroid','trophy'];
 const courseTones = ['violet','honey','mint'] as const;
-const days = ['س','أ','ا','ث','أ','خ','ج'];
+const days = ['سبت','أحد','إثن','ثلا','أرب','خمي','جمع'];
 
 export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
   const { state } = useApp();
@@ -76,7 +76,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
             return <article key={chapter.id} className={'nabd-learning-card nabd-tone-'+courseTones[i]}>
               <div className="nabd-learning-art"><img src={artBase+artMap[chapter.id-1]+'.svg'} alt={chapter.name}/></div>
               <div className="nabd-learning-card-info">
-                <div className="nabd-learning-badges"><span className="nabd-learning-level">{markedComplete?'تمت مراجعته':lastTest?'اختبار سابق':'جاهز للتعلّم'}</span><span className="nabd-learning-page"><Star size={13} fill="currentColor"/> {chapter.page}</span></div>
+                <div className="nabd-learning-badges"><span className="nabd-learning-level">{markedComplete?'تمت مراجعته':lastTest?'اختبار سابق':'جاهز للتعلّم'}</span><span className="nabd-learning-page"><BookOpenText size={13}/> ص {chapter.page}</span></div>
                 <h3>{chapter.name}</h3><p>{chapter.desc}</p>
                 <div className="nabd-learning-bottom"><div className="nabd-learning-track" role="progressbar" aria-label={'تقدم '+chapter.name} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}><span style={{width:pct+'%'}}/></div><small>{measured?pct+'٪':'ابدأ الآن'}</small></div>
                 <small className="nabd-progress-meaning">{lastTest&&!markedComplete?'نتيجة الاختبار الأخير':'حالة مراجعة الفصل'}</small>
