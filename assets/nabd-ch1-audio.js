@@ -5,6 +5,7 @@ const BASE="nabd/chapter1/recording/",DB="nabd-voice-bank-v1",STORE="audios",LS=
 const $=id=>document.getElementById(id);
 const topics=[["غير محدد — يحتاج مراجعة","ذات السحايا","شلل الأطفال","الكزاز","الأمراض النفسية والاكتئاب","عدة مواضيع أو تتمة درس"],["غير محدد — يحتاج مراجعة","ذات السحايا","شلل الأطفال","الكزاز","الأمراض النفسية والاكتئاب","عدة مواضيع أو تتمة درس"]];
 let local={};try{local=JSON.parse(localStorage.getItem(LS)||"{}")||{}}catch(_){}
+const EXPECTED={"ch1_01":"62b316e8f2e497b3de0f1f956a2ac8a411a2aa27adbfdd0594b127776cf9e948","ch1_02":"65f5cbfad68d660b26e659a717f557b37e14f9718b29ce99b0e113cd913028e7","ch1_03":"85a3b365c3a284bfa4d7fb3a3382d7cbf8ea18b5ca578da8357b52c96b886bf1","ch1_04":"00f71e3e4840089632ad0455bbc69d5a355015aafa26f292e4f7532fd088d050","ch1_05":"ef985fbcfb5c58f298ed8e51c1e39136089bc05825c172834aa0452794232003","ch1_06":"b411a1742944c7ccb9509213f75058e874b5f548d6505891d451b01083149e24"};
 const rows=Array.from({length:6},(_,i)=>({id:"ch1_"+String(i+1).padStart(2,"0"),num:i+1}));
 function openDB(){return new Promise((ok,bad)=>{if(!globalThis.indexedDB)return bad(new Error("التخزين المحلي غير متاح في هذا المتصفح"));const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE)};r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error)})}
 async function io(id,blob){const db=await openDB();return new Promise((ok,bad)=>{const tx=db.transaction(STORE,blob?"readwrite":"readonly");const rq=blob?tx.objectStore(STORE).put(blob,BASE+id):tx.objectStore(STORE).get(BASE+id);rq.onsuccess=()=>ok(rq.result);rq.onerror=()=>bad(rq.error);tx.oncomplete=()=>db.close();tx.onerror=()=>{db.close();bad(tx.error)}})}
@@ -56,7 +57,7 @@ async function importPack(file){
   const binary=b64decode(clip.base64);total+=binary.length;
   if(binary.length!==clip.size||binary.length<1000||binary.length>2*1024*1024||total>9*1024*1024)throw Error("حجم التسجيل غير صحيح");
   const fingerprint=await fileSha(binary.buffer);
-  if(fingerprint!==clip.sha256)throw Error("فشل فحص سلامة تسجيل "+clip.id);
+  if(fingerprint!==clip.sha256||fingerprint!==EXPECTED[clip.id])throw Error("هذا التسجيل لا يطابق الملف الذي أرسله صاحب المشروع: "+clip.id);
   clips.push({id:clip.id,blob:new Blob([binary],{type:"audio/mpeg"})});
  }
  for(const c of clips)await io(c.id,c.blob);
