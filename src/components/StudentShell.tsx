@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BookOpen, BookOpenText, Brain, CalendarDays, ChevronLeft, ClipboardCheck, FlaskConical, Gamepad2, HeartPulse, Home, LibraryBig, Menu, Microscope, RotateCcw, Sparkles, Users, Volume2, X } from 'lucide-react';
 import type { TabType } from './Sidebar';
+import type { LucideIcon } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 interface Props {
@@ -8,14 +9,14 @@ interface Props {
   onNavigateTab: (tab: TabType, params?: {chapter?: number;page?: number}) => void;
   children: React.ReactNode;
 }
-const primary: { id: TabType; name: string; icon: React.ComponentType<{size?:number;strokeWidth?:number}> }[] = [
+const primary: { id: TabType; name: string; icon: LucideIcon }[] = [
   { id:'home',name:'الرئيسية',icon:Home },
   { id:'chapters',name:'دروسي',icon:BookOpenText },
   { id:'lab',name:'المختبر',icon:Microscope },
   { id:'quiz',name:'اختبرني',icon:ClipboardCheck },
   { id:'vault',name:'المراجعة',icon:RotateCcw },
 ];
-const extras: {label:string;detail:string;icon: React.ComponentType<{size?:number}>; tab?:TabType;href?:string}[] = [
+const extras: {label:string;detail:string;icon: LucideIcon; tab?:TabType;href?:string}[] = [
   {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,tab:'curriculum'},
   {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,href:'simulations.html'},
   {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,href:'exam-bank.html'},
