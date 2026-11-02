@@ -1,0 +1,197 @@
+/* نَبْض — منظومة واجهة المتعلم 13
+   تكوين مستلهم من المرجع المرسل: ثلاث شاشات تعليمية، ألوان باستيلية،
+   رسومات Fluent Emoji المرخّصة MIT، دون توليد أيقونات بالذكاء الاصطناعي. */
+:root{
+ --violet:#7048D4;--violet-dark:#452593;--ink:#25233F;--muted:#625E7C;
+ --canvas:#FBF9FF;--line:#EAE2F5;--focus:#542FAF;
+}
+body,.student-app{background:#FBF9FF;color:#25233F}
+.student-app{background:radial-gradient(ellipse at 0% 18%,rgba(255,214,232,.38) 0,transparent 38%),radial-gradient(ellipse at 90% 0%,rgba(229,212,255,.50) 0,transparent 38%),#FBF9FF}
+.student-topbar{border-bottom:1px solid #EAE5F5;background:rgba(255,255,255,.94)}
+.student-topbar-inner{max-width:1250px;min-height:74px}
+.student-brand-mark{background:#EEE4FF;color:#6542CA;box-shadow:none}
+.student-desktop-nav button.is-current{background:#EDE5FC;color:#5834AF}
+.student-desktop-nav button:hover{background:#F4EEFF;color:#5834AF}
+.student-reminder-button,.student-menu-button{border-color:#E7DFF5;color:#6139BC}
+.student-page{max-width:1250px;padding:25px 23px 98px}
+.nabd-journey{color:#25233F}
+.nabd-journey-grid{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.13fr) minmax(0,.96fr);gap:20px;align-items:stretch;direction:rtl}
+.nabd-journey-grid>section{min-width:0}
+.nabd-welcome-phone,.nabd-today-panel,.nabd-tracker-panel{background:#FFF;border:1px solid #EEE7F5;border-radius:28px;box-shadow:0 16px 45px rgba(89,57,142,.07);overflow:hidden}
+.nabd-welcome-phone{display:flex;flex-direction:column}
+.nabd-welcome-illustration{min-height:320px;position:relative;display:flex;align-items:center;justify-content:center;background:linear-gradient(148deg,#E9DFFC,#D7CAFA 80%);overflow:hidden}
+.nabd-welcome-glow{width:215px;height:215px;border-radius:50%;position:absolute;top:42px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.27)}
+.nabd-hero-books,.nabd-hero-brain{position:absolute;object-fit:contain;filter:drop-shadow(0 13px 9px rgba(101,67,142,.10))}
+.nabd-hero-books{width:200px;height:200px;bottom:32px;left:50%;transform:translateX(-50%) rotate(-5deg)}
+.nabd-hero-brain{width:150px;height:150px;top:32px;left:50%;transform:translateX(-50%) rotate(6deg)}
+.nabd-hero-sparkle{position:absolute;font-size:30px;color:#fff;text-shadow:0 2px 4px #A68BE5}
+.sparkle-one{top:45px;right:17%}.sparkle-two{top:155px;left:13%;font-size:21px}
+.nabd-welcome-copy{border-radius:32px 32px 0 0;background:#fff;position:relative;margin-top:-17px;text-align:center;padding:27px 26px 30px;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.nabd-welcome-eyebrow{display:inline-flex;background:#F2ECFF;color:#6640BA;border-radius:999px;padding:7px 13px;font-size:11px;font-weight:850}
+.nabd-welcome-copy h1{font-size:clamp(25px,2.7vw,33px);line-height:1.45;font-weight:900;margin:16px 0 8px;letter-spacing:-.6px}
+.nabd-welcome-copy h1 em{font-style:normal;color:#7048D4}
+.nabd-welcome-copy p{max-width:280px;line-height:1.9;font-size:14px;color:#625E78;margin:0 0 23px}
+.nabd-start-button{background:#7048D4;color:white;border:0;border-radius:999px;padding:8px 8px 8px 17px;min-height:53px;width:100%;max-width:290px;display:flex;align-items:center;justify-content:space-between;flex-direction:row-reverse;font-weight:900;font-size:15px;box-shadow:0 6px 15px rgba(110,72,212,.17)}
+.nabd-start-button:hover{background:#5933B4}
+.nabd-arrow-circle{display:grid;place-items:center;width:37px;height:37px;border-radius:50%;background:#fff;color:#633DBD;flex-shrink:0}
+.nabd-welcome-secondary{display:inline-flex;align-items:center;gap:3px;background:none;border:0;color:#6D45C3;font-size:12px;font-weight:800;margin-top:14px;padding:10px;min-height:44px}
+.nabd-today-panel{padding:18px 17px 18px;display:flex;flex-direction:column;gap:0}
+.nabd-today-topline{display:flex;align-items:center;gap:10px}
+.nabd-hello-avatar{width:43px;height:43px;border-radius:50%;background:#EDE5FF;display:grid;place-items:center;flex-shrink:0}
+.nabd-hello-avatar img{width:35px;height:35px;object-fit:contain}
+.nabd-today-topline>div{flex:1;min-width:0}
+.nabd-today-topline strong{display:block;font-size:13px;color:#2D2946}
+.nabd-today-topline small{display:block;font-size:11px;color:#716C82;margin-top:3px}
+.nabd-circle-utility{border:1px solid #EFE8F7;background:#FAF7FF;color:#6447A5;width:41px;height:41px;min-width:41px;border-radius:50%;display:grid;place-items:center;padding:0}
+.nabd-today-heading{display:flex;align-items:center;justify-content:space-between;margin:27px 2px 14px;gap:12px}
+.nabd-today-heading>div>span{display:block;font-size:12px;color:#756C91;font-weight:800}
+.nabd-today-heading h2{font-weight:900;font-size:27px;margin:2px 0;color:#27233C}
+.nabd-heading-star{display:grid;place-items:center;background:#F4EFFF;border-radius:50%;width:40px;height:40px;color:#7048D4}
+.nabd-course-list{display:flex;flex-direction:column;gap:12px}
+.nabd-learning-card{display:flex;align-items:center;gap:11px;min-height:143px;border-radius:20px;padding:14px 12px;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.7)}
+.nabd-tone-violet{background:#E8DDFB}
+.nabd-tone-honey{background:#FFF0CB}
+.nabd-tone-mint{background:#E3F4EC}
+.nabd-learning-art{width:73px;height:92px;flex:0 0 73px;display:flex;align-items:center;justify-content:center}
+.nabd-learning-art img{max-width:76px;max-height:82px;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 8px 6px rgba(77,52,94,.09))}
+.nabd-learning-card-info{min-width:0;flex:1;align-self:center;padding-bottom:4px}
+.nabd-learning-badges{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.nabd-learning-level{font-size:10px;color:#6041AA;background:#F6F0FF;border-radius:999px;padding:3px 7px;font-weight:800;white-space:nowrap}
+.nabd-tone-honey .nabd-learning-level{color:#936016;background:#FFF9E9}
+.nabd-tone-mint .nabd-learning-level{color:#11795D;background:#F4FFF9}
+.nabd-learning-page{display:inline-flex;align-items:center;gap:2px;color:#906F1C;font-size:11px;background:#ffffffbd;padding:3px 6px;border-radius:999px;white-space:nowrap}
+.nabd-learning-page svg{color:#F4B923}
+.nabd-learning-card h3{font-size:16px;font-weight:900;color:#2D2943;margin:10px 0 2px;line-height:1.3}
+.nabd-learning-card p{font-size:11px;color:#5E586D;margin:0 0 8px;line-height:1.55}
+.nabd-learning-bottom{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.nabd-learning-track{height:7px;border-radius:999px;background:rgba(255,255,255,.92);overflow:hidden;flex:1}
+.nabd-learning-track>span{height:100%;display:block;border-radius:inherit;background:#7751D6;transition:width .3s}
+.nabd-tone-honey .nabd-learning-track>span{background:#F4B828}
+.nabd-tone-mint .nabd-learning-track>span{background:#38AD80}
+.nabd-learning-bottom>small{font-size:10px;min-width:35px;text-align:left;color:#3E3358;font-weight:800}
+.nabd-progress-meaning{font-size:9px;color:#756D85;display:block;margin-top:4px}
+.nabd-course-go{align-self:flex-end;display:grid;place-items:center;background:#fff;border:0;border-radius:50%;width:35px;height:35px;flex:0 0 35px;color:#5136A0;box-shadow:0 3px 7px rgba(64,41,103,.07);padding:0}
+.nabd-course-go:hover{transform:translateX(-2px)}
+.nabd-view-all{border:0;background:transparent;color:#6540B3;font-size:13px;font-weight:800;padding:13px 9px 5px;min-height:44px;display:flex;align-items:center;gap:4px;align-self:center}
+.nabd-tracker-panel{padding:14px 15px 16px;display:flex;flex-direction:column;gap:0}
+.nabd-tracker-head{display:flex;align-items:center;justify-content:space-between;min-height:38px}
+.nabd-tracker-label{font-size:15px;font-weight:900}
+.nabd-tracker-mascot{height:187px;background:linear-gradient(145deg,#EAE1FF,#F6EFFC);border-radius:18px;margin:10px 0 13px;padding:16px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;position:relative;overflow:hidden}
+.nabd-tracker-mascot img{position:absolute;width:148px;height:148px;object-fit:contain;left:4px;bottom:8px;filter:drop-shadow(0 6px 8px rgba(100,64,156,.08))}
+.nabd-tracker-mascot h2{font-size:23px;line-height:1.43;color:#44307A;margin:0 0 9px;position:relative;z-index:1;font-weight:900}
+.nabd-tracker-mascot>span{display:inline-block;background:#fff;border-radius:999px;padding:6px 10px;color:#694DA8;font-weight:800;font-size:11px;position:relative;z-index:1}
+.nabd-tracker-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.nabd-stat-tile{border:0;min-height:118px;border-radius:18px;padding:15px 14px;text-align:right;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between}
+.nabd-stat-violet{background:#E9E2FC;color:#6342B3}
+.nabd-stat-honey{background:#FFF0C7;color:#A36B11}
+.nabd-stat-tile strong{font-size:29px;font-weight:900;color:#28263E;line-height:1.2}
+.nabd-stat-tile span{font-size:11px;font-weight:800;color:#4D465D}
+.nabd-chart-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:23px 1px 8px}
+.nabd-chart-head h3{margin:0;font-size:15px;font-weight:900}
+.nabd-chart-head>span{font-size:10px;color:#7C7291;background:#F6F1FC;border-radius:999px;padding:6px 8px}
+.nabd-activity-chart{height:157px;display:flex;align-items:flex-end;gap:6px;padding:15px 5px 0;direction:rtl}
+.nabd-activity-day{display:flex;flex:1;flex-direction:column;align-items:center;justify-content:flex-end;gap:5px;height:100%;min-width:0}
+.nabd-activity-count{font-size:11px;font-weight:900;color:#7548C9;height:17px}
+.nabd-activity-bar{width:100%;max-width:34px;min-height:9px;border-radius:14px 14px 10px 10px;background:#D8C5F6;box-shadow:inset 0 -3px 7px rgba(88,44,151,.045)}
+.nabd-bar-1{background:#FFDF87}.nabd-bar-2{background:#BFA9F3}.nabd-bar-3{background:#7853DA}
+.nabd-activity-day:nth-child(6) .nabd-activity-bar{background:#B8E7C8}
+.nabd-activity-day.is-today .nabd-day-label{color:#613CC1;font-weight:900}
+.nabd-day-label{font-size:10px;color:#635C70;font-weight:750;min-height:17px}
+.nabd-empty-activity{font-size:10px;line-height:1.6;text-align:center;color:#797088;margin:6px 0 0}
+.nabd-achievement{background:#F0E7FF;border:0;border-radius:18px;padding:10px 11px;display:flex;align-items:center;gap:10px;text-align:right;margin-top:auto;min-height:77px;color:#554075;width:100%}
+.nabd-achievement-art{background:#fff9e8;border-radius:14px;width:54px;height:54px;display:grid;place-items:center;flex:0 0 54px}
+.nabd-achievement-art img{width:46px;height:46px;object-fit:contain}
+.nabd-achievement>span:nth-child(2){flex:1;min-width:0}
+.nabd-achievement strong{display:block;font-size:12px;color:#32284B;line-height:1.5}
+.nabd-achievement small{display:block;font-size:10px;color:#665A79;line-height:1.6;margin-top:4px}
+.nabd-tracker-note{display:flex;align-items:center;gap:6px;font-size:10px;color:#756D88;line-height:1.5;margin:9px 1px 0}
+.nabd-tracker-note svg{flex:0 0 auto;color:#23A382}
+.nabd-quick-section{margin-top:32px;padding-bottom:14px}
+.nabd-quick-heading>div>span{font-size:12px;color:#7753B7;font-weight:900}
+.nabd-quick-heading h2{font-size:23px;font-weight:900;margin:5px 0 17px}
+.nabd-quick-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.nabd-quick-action{display:flex;flex-direction:column;align-items:flex-start;gap:5px;border:1px solid #EAE2F3;border-radius:21px;text-align:right;padding:17px 16px;min-height:169px;transition:transform .15s,border-color .15s}
+.nabd-quick-action:hover{transform:translateY(-2px);border-color:#B9A6DC}
+.qa-violet{background:#EEE6FD}.qa-mint{background:#E6F5EE}.qa-honey{background:#FFF3D9}.qa-pink{background:#FFE9F1}
+.nabd-quick-art{width:70px;height:69px;display:grid;place-items:center}
+.nabd-quick-art img{width:68px;height:68px;object-fit:contain;filter:drop-shadow(0 5px 6px rgba(75,50,97,.09))}
+.nabd-quick-action strong{font-size:16px;font-weight:900;color:#2C2942}
+.nabd-quick-action small{font-size:12px;line-height:1.5;color:#645E75}
+.nabd-more-shortcuts{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.nabd-more-shortcuts button{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #E8E1F1;border-radius:999px;color:#5C43A5;font-size:12px;font-weight:850;min-height:43px;padding:8px 13px}
+.nabd-more-shortcuts button:nth-child(2){color:#147A63;background:#F1FBF6}
+.nabd-more-shortcuts button:nth-child(3){color:#986213;background:#FFF9E9}
+.nabd-study-disclaimer{font-size:11px;line-height:1.8;color:#7B718A;margin:17px 0 0}
+.student-mobile-nav{background:#fff;border-top:1px solid #EEE7F5}
+.student-mobile-nav button{color:#59536A}
+.student-mobile-nav button:nth-child(1) .student-nav-symbol{color:#7551D6;background:#F0E9FE}
+.student-mobile-nav button:nth-child(2) .student-nav-symbol{color:#5371C8;background:#EBF0FF}
+.student-mobile-nav button:nth-child(3) .student-nav-symbol{color:#11957F;background:#E7F6F0}
+.student-mobile-nav button:nth-child(4) .student-nav-symbol{color:#BC7911;background:#FFF3DB}
+.student-mobile-nav button:nth-child(5) .student-nav-symbol{color:#D15D8C;background:#FFEAF2}
+.student-mobile-nav button.is-current .student-nav-symbol{background:#7048D4;color:white}
+.student-mobile-nav button.is-current{color:#603BB9}
+.student-more-icon{color:#724BBA;background:#F0EAFE}
+.student-more-grid>button:nth-child(4n+2) .student-more-icon{color:#148C73;background:#E7F8EF}
+.student-more-grid>button:nth-child(4n+3) .student-more-icon{color:#B67715;background:#FFF4DC}
+.student-more-grid>button:nth-child(4n+4) .student-more-icon{color:#D45C86;background:#FFE9F0}
+.student-chapter-row.student-tint-lilac{background:#F6F0FE!important}
+.student-chapter-row.student-tint-peach{background:#FFF5E5!important}
+.student-chapter-row.student-tint-mint{background:#ECF8F2!important}
+.student-chapter-row.student-tint-sky{background:#EFF7FF!important}
+.student-chapter-row{border-color:#EAE2F2!important}
+.student-chapter-row .student-chapter-figure{background:#ffffffaa}
+.student-chapter-row .student-chapter-figure img{max-width:85%;max-height:85%;object-fit:contain}
+.student-pill-primary{background:#7048D4!important}
+.student-pill-secondary{background:#FFF!important;color:#633EB1!important}
+.student-trust-note{color:#756D84}
+@media(max-width:1120px){
+ .nabd-journey-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:16px}
+ .nabd-tracker-panel{grid-column:span 2;display:grid;grid-template-columns:1fr 1.3fr;align-items:center;gap:14px}
+ .nabd-tracker-head{grid-column:1/-1}
+ .nabd-tracker-mascot{grid-column:1;grid-row:2/4;height:230px;margin:0}
+ .nabd-tracker-stats{grid-column:2;grid-row:2}
+ .nabd-chart-head{grid-column:2;grid-row:3;margin:0}
+ .nabd-activity-chart{grid-column:2;grid-row:4;height:140px}
+ .nabd-achievement{grid-column:1;grid-row:4}
+ .nabd-tracker-note{grid-column:1/-1}
+}
+@media(max-width:720px){
+ .student-page{padding:14px 14px 106px}
+ .nabd-journey-grid{display:flex;flex-direction:column;gap:15px}
+ .nabd-welcome-phone{display:grid;grid-template-columns:38% minmax(0,1fr);border-radius:22px;min-height:215px}
+ .nabd-welcome-illustration{min-height:215px}
+ .nabd-welcome-glow{width:110px;height:110px}
+ .nabd-hero-brain{width:90px;height:90px;top:18px}
+ .nabd-hero-books{width:110px;height:110px;bottom:12px}
+ .nabd-welcome-copy{border-radius:0;margin-top:0;padding:17px 12px;text-align:right;align-items:flex-start}
+ .nabd-welcome-copy h1{font-size:21px;margin:7px 0}
+ .nabd-welcome-eyebrow{font-size:10px;padding:4px 7px}
+ .nabd-welcome-copy p{font-size:11px;line-height:1.6;margin:2px 0 10px}
+ .nabd-start-button{min-height:43px;padding:5px 6px 5px 10px;font-size:12px}
+ .nabd-arrow-circle{width:31px;height:31px}
+ .nabd-welcome-secondary{font-size:10px;margin:2px 0 0;padding:6px}
+ .nabd-today-panel,.nabd-tracker-panel{border-radius:21px}
+ .nabd-tracker-panel{display:flex;gap:0}
+ .nabd-tracker-head,.nabd-tracker-mascot,.nabd-tracker-stats,.nabd-chart-head,.nabd-activity-chart,.nabd-achievement,.nabd-tracker-note{grid-column:auto;grid-row:auto}
+ .nabd-tracker-mascot{height:150px;width:100%;margin:7px 0 13px}
+ .nabd-tracker-mascot h2{font-size:21px}
+ .nabd-tracker-mascot img{width:130px;height:130px}
+ .nabd-chart-head{margin:22px 1px 8px}
+ .nabd-activity-chart{height:140px}
+ .nabd-achievement{margin-top:17px}
+ .nabd-quick-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ .nabd-quick-action{min-height:154px;padding:13px}
+ .nabd-quick-section{margin-top:24px}
+ .nabd-quick-heading h2{font-size:22px}
+}
+@media(max-width:375px){
+ .nabd-welcome-phone{grid-template-columns:35% minmax(0,1fr)}
+ .nabd-welcome-copy h1{font-size:19px}
+ .nabd-learning-art{flex-basis:58px;width:58px}
+ .nabd-learning-art img{max-width:58px}
+ .nabd-learning-card{gap:7px;padding:11px 9px}
+ .nabd-learning-card h3{font-size:14px}
+ .nabd-course-go{width:32px;height:32px;flex-basis:32px}
+}
+@media(prefers-reduced-motion:reduce){.nabd-journey *{animation:none!important;transition:none!important}}
