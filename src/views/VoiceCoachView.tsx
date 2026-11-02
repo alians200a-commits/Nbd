@@ -16,43 +16,13 @@ import { VERIFIED_RECORDS } from '../data';
 import { useApp } from '../context/AppContext';
 
 export const VoiceCoachView: React.FC = () => {
-  const { state, setSpeaker, addPoints } = useApp();
+  const { addPoints } = useApp();
   const [selectedRecordIdx, setSelectedRecordIdx] = useState<number>(0);
   const [isListening, setIsListening] = useState<boolean>(false);
   const [transcript, setTranscript] = useState<string>('');
   const [evalResult, setEvalResult] = useState<{ match: number; feedback: string } | null>(null);
-  const [isPlayingAudio, setIsPlayingAudio] = useState<boolean>(false);
 
   const currentRecord = VERIFIED_RECORDS[selectedRecordIdx] || VERIFIED_RECORDS[0];
-
-  const handleSpeakSample = () => {
-    if (!('speechSynthesis' in window)) {
-      alert('المتصفح لا يدعم القراءة الصوتية.');
-      return;
-    }
-
-    if (isPlayingAudio) {
-      window.speechSynthesis.cancel();
-      setIsPlayingAudio(false);
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-    const utt = new SpeechSynthesisUtterance(currentRecord.answer);
-    utt.lang = 'ar-SA';
-    utt.rate = state.speechRate || 1.0;
-
-    const voices = window.speechSynthesis.getVoices();
-    const arVoice = voices.find((v) => v.lang.startsWith('ar') && v.name.toLowerCase().includes('female')) ||
-                    voices.find((v) => v.lang.startsWith('ar'));
-    if (arVoice) utt.voice = arVoice;
-
-    utt.onend = () => setIsPlayingAudio(false);
-    utt.onerror = () => setIsPlayingAudio(false);
-
-    window.speechSynthesis.speak(utt);
-    setIsPlayingAudio(true);
-  };
 
   const startVoiceRecognition = () => {
     // Check SpeechRecognition
@@ -136,34 +106,14 @@ export const VoiceCoachView: React.FC = () => {
             <Mic size={20} />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-[#effbff]">المعلّمة الصوتية الذكية وهندسة الصوت</h2>
-            <p className="text-xs text-[#82a4b8]">استمع لشرح التعاريف أو سمّع بصوتك للتقييم الآلي المعتمد</p>
+            <h2 className="text-lg font-bold text-[#effbff]">تدريب التسميع الصوتي</h2>
+            <p className="text-xs text-[#82a4b8]">استمع إلى الشروح المعتمدة، وتدرّب على تسميع التعاريف</p>
           </div>
         </div>
 
-        {/* Speaker Profile Badge */}
-        <div className="flex items-center gap-2 bg-[#091728] border border-[#1e3b54] p-1 rounded-xl text-xs">
-          <span className="text-[#88a9bc] px-2">الهوية الصوتية:</span>
-          <button
-            onClick={() => setSpeaker('B')}
-            className={`px-3 py-1 rounded-lg font-bold transition ${
-              state.teacherVoiceSpeaker === 'B'
-                ? 'bg-[#1b4e5f] text-[#7bf0da]'
-                : 'text-[#6b8c9e]'
-            }`}
-          >
-            المتحدث B (المعتمد)
-          </button>
-          <button
-            onClick={() => setSpeaker('A')}
-            className={`px-3 py-1 rounded-lg font-bold transition ${
-              state.teacherVoiceSpeaker === 'A'
-                ? 'bg-[#1b4e5f] text-[#7bf0da]'
-                : 'text-[#6b8c9e]'
-            }`}
-          >
-            المتحدث A
-          </button>
+        <div className="w-full sm:max-w-sm rounded-xl bg-[#133f43] border border-[#27736b] px-4 py-3 text-right">
+          <div className="font-bold text-[#c6fff2] text-xs mb-2">شرح المعلّمة المعتمد — الخلية العصبية</div>
+          <audio controls preload="none" className="w-full h-10" src={import.meta.env.BASE_URL + 'nabd-voice/neuron-baghdad-sulafat.wav'} aria-label="استمع إلى شرح الخلية العصبية" />
         </div>
       </div>
 
@@ -208,18 +158,7 @@ export const VoiceCoachView: React.FC = () => {
                 </h3>
               </div>
 
-              {/* Read aloud button */}
-              <button
-                onClick={handleSpeakSample}
-                className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition border ${
-                  isPlayingAudio
-                    ? 'bg-[#3e2c18] border-[#f2c575] text-[#f2c575]'
-                    : 'bg-[#153447] border-[#296877] text-[#7bf0da]'
-                }`}
-              >
-                {isPlayingAudio ? <VolumeX size={15} /> : <Volume2 size={15} />}
-                <span>{isPlayingAudio ? 'إيقاف النموذج' : 'استمع للنموذج الصوتي'}</span>
-              </button>
+              <span className="text-xs text-[#91b8c3]">لكل تعريف تسجيله الخاص بعد الاعتماد؛ ماكو صوت آلي بديل.</span>
             </div>
 
             {/* Model Textbook Answer */}
@@ -279,13 +218,8 @@ export const VoiceCoachView: React.FC = () => {
               )}
             </div>
 
-            {/* Note on Speaker B profile */}
-            <div className="p-4 rounded-2xl bg-[#112338] border border-[#204060] text-xs text-[#9fc2d4] leading-relaxed flex items-start gap-3">
-              <Info size={18} className="text-[#f2c575] shrink-0 mt-0.5" />
-              <div>
-                <b className="text-[#effbff] block mb-0.5">حول هوية صوت المعلّمة B:</b>
-                تم تثبيت المتحدث B من التسجيل الثنائي كمرجع معتمد لأسلوب الشرح وتوجيه الطالب. تتيح المنصة التدريب الشفهي والتسميع الصوتي دون الحاجة لخوادم خارجية معتمدة على تقنيات المتصفح الحديثة.
-              </div>
+            <div className="p-4 rounded-2xl bg-[#112338] border border-[#204060] text-xs text-[#9fc2d4] leading-relaxed">
+              شروحات نَبْض تُنشر بعد مراجعة المعلومة والنطق. ضبط الصوت وتوليده واعتماده مهام الإدارة فقط؛ هنا تستمع وتتدرّب على التسميع.
             </div>
           </div>
         </div>
