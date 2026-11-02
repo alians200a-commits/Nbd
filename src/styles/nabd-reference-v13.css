@@ -195,3 +195,17 @@ body,.student-app{background:#FBF9FF;color:#25233F}
  .nabd-course-go{width:32px;height:32px;flex-basis:32px}
 }
 @media(prefers-reduced-motion:reduce){.nabd-journey *{animation:none!important;transition:none!important}}
+
+/* Colored, equally sized navigation symbols: identical shape system, distinct meaning. */
+.student-desktop-nav button svg{width:20px;height:20px;stroke-width:2.1}
+.student-desktop-nav button:nth-child(1) svg{color:#7855D8}
+.student-desktop-nav button:nth-child(2) svg{color:#5875CB}
+.student-desktop-nav button:nth-child(3) svg{color:#0A987D}
+.student-desktop-nav button:nth-child(4) svg{color:#C18818}
+.student-desktop-nav button:nth-child(5) svg{color:#D05A8A}
+.student-menu-button svg{color:#724CBD}
+.student-reminder-button svg{color:#C25B8F}
+.student-more-grid>button .student-more-icon{flex-shrink:0;display:grid;place-items:center;width:46px;height:46px;border-radius:14px}
+.student-more-grid>button .student-more-icon svg{width:23px;height:23px;stroke-width:2}
+.nabd-learning-art img,.nabd-quick-art img,.nabd-tracker-mascot img{image-rendering:auto}
+.student-chapter-figure img{filter:drop-shadow(0 5px 8px rgba(95,67,120,.08))}
