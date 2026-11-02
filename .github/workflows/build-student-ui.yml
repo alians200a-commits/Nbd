@@ -1,0 +1,56 @@
+name: Build student app and check real navigation
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  student-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out real React application
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install free open-source dependencies
+        run: npm install --no-audit --no-fund
+      - name: Type check and build app
+        run: npm run build
+      - name: Include linked learning pages in deployable build
+        run: |
+          mkdir -p dist/assets dist/data
+          cp -R assets/. dist/assets/
+          cp -R data/. dist/data/
+          find . -maxdepth 1 -type f -name '*.html' ! -name 'index.html' -exec cp {} dist/ \;
+      - name: Check new student navigation and original illustrations
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          app=Path('src/App.tsx').read_text(encoding='utf-8')
+          ui=Path('src/components/StudentShell.tsx').read_text(encoding='utf-8')
+          home=Path('src/views/StudentHomeView.tsx').read_text(encoding='utf-8')
+          chapters=Path('src/views/StudentChaptersView.tsx').read_text(encoding='utf-8')
+          assert 'StudentShell' in app and 'StudentHomeView' in app and 'StudentChaptersView' in app
+          assert 'student-mobile-nav' in ui and 'student-desktop-nav' in ui
+          assert 'curriculum' in home and 'chapters' in chapters and 'lab' in chapters
+          assert 'ministryExam' in app and 'voiceCoach' in app and 'organSim' in app
+          art=['brain','books','microscope','heart','lungs','bone','eye',
+               'graduate','trophy','intestine','arm','kidneys','dna','thyroid','cell-nuclei','nerve']
+          for name in art:
+              assert Path('dist/nabd-art/'+name+'.svg').is_file(),name
+          for name in ('learn.html','simulations.html','exam-bank.html','materials.html'):
+              assert Path('dist/'+name).is_file(),name
+          assert Path('dist/assets/nabd-learn.js').is_file()
+          assert Path('dist/data/nabd-curriculum.js').is_file()
+          print('React app, original artwork, core routes and legacy learning pages verified')
+          PY
+      - name: Upload deployable preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: nabd-student-ui-dist
+          path: dist/
+          retention-days: 7
