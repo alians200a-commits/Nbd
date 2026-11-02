@@ -15,6 +15,8 @@ jobs:
           node --check assets/nabd-learn.js
           node --check assets/nabd-simulations.js
           node --check assets/nabd-exambank.js
+          node --check assets/nabd-process.js
+          node --check assets/nabd-ch1-audio.js
           node --check data/nabd-curriculum.js
       - name: Verify source links, 3D nucleus picking and lesson voice keys
         run: |
@@ -36,6 +38,16 @@ jobs:
               ids=set(re.findall(r'id="([^"]+)"',h))
               refs=set(re.findall(r'\$\("([^"]+)"\)',j))
               assert not refs-ids,(htmlpath,refs-ids)
+          process_js=Path('assets/nabd-process.js').read_text()
+          assert 'const SYSTEMS=' in process_js
+          assert process_js.count('"stages":')==11, 'Expected eleven chapter sequences'
+          process_html=Path('simulations.html').read_text()
+          assert 'assets/nabd-process.js' in process_html
+          for required in ['process-title','process-current','process-choices','process-feedback','process-progress','process-restart']:
+              assert ('id="'+required+'"') in process_html,required
+          exam_html=Path('exam-bank.html').read_text()
+          for required in ['manual-review','download-audit','question-text']:
+              assert ('id="'+required+'"') in exam_html,required
           sim=Path('assets/nabd-simulations.js').read_text()
           assert 'target:"nucleus"' in sim and 'target:"soma"' in sim
           assert '"nucleus",-0.46' in sim and '"soma",-0.45' in sim
