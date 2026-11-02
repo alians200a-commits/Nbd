@@ -1,0 +1,126 @@
+name: Gemini 3.1 | Iraqi teacher narration
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'voice-requests/**'
+      - '.github/workflows/gemini-baghdad-voice.yml'
+  workflow_dispatch:
+    inputs:
+      request_file:
+        description: 'Narration request JSON inside voice-requests/'
+        required: true
+        type: string
+        default: 'voice-requests/test-neuron-baghdad.json'
+
+permissions:
+  contents: read
+
+jobs:
+  generate-voice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out lesson request without exposing keys
+        uses: actions/checkout@v4
+      - name: Prepare private Gemini 3.1 voice generation
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INPUT_REQUEST: ${{ inputs.request_file }}
+        run: |
+          python3 - <<'PY'
+          import os, sys, json, re, base64, wave, time, urllib.request, urllib.error
+          from pathlib import Path
+          from datetime import datetime, timezone
+          key = os.environ.get("GEMINI_API_KEY", "").strip()
+          if not key:
+              print("::error::أضف GEMINI_API_KEY إلى GitHub Actions secrets حتى نولّد الصوت من حسابك.", file=sys.stderr)
+              sys.exit(1)
+          relative = os.environ.get("INPUT_REQUEST") or "voice-requests/test-neuron-baghdad.json"
+          root = Path.cwd().resolve()
+          candidate = (root / relative).resolve()
+          allowed = (root / "voice-requests").resolve()
+          if allowed not in candidate.parents or candidate.suffix != ".json" or not candidate.is_file():
+              raise ValueError("ملف الدرس لازم يكون JSON داخل voice-requests فقط")
+          request = json.loads(candidate.read_text(encoding="utf-8"))
+          transcript = request.get("text", "").strip()
+          topic = request.get("topic", "").strip()
+          if not isinstance(transcript, str) or not (30 <= len(transcript) <= 3000):
+              raise ValueError("نص شرح الدرس يجب أن يكون بين 30 و3000 حرف")
+          if not isinstance(topic, str) or not topic or len(topic) > 120:
+              raise ValueError("عنوان الموضوع مطلوب، وبحد أقصى 120 حرف")
+          voice = request.get("voice", "Sulafat")
+          if voice != "Sulafat":
+              raise ValueError("اختيار الصوت موحّد حالياً: Sulafat فقط")
+          model = "gemini-3.1-flash-tts-preview"
+          spoken = (
+              "Generate one clean spoken lesson recording. One warm female biology teacher from Baghdad, Iraq. "
+              "Speak naturally in authentic Baghdadi Iraqi Arabic, not Egyptian, Gulf, Levantine or formal newscaster Arabic. "
+              "Patient, engaging, friendly, gently expressive, medium-slow teaching pace. "
+              "Clearly pronounce medical and scientific terminology. No music or effects. "
+              "Speak exactly the Arabic transcript after the marker, with no additional words.\n"
+              "TRANSCRIPT TO SPEAK:\n" + transcript
+          )
+          payload = {
+              "contents": [{"role":"user", "parts":[{"text":spoken}]}],
+              "generationConfig": {
+                  "responseModalities": ["AUDIO"],
+                  "speechConfig": {"voiceConfig":{"prebuiltVoiceConfig":{"voiceName":voice}}}
+              }
+          }
+          url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+          body = json.dumps(payload,ensure_ascii=False).encode("utf-8")
+          result = None
+          for attempt in range(3):
+              http_req = urllib.request.Request(
+                  url, data=body, method="POST",
+                  headers={"x-goog-api-key":key, "Content-Type":"application/json", "User-Agent":"NABD-Baghdad-TTS/1.0"})
+              try:
+                  with urllib.request.urlopen(http_req, timeout=160) as resp:
+                      result = json.load(resp)
+                  break
+              except urllib.error.HTTPError as e:
+                  raw = e.read(500).decode("utf-8", "replace")
+                  print(f"Gemini HTTP {e.code}: {raw}", file=sys.stderr)
+                  if e.code not in (500,502,503,504) or attempt == 2:
+                      raise RuntimeError(f"Gemini API HTTP {e.code}; راجع حصة النموذج أو المفتاح") from None
+                  time.sleep(3*(attempt+1))
+          audio = None
+          mime = ""
+          for candidate_obj in result.get("candidates", []):
+              for p in candidate_obj.get("content", {}).get("parts", []):
+                  blob = p.get("inlineData") or {}
+                  if blob.get("data") and (blob.get("mimeType","").startswith("audio/")):
+                      audio = base64.b64decode(blob["data"])
+                      mime = blob.get("mimeType", "")
+                      break
+              if audio: break
+          if not audio or len(audio) < 1000:
+              raise RuntimeError("Gemini ما رجّع تسجيلاً صوتياً؛ لم يتم إنشاء ملف وهمي.")
+          dest = Path("gemini-voice-output")
+          dest.mkdir(exist_ok=True)
+          out = dest / "neuron_baghdad_gemini31_review.wav"
+          if audio[:4] == b"RIFF":
+              out.write_bytes(audio)
+          else:
+              rate_found = re.search(r"rate=(\d+)",mime)
+              rate = int(rate_found.group(1)) if rate_found else 24000
+              with wave.open(str(out),"wb") as f:
+                  f.setnchannels(1); f.setsampwidth(2); f.setframerate(rate); f.writeframes(audio)
+          info={
+              "topic":topic,"text":transcript,"model":model,
+              "voice":voice,"accent_requested":"Iraqi Baghdadi Arabic",
+              "generated_at":datetime.now(timezone.utc).isoformat(),
+              "human_approved":False,
+              "notice":"This is a voice audition. Teacher must verify pronunciation, script and dialect before publication."
+          }
+          (dest/"narration.json").write_text(json.dumps(info,ensure_ascii=False,indent=2),encoding="utf-8")
+          print("Generated a real Gemini 3.1 WAV audition:",out,"bytes:",out.stat().st_size)
+          PY
+      - name: Upload audio for review without automatically publishing it
+        uses: actions/upload-artifact@v4
+        with:
+          name: gemini31-neuron-baghdad-review
+          path: gemini-voice-output/
+          if-no-files-found: error
+          retention-days: 30
