@@ -1,0 +1,52 @@
+name: Build and deploy NABD student website
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install free open-source packages
+        run: npm install --no-audit --no-fund
+      - name: Check TypeScript and build React site
+        run: npm run build
+      - name: Include original source-import tools but not any user private files
+        run: |
+          mkdir -p dist/assets dist/data
+          cp -R assets/. dist/assets/
+          cp -R data/. dist/data/
+          find . -maxdepth 1 -type f -name '*.html' ! -name 'index.html' -exec cp {} dist/ \;
+          test -f dist/index.html
+          test -f dist/assets/healthicons-anatomy.svg
+          test -f dist/learn.html
+          test -f dist/exam-bank.html
+          test -f dist/simulations.html
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Publish GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
