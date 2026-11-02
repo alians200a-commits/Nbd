@@ -17,16 +17,16 @@ const primary: { id: TabType; name: string; icon: LucideIcon; art: string }[] = 
   { id:'quiz',name:'اختبرني',icon:ClipboardCheck,art:'quiz-memo' },
   { id:'vault',name:'المراجعة',icon:RotateCcw,art:'review-search' },
 ];
-const extras: {label:string;detail:string;icon: LucideIcon; tab?:TabType;href?:string}[] = [
-  {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,tab:'curriculum'},
-  {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,href:'simulations.html'},
-  {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,href:'exam-bank.html'},
-  {label:'المعلّمة B',detail:'إدارة التسجيلات الصوتية المرجعية',icon:Volume2,href:'learn.html?voice=1'},
-  {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,tab:'games'},
-  {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,tab:'planner'},
-  {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,tab:'parents'},
-  {label:'المنعكس العصبي',detail:'نشاط تفاعلي لفهم الاستجابة',icon:Brain,tab:'reflex'},
-  {label:'المصادر',detail:'المراجع والمشاريع المجانية',icon:LibraryBig,tab:'sources'},
+const extras: {label:string;detail:string;icon: LucideIcon; art:string; tab?:TabType;href?:string}[] = [
+  {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,art:'open-book',tab:'curriculum'},
+  {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,art:'microscope',href:'simulations.html'},
+  {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,art:'quiz-memo',href:'exam-bank.html'},
+  {label:'المعلّمة B',detail:'إدارة التسجيلات الصوتية المرجعية',icon:Volume2,art:'teacher-microphone',href:'learn.html?voice=1'},
+  {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,art:'game-controller',tab:'games'},
+  {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,art:'study-calendar',tab:'planner'},
+  {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,art:'family-group',tab:'parents'},
+  {label:'المنعكس العصبي',detail:'نشاط تفاعلي لفهم الاستجابة',icon:Brain,art:'brain',tab:'reflex'},
+  {label:'المصادر',detail:'المراجع والمشاريع المجانية',icon:LibraryBig,art:'notebook',tab:'sources'},
 ];
 export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children}) => {
   const {state}=useApp();
@@ -72,7 +72,7 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
           <button type="button" aria-label="إغلاق القائمة" onClick={()=>setOpen(false)}><X size={23}/></button>
         </div>
         <div className="student-more-grid">{extras.map(item=><button key={item.label} type="button" onClick={()=>launch(item)}>
-          <span className="student-more-icon"><item.icon size={23}/></span><span><strong>{item.label}</strong><small>{item.detail}</small></span><ChevronLeft size={18}/></button>)}</div>
+          <span className="student-more-icon"><img className="nabd-menu-illustration" src={artBase+item.art+'.svg'} alt="" aria-hidden="true"/></span><span><strong>{item.label}</strong><small>{item.detail}</small></span><ChevronLeft size={18}/></button>)}</div>
       </section>
     </div>}
   </div>;
