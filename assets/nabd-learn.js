@@ -22,6 +22,10 @@ const actions=el("div",undefined,"topic-actions"),answer=el("p",t[5],"topic-answ
 const reveal=el("ion-button","إظهار الجواب");reveal.size="small";reveal.fill="outline";reveal.onclick=()=>{answer.hidden=!answer.hidden;reveal.textContent=answer.hidden?"إظهار الجواب":"إخفاء الجواب"};
 const complete=el("ion-button","قرأت الدرس");complete.size="small";complete.color="secondary";complete.fill="outline";complete.onclick=()=>{state.read[id]=Date.now();save();drawLessons();say("تم حفظ مراجعة "+t[0])};actions.append(reveal,complete);body.append(actions,answer);
 const scoreButtons=el("div",undefined,"topic-actions");for(const correct of [true,false]){const btn=el("ion-button",correct?"عرفته":"أحتاج أراجعه");btn.fill="clear";btn.size="small";btn.color=correct?"success":"danger";btn.onclick=()=>{state.total++;if(correct)state.right++;else state.review[id]=Date.now();save();say(correct?"ممتاز، تمت إضافتها لإحصاءاتك":"حفظنا السؤال ضمن المراجعة")};scoreButtons.append(btn)}body.append(scoreButtons);
+const activity=el("ion-button","اختبر الفقرة داخل المختبر ثلاثي الأبعاد");
+activity.fill="outline";activity.color="secondary";activity.size="small";
+activity.onclick=()=>{location.href="simulations.html#c"+ch.id+"t"+i};
+body.append(activity);
 const voice=el("div",undefined,"topic-audio"),listen=el("ion-button","استمع بصوت B"),upload=el("ion-button","ارفع تسجيل الدرس");listen.size=upload.size="small";listen.fill=upload.fill="outline";listen.onclick=()=>listenTopic(id,t[0]);upload.onclick=()=>uploadTopic(id,t[0]);voice.append(listen,upload);body.append(voice,el("p","التسجيل المرفق يخص الفيزياء؛ لا يُستخدم لشرح هذا الموضوع. لا صوت بديل تلقائياً.","topic-audio-label"));acc.append(body);holder.append(acc)});
 $("lesson-empty").hidden=found!==0;}
 function showFlash(){const x=questions();if(!x.length)return;flash=(flash+x.length)%x.length;const a=x[flash];$("flash-counter").textContent=(flash+1)+" / "+x.length;$("flash-kind").textContent=flipped?"الإجابة":"السؤال";$("flash-text").textContent=flipped?a.t[5]:a.t[4];}
