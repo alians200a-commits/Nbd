@@ -54,6 +54,21 @@ jobs:
           assert v5['answer_extraction_missing_count']==79
           assert v5['high_priority_review_count']==115
           assert v5['ministerial_year_and_round_question_links_verified']==0
+          new_meta=json.loads(Path('data/NABD_QBANK_V5_2_PUBLIC_AUDIT.json').read_text())
+          assert new_meta['original_candidate_records']==491
+          assert new_meta['interactive_subparts_in_original_parent_records']==25
+          assert new_meta['source_image_reviewed_compound_questions']==6
+          assert new_meta['records_without_extracted_answer_or_visual_subparts']==76
+          assert new_meta['suspicious_long_question_prompts_with_possible_embedded_answers']==54
+          app_script=Path('assets/nabd-exambank.js').read_text()
+          assert 'function unsafeQuestion' in app_script
+          assert 'function showAuditPage' in app_script
+          assert 'source-page-text' in app_script
+          assert 'status==="unsafe"' in app_script
+          exam_html=Path('exam-bank.html').read_text()
+          assert 'id="unsafe-source-review"' in exam_html
+          assert 'id="source-page-text"' in exam_html
+          assert 'id="show-raw-question"' in exam_html
           assert 'inline-practice' in Path('exam-bank.html').read_text()
           exam_source=Path('assets/nabd-exambank.js').read_text()
           assert 'status==="inline"' in exam_source
