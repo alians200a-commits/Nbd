@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { TABLER_CHAPTERS } from '../data/tablerData';
+import { BiologySymbolIcon } from '../components/BiologySymbolIcon';
 import { TabType } from '../components/Sidebar';
 import {
   ArrowLeft, BookOpen, Brain, Bone, CheckCircle2, ClipboardCheck,
@@ -13,10 +14,7 @@ interface Props {
   onNavigateTab: (tab: TabType, params?: { chapter?: number }) => void;
 }
 
-const organIcons = [
-  Brain, Bone, Activity, BookOpen, HeartPulse, Wind,
-  Droplets, Dna, Eye, FlaskConical, ShieldPlus
-];
+const anatomySymbols = ['nerve','skeleton','arm','intestine','blood-vessel','lungs'] as const;
 const palettes = ['blue','violet','orange','mint','rose','sky','blue','violet','orange','mint','rose'];
 
 export const TablerHomeView: React.FC<Props> = ({ onNavigateTab }) => {
@@ -107,11 +105,11 @@ export const TablerHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         </div>
         <div className="nabd-chapter-strip">
           {TABLER_CHAPTERS.slice(0, 6).map((ch, i) => {
-            const Icon = organIcons[i];
+            
             const done = !!state.finishedTopics[String(ch.id)];
             return (
               <button className="nabd-chapter-tile" key={ch.id} onClick={() => onNavigateTab('curriculum', { chapter: ch.id })}>
-                <span className={`nabd-chapter-art tone-${palettes[i]}`}><Icon size={31} strokeWidth={1.7} aria-hidden="true" /></span>
+                <span className={`nabd-chapter-art tone-${palettes[i]}`}><BiologySymbolIcon name={anatomySymbols[i]} size={36} /></span>
                 <span className="nabd-chapter-details">
                   <small>الفصل {ch.id}</small>
                   <strong>{ch.name}</strong>
