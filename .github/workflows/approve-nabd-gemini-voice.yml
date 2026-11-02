@@ -29,7 +29,7 @@ jobs:
           gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "$SOURCE_ARTIFACT" --dir /tmp/nabd-source-voice
           test -s /tmp/nabd-source-voice/neuron_baghdad_gemini31_review.wav
           test -s /tmp/nabd-source-voice/narration.json
-      - name: Verify provenance and convert approved voice to light MP3
+      - name: Verify provenance and save approved voice WAV
         run: |
           set -eu
           mkdir -p public/nabd-voice
@@ -46,13 +46,13 @@ jobs:
           assert 10 < seconds < 120, 'Invalid clip duration'
           print('Real Gemini WAV verified, length:', round(seconds,1),'sec')
           PY
-          ffmpeg -v error -nostdin -y -i /tmp/nabd-source-voice/neuron_baghdad_gemini31_review.wav -vn -codec:a libmp3lame -q:a 4 public/nabd-voice/neuron-baghdad-sulafat.mp3
-          test -s public/nabd-voice/neuron-baghdad-sulafat.mp3
+          cp /tmp/nabd-source-voice/neuron_baghdad_gemini31_review.wav public/nabd-voice/neuron-baghdad-sulafat.wav
+          test -s public/nabd-voice/neuron-baghdad-sulafat.wav
           python3 - <<'PY'
           import json,hashlib
           from pathlib import Path
           src=json.loads(Path('/tmp/nabd-source-voice/narration.json').read_text(encoding='utf-8'))
-          audio=Path('public/nabd-voice/neuron-baghdad-sulafat.mp3')
+          audio=Path('public/nabd-voice/neuron-baghdad-sulafat.wav')
           approval={
               'version':1,
               'voice_style_approved_by_owner':True,
@@ -73,7 +73,7 @@ jobs:
           set -eu
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add public/nabd-voice/neuron-baghdad-sulafat.mp3 public/nabd-voice/manifest.json
+          git add public/nabd-voice/neuron-baghdad-sulafat.wav public/nabd-voice/manifest.json
           if ! git diff --staged --quiet; then
             git commit -m "Approve Gemini 3.1 Sulafat Baghdadi biology voice sample"
             git push
