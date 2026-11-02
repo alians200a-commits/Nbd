@@ -55,6 +55,18 @@ jobs:
           assert v5['high_priority_review_count']==115
           assert v5['ministerial_year_and_round_question_links_verified']==0
           assert 'inline-practice' in Path('exam-bank.html').read_text()
+          exam_source=Path('assets/nabd-exambank.js').read_text()
+          assert 'status==="inline"' in exam_source
+          assert 'function renderInlineParts' in exam_source
+          assert 'function refreshPageAudit' in exam_source
+          assert 'function saveAuditPage' in exam_source
+          assert 'function exportPageAudit' in exam_source
+          assert 'if(!bookUrl)' in exam_source
+          exam_html=Path('exam-bank.html').read_text()
+          for name in ('inline-practice','audit-page','audit-page-filter','audit-page-note','audit-open-source','audit-mark-page','audit-export-pages'):
+              assert ('id="'+name+'"') in exam_html, name
+          assert "source_pdf_sha256" in exam_source
+
           assert 'function renderInlineParts' in Path('assets/nabd-exambank.js').read_text()
           assert 'pulseActive' in Path('assets/nabd-simulations.js').read_text()
           assert 'startPulse' in Path('assets/nabd-simulations.js').read_text()
