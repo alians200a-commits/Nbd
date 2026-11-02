@@ -1,1 +1,41 @@
-<!DOCTYPE html><html lang="ar" dir="rtl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نَبْض | مختبر الأحياء</title><style>body{margin:0;background:#071321;color:#e9f5f6;font:16px Tahoma,Arial,sans-serif;min-height:100vh;display:grid;place-items:center;text-align:center}main{padding:25px}h1{color:#65e5dc}small{color:#b1c4cc}a{color:#70efda}</style><main><h1>نَبْض — مختبر الأحياء الذكي</h1><p id="state">جاري تحميل التطبيق…</p><small>نسخة تجريبية للنشر العام، بدون الكتب والصوت الخاص.</small><p><a href="atlas_real.html">فتح الأطلس التشريحي</a></p></main><script>(async()=>{try{const paths=Array.from({length:8},(_,i)=>"chunks/part"+String(i).padStart(3,"0")+".txt");const texts=await Promise.all(paths.map(async p=>{const r=await fetch(p,{cache:"no-store"});if(!r.ok)throw new Error(p+": "+r.status);return r.text()}));document.open();document.write(texts.join(""));document.close()}catch(e){document.getElementById("state").textContent="تعذر تحميل التطبيق: "+e.message;}})()</script></html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f8fd">
+<meta name="description" content="نَبْض — مختبر الأحياء الذكي للصف الثالث المتوسط في العراق. تعلّم، شاهد مجسمات تشريحية، اختبر نفسك، وراجع أخطاءك.">
+<title>نَبْض | الأحياء بشكل يفهمه عقلك</title>
+<link rel="stylesheet" href="assets/nabd-premium.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
+<script defer src="assets/nabd-premium.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#content">انتقل إلى المحتوى</a>
+<div class="app-shell">
+<aside class="sidebar" aria-label="التنقل الرئيسي">
+  <a href="./" class="logo" aria-label="نَبْض — الصفحة الرئيسية"><span class="brand-icon"><span class="ico" style="--i:url('assets/icons/heart-pulse.svg')"></span></span><span class="logo-word">نَبْض <small>المنصة الذكية للأحياء</small></span></a>
+  <p class="nav-caption">مساحتك الدراسية</p>
+  <nav id="main-nav">
+   <button class="nav-btn active" data-view="home"><span class="ico" style="--i:url('assets/icons/layout-dashboard.svg')"></span>الرئيسية</button>
+   <button class="nav-btn" data-view="chapters"><span class="ico" style="--i:url('assets/icons/book-open.svg')"></span>فصول المنهج</button>
+   <button class="nav-btn" data-view="lab"><span class="ico" style="--i:url('assets/icons/atom.svg')"></span>المختبر التشريحي <span class="mini-tag">3D</span></button>
+   <button class="nav-btn" data-view="quiz"><span class="ico" style="--i:url('assets/icons/clipboard-check.svg')"></span>الاختبارات</button>
+   <button class="nav-btn" data-view="vault"><span class="ico" style="--i:url('assets/icons/bookmark-check.svg')"></span>خزنة الأخطاء</button>
+   <button class="nav-btn" data-view="planner"><span class="ico" style="--i:url('assets/icons/calendar-days.svg')"></span>خطة المراجعة</button>
+  </nav>
+  <p class="nav-caption second-caption">المزيد</p>
+  <nav class="secondary-nav">
+   <button class="nav-btn" data-view="assistant"><span class="ico" style="--i:url('assets/icons/messages-square.svg')"></span>المعلّمة الذكية</button>
+   <button class="nav-btn" data-view="sources"><span class="ico" style="--i:url('assets/icons/library-big.svg')"></span>المصادر والمراجع</button>
+  </nav>
+  <div class="sidebar-bottom"><div class="side-coach"><span class="coach-light"></span><strong>التقدّم يصير خطوة خطوة</strong><p>افهم الفكرة، جرّبها، وبعدها ثبّتها بالمراجعة.</p><button class="text-button" data-view="planner">رتّب مراجعتي <span aria-hidden="true">←</span></button></div><span class="side-footer">نَبْض · إصدار الواجهة 8.0</span></div>
+</aside>
+<div class="workspace">
+<header class="topbar"><div class="crumb"><button id="menu-button" class="icon-btn mobile-menu" aria-label="فتح القائمة" aria-expanded="false"><span class="ico" style="--i:url('assets/icons/menu.svg')"></span></button><span class="crumb-parent">منصة نَبْض</span><span class="crumb-divider">/</span><strong id="current-title">الرئيسية</strong></div><div class="top-actions"><label class="searchbox"><span class="ico" style="--i:url('assets/icons/search.svg')"></span><input id="global-search" type="search" placeholder="ابحث عن جهاز، موضوع، تعريف..." aria-label="بحث في فصول الأحياء"></label><button class="icon-btn" id="reminders-button" aria-label="المراجعات المستحقة" title="المراجعات المستحقة"><span class="ico" style="--i:url('assets/icons/bell.svg')"></span><span class="notification-dot" id="notification-dot" hidden></span></button><span class="avatar" aria-label="ملف طالب">ط</span></div></header>
+<main class="content" id="content" tabindex="-1" aria-live="polite"><div class="loading-card">جاري تجهيز مساحتك الدراسية…</div></main>
+</div>
+</div>
+<nav class="mobile-bottom" aria-label="التنقل السريع"><button data-view="home" class="mobile-nav-btn active"><span class="ico" style="--i:url('assets/icons/house.svg')"></span><small>الرئيسية</small></button><button data-view="chapters" class="mobile-nav-btn"><span class="ico" style="--i:url('assets/icons/book-open.svg')"></span><small>الدروس</small></button><button data-view="lab" class="mobile-nav-btn"><span class="ico" style="--i:url('assets/icons/atom.svg')"></span><small>المختبر</small></button><button data-view="quiz" class="mobile-nav-btn"><span class="ico" style="--i:url('assets/icons/clipboard-check.svg')"></span><small>اختبار</small></button><button data-view="vault" class="mobile-nav-btn"><span class="ico" style="--i:url('assets/icons/bookmark-check.svg')"></span><small>أخطائي</small></button></nav>
+<div class="overlay" id="overlay" hidden></div><div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="quiz-dialog"><div class="dialog-head"><span class="pill">اختبار سريع · الفصل الأول</span><button class="icon-btn" id="close-quiz" aria-label="إغلاق الاختبار"><span class="ico" style="--i:url('assets/icons/x.svg')"></span></button></div><div id="quiz-body"></div></dialog>
+</body></html>
