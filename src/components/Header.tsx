@@ -1,88 +1,106 @@
-import React from 'react';
-import { Menu, Sparkles, BookOpen, Search, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { TablerIcon } from './TablerIcon';
 import { useApp } from '../context/AppContext';
 import { TabType } from './Sidebar';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
-  onNavigateTab: (tab: TabType) => void;
+  onNavigateTab: (tab: TabType, params?: any) => void;
   currentTab: TabType;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, onNavigateTab, currentTab }) => {
   const { state } = useApp();
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const getTabTitle = () => {
+  const getBreadcrumbTitle = () => {
     switch (currentTab) {
-      case 'home': return 'الرئيسية والمتابعة اليومية';
-      case 'atlas': return 'الأطلس التشريحي المرجعي ثلاثي الأبعاد';
-      case 'curriculum': return 'دروس ومباحث كتاب الأحياء الوزاري';
-      case 'experiments': return 'استوديو الأبحاث والتجارب التفاعلية';
-      case 'reflex': return 'محاكاة القوس والمنعكس العصبي';
-      case 'quiz': return 'بنك الأسئلة الوزارية والاختبارات';
-      case 'ministryExam': return 'محاكي الامتحان الوزاري الشامل';
-      case 'figureStudio': return 'استوديو الرسوم والمخططات الوزارية';
-      case 'vault': return 'خزنة الأخطاء والمراجعة التكرارية';
-      case 'examNight': return 'مراجعة ليلة الامتحان والملخصات المركزة';
-      case 'organSim': return 'محاكاة أجهزة الجسم الحيوية';
-      case 'voiceCoach': return 'المعلّمة الصوتية الذكية وهندسة الصوت';
-      case 'planner': return 'جدول الدراسة والمهام والواجبات';
-      case 'games': return 'ألعاب ومسابقات الأحياء العلمية';
-      case 'parents': return 'لوحة متابعة أولياء الأمور وتقارير الإنجاز';
-      default: return 'نَبْض — مختبر الأحياء';
+      case 'home': return 'الرئيسية';
+      case 'chapters': return 'فصول المنهج';
+      case 'lab': return 'المختبر التشريحي';
+      case 'quiz': return 'الاختبارات';
+      case 'vault': return 'خزنة الأخطاء';
+      case 'planner': return 'المراجعة الذكية';
+      case 'assistant': return 'المعلّمة الذكية';
+      case 'sources': return 'المصادر';
+      case 'curriculum': return 'الكتاب المنهجي';
+      case 'experiments': return 'استوديو التجارب';
+      case 'reflex': return 'محاكاة المنعكس';
+      case 'ministryExam': return 'محاكي الامتحان الوزاري';
+      case 'figureStudio': return 'استوديو الرسوم';
+      case 'examNight': return 'ليلة الامتحان';
+      case 'organSim': return 'محاكاة الأعضاء';
+      case 'games': return 'ألعاب التعلّم';
+      case 'parents': return 'متابعة الأهل';
+      default: return 'الرئيسية';
     }
   };
 
-  const completedTopicsCount = Object.keys(state.finishedTopics).length;
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    onNavigateTab('chapters');
+  };
+
+  const mistakesDue = Object.keys(state.mistakes).length;
 
   return (
-    <header className="sticky top-0 z-30 bg-[#070f1f]/90 backdrop-blur-md border-b border-[#20374e] px-4 py-3 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-30 bg-white border-b border-[#e6e8eb] px-4 py-2.5 flex items-center justify-between gap-3 shadow-sm">
       <div className="flex items-center gap-3">
+        {/* Mobile toggler */}
         <button
           onClick={onToggleSidebar}
-          className="lg:hidden p-2 rounded-xl bg-[#11223b] text-[#86e9dc] hover:bg-[#183256] transition"
-          aria-label="القائمة"
+          className="lg:hidden p-1.5 rounded-lg border border-[#e6e8eb] text-[#182433] hover:bg-[#f8fafc]"
+          aria-label="فتح القائمة"
         >
-          <Menu size={20} />
+          <TablerIcon name="home" size={20} />
         </button>
-        <div>
-          <h1 className="text-base sm:text-lg font-bold text-[#effaff] tracking-tight flex items-center gap-2">
-            <span>{getTabTitle()}</span>
-          </h1>
-          <div className="text-xs text-[#829eaf] hidden sm:block">
-            جمهورية العراق — وزارة التربية — الأحياء للثالث المتوسط
-          </div>
+
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-2 text-xs">
+          <span className="text-[#868e96] hidden sm:inline">الأحياء · الثالث المتوسط</span>
+          <span className="text-[#868e96] hidden sm:inline">/</span>
+          <strong className="text-[#182433] text-sm">{getBreadcrumbTitle()}</strong>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 sm:gap-3">
-        {/* Progress badge */}
-        <div className="hidden md:flex items-center gap-2 bg-[#0c1f36] border border-[#234360] px-3 py-1.5 rounded-xl text-xs text-[#cbe5ee]">
-          <CheckCircle2 size={15} className="text-[#6bf4c7]" />
-          <span>الموضوعات المنجزة: <b>{completedTopicsCount}</b> / 58</span>
-        </div>
+      <div className="flex items-center gap-3">
+        {/* Search bar */}
+        <form onSubmit={handleSearch} className="hidden sm:flex items-center">
+          <div className="relative">
+            <input
+              type="search"
+              placeholder="ابحث عن فصل أو جهاز..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="bg-[#f8fafc] border border-[#dce1e7] rounded-xl px-8 py-1.5 text-xs text-[#182433] placeholder-[#868e96] focus:outline-none focus:border-[#0054a6] w-48 transition-all"
+            />
+            <span className="absolute right-2.5 top-2 text-[#868e96] pointer-events-none">
+              <TablerIcon name="search" size={14} />
+            </span>
+          </div>
+        </form>
 
-        {/* Quick Launch Atlas */}
-        {currentTab !== 'atlas' && (
-          <button
-            onClick={() => onNavigateTab('atlas')}
-            className="flex items-center gap-1.5 bg-[#143d4c] hover:bg-[#1d5265] text-[#7bf0da] text-xs font-bold px-3 py-2 rounded-xl border border-[#296873] transition"
-          >
-            <Sparkles size={14} />
-            <span>الأطلس 3D</span>
-          </button>
-        )}
+        {/* Reminders / Vault shortcut button */}
+        <button
+          onClick={() => onNavigateTab('vault')}
+          className="btn btn-icon border border-[#0054a6] text-[#0054a6] hover:bg-[#e6f4fe] p-1.5 rounded-xl transition relative"
+          title={`المراجعات المستحقة (${mistakesDue})`}
+          aria-label="المراجعات المستحقة"
+        >
+          <TablerIcon name="calendar-event" size={18} />
+          {mistakesDue > 0 && (
+            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#d63939] rounded-full ring-2 ring-white" />
+          )}
+        </button>
 
-        {/* Quick Launch Book */}
-        {currentTab !== 'curriculum' && (
-          <button
-            onClick={() => onNavigateTab('curriculum')}
-            className="flex items-center gap-1.5 bg-[#172e48] hover:bg-[#203e61] text-[#9bd9f1] text-xs font-bold px-3 py-2 rounded-xl border border-[#274f74] transition"
-          >
-            <BookOpen size={14} />
-            <span>الكتاب</span>
-          </button>
-        )}
+        {/* Student Avatar */}
+        <span
+          className="w-8 h-8 rounded-full bg-[#e6f4fe] text-[#0054a6] font-bold text-xs flex items-center justify-center border border-[#b8e2fb]"
+          aria-label="وضع الطالب"
+        >
+          ط
+        </span>
       </div>
     </header>
   );
