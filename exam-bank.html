@@ -10,9 +10,13 @@
 <label for="pdf-input">الملزمة الأصلية PDF (للمقارنة الحرفية)</label><input type="file" id="pdf-input" accept=".pdf,application/pdf" aria-label="استيراد الملزمة الأصلية"><p class="help">تُحفظ البيانات على جهازك؛ لا تُرسل إلى GitHub أو لأي خادم من التطبيق.</p></section>
 <section id="quiz-panel" class="section hidden"><div class="meta"><span class="badge" id="question-number"></span><span class="badge" id="question-page"></span><span class="badge" id="question-chapter"></span></div>
 <div class="filters"><ion-select id="chapter-filter" interface="popover" label="اختر الفصل" label-placement="stacked" value="all"><ion-select-option value="all">جميع الفصول</ion-select-option></ion-select><ion-searchbar id="question-search" placeholder="ابحث في السؤال" debounce="150"></ion-searchbar></div>
-<ion-segment value="all" id="question-filter" scrollable><ion-segment-button value="all"><ion-label>كل الأسئلة</ion-label></ion-segment-button><ion-segment-button value="marked"><ion-label>صفحات فيها سنوات</ion-label></ion-segment-button><ion-segment-button value="needs"><ion-label>أولوية التدقيق</ion-label></ion-segment-button><ion-segment-button value="inline"><ion-label>فروع السؤال المركب</ion-label></ion-segment-button><ion-segment-button value="inline"><ion-label>فروع السؤال المركب</ion-label></ion-segment-button></ion-segment>
+<ion-segment value="all" id="question-filter" scrollable><ion-segment-button value="all"><ion-label>كل الأسئلة</ion-label></ion-segment-button><ion-segment-button value="marked"><ion-label>صفحات فيها سنوات</ion-label></ion-segment-button><ion-segment-button value="needs"><ion-label>أولوية التدقيق</ion-label></ion-segment-button><ion-segment-button value="inline"><ion-label>فروع السؤال المركب</ion-label></ion-segment-button><ion-segment-button value="unsafe"><ion-label>سؤال قد يكشف جوابه</ion-label></ion-segment-button><ion-segment-button value="inline"><ion-label>فروع السؤال المركب</ion-label></ion-segment-button></ion-segment>
 <div class="question-nav"><ion-button id="prev" fill="outline"><ion-icon name="arrow-forward-outline" slot="start"></ion-icon>السابق</ion-button><span id="progress" class="quiz-score"></span><ion-button id="next" fill="outline">التالي<ion-icon name="arrow-back-outline" slot="end"></ion-icon></ion-button></div>
-<div id="question-text" class="question" aria-live="polite"></div>
+<div id="question-text" class="question" aria-live="polite"></div><div id="unsafe-source-review" class="warn hidden">
+ هذه الفقرة طويلة ويُحتمل أن يكون الجواب مطبوعاً داخل نص السؤال؛ لذلك لم نعرضها كاختبار آلي.
+ <ion-button id="show-raw-question" fill="outline" size="small" color="tertiary">اعرض نص السؤال الخام للمراجعة فقط</ion-button>
+ <p id="raw-question-text" class="answer hidden" style="white-space:pre-wrap"></p>
+</div>
 <div id="inline-practice" class="section hidden" aria-label="فروع السؤال التي يتضمن مصدرها الإجابات">
  <h3 style="font-size:17px">تدريب الفروع الأصلية للسؤال المركب</h3>
  <p class="help">المصدر يطبع بعض الأجوبة داخل فروع السؤال نفسه. أخفينا الأجوبة هنا لتختبر معلوماتك، وما غيّرنا العدد الأصلي للأسئلة. هذه تدريبات ذاتية وليست تصحيحاً وزارياً.</p>
