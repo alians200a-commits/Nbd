@@ -22,6 +22,7 @@ const extras: {label:string;detail:string;icon: LucideIcon; art:string; tab?:Tab
   {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,art:'microscope',href:'simulations.html'},
   {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,art:'quiz-memo',href:'exam-bank.html'},
   {label:'المعلّمة B',detail:'إدارة التسجيلات الصوتية المرجعية',icon:Volume2,art:'teacher-microphone',href:'learn.html?voice=1'},
+  {label:'استوديو الصوت البغدادي',detail:'إعداد نص الشرح وتوليده بصوت أنثوي جديد',icon:Volume2,art:'study-headphones',href:'voice_production.html'},
   {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,art:'game-controller',tab:'games'},
   {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,art:'study-calendar',tab:'planner'},
   {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,art:'family-group',tab:'parents'},
