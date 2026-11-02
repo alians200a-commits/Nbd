@@ -9,12 +9,13 @@ interface Props {
   onNavigateTab: (tab: TabType, params?: {chapter?: number;page?: number}) => void;
   children: React.ReactNode;
 }
-const primary: { id: TabType; name: string; icon: LucideIcon }[] = [
-  { id:'home',name:'الرئيسية',icon:Home },
-  { id:'chapters',name:'دروسي',icon:BookOpenText },
-  { id:'lab',name:'المختبر',icon:Microscope },
-  { id:'quiz',name:'اختبرني',icon:ClipboardCheck },
-  { id:'vault',name:'المراجعة',icon:RotateCcw },
+const artBase = import.meta.env.BASE_URL + 'nabd-art/';
+const primary: { id: TabType; name: string; icon: LucideIcon; art: string }[] = [
+  { id:'home',name:'الرئيسية',icon:Home,art:'home-house' },
+  { id:'chapters',name:'دروسي',icon:BookOpenText,art:'books' },
+  { id:'lab',name:'المختبر',icon:Microscope,art:'microscope' },
+  { id:'quiz',name:'اختبرني',icon:ClipboardCheck,art:'quiz-memo' },
+  { id:'vault',name:'المراجعة',icon:RotateCcw,art:'review-search' },
 ];
 const extras: {label:string;detail:string;icon: LucideIcon; tab?:TabType;href?:string}[] = [
   {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,tab:'curriculum'},
@@ -47,7 +48,7 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
           <span><strong>نَبْض</strong><small>مختبر الأحياء الذكي</small></span>
         </button>
         <nav className="student-desktop-nav" aria-label="الأقسام الرئيسية">
-          {primary.map(n=><button type="button" key={n.id} className={active(n.id)?'is-current':''} aria-current={active(n.id)?'page':undefined} onClick={()=>navigate(n.id)}><n.icon size={19}/>{n.name}</button>)}
+          {primary.map(n=><button type="button" key={n.id} className={active(n.id)?'is-current':''} aria-current={active(n.id)?'page':undefined} onClick={()=>navigate(n.id)}><img className="nabd-nav-illustration" src={artBase+n.art+'.svg'} alt="" aria-hidden="true"/>{n.name}</button>)}
         </nav>
         <div className="student-topbar-actions">
           <button type="button" className="student-reminder-button" onClick={()=>navigate('vault')} aria-label={'الأسئلة التي تحتاج مراجعة: '+due}>
@@ -62,7 +63,7 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
     <main id="main" className="student-page" role="main">{children}</main>
     <nav className="student-mobile-nav" aria-label="القائمة السفلية">
       {primary.map(n=><button type="button" key={n.id} onClick={()=>navigate(n.id)} className={active(n.id)?'is-current':''} aria-current={active(n.id)?'page':undefined}>
-        <span className="student-nav-symbol"><n.icon size={22} strokeWidth={active(n.id)?2.6:2}/></span><span>{n.name}</span>
+        <span className="student-nav-symbol"><img className="nabd-nav-illustration" src={artBase+n.art+'.svg'} alt="" aria-hidden="true"/></span><span>{n.name}</span>
       </button>)}
     </nav>
     {open&&<div className="student-menu-backdrop" onClick={()=>setOpen(false)}>
