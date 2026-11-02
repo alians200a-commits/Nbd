@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff"><meta name="description" content="دروس الأحياء للثالث المتوسط العراقي، فصول علمية ومراجعة وبطاقات ومطابقة وصوت المعلمة B">
+<title>دروسي | نَبْض</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/css/ionic.bundle.css">
+<link rel="stylesheet" href="assets/nabd-ionic.css">
+<link rel="stylesheet" href="assets/nabd-learn.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.js"></script>
+<script defer src="data/nabd-curriculum.js"></script>
+<script defer src="assets/nabd-learn.js"></script>
+</head>
+<body>
+<ion-app mode="md">
+ <ion-header class="ion-no-border"><ion-toolbar>
+   <ion-buttons slot="start"><ion-button id="back-home" href="index.html" aria-label="العودة إلى نَبْض"><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon></ion-button></ion-buttons>
+   <ion-title>مكتبة الأحياء</ion-title>
+   <ion-buttons slot="end"><ion-button id="open-voice" aria-label="إعداد الصوت"><ion-icon slot="icon-only" name="volume-high-outline"></ion-icon></ion-button></ion-buttons>
+ </ion-toolbar></ion-header>
+ <ion-content>
+  <main class="study-container">
+   <header class="study-header"><ion-chip color="secondary" outline="true"><ion-icon name="school-outline"></ion-icon><ion-label>الثالث المتوسط · العراق</ion-label></ion-chip><h1>الدروس اللي تفهمها تبقى وياك.</h1><p>شرح مبسط لكل فصل، صور تشريحية من المصادر المفتوحة، أسئلة للفهم، وبطاقات للمراجعة.</p></header>
+   <ion-segment id="study-menu" scrollable value="lessons" aria-label="أقسام المكتبة">
+    <ion-segment-button value="lessons"><ion-label>الدروس</ion-label></ion-segment-button>
+    <ion-segment-button value="flash"><ion-label>بطاقات الحفظ</ion-label></ion-segment-button>
+    <ion-segment-button value="matching"><ion-label>لعبة المطابقة</ion-label></ion-segment-button>
+    <ion-segment-button value="coach"><ion-label>اسأل المساعد</ion-label></ion-segment-button>
+    <ion-segment-button value="parent"><ion-label>ولي الأمر</ion-label></ion-segment-button>
+   </ion-segment>
+
+   <section id="study-lessons" class="study-view active">
+    <div class="study-controls">
+     <ion-searchbar id="topic-search" placeholder="ابحث عن مصطلح أو جهاز..." show-clear-button="focus"></ion-searchbar>
+     <ion-select id="chapter-choice" interface="popover" label="الفصل الدراسي" label-placement="stacked" aria-label="اختر فصل الأحياء"></ion-select>
+    </div>
+    <div class="study-header-small"><h2 id="chapter-title">الفصل الأول</h2><span id="chapter-range"></span></div>
+    <p id="chapter-description" class="secondary"></p>
+    <ion-accordion-group id="topic-accordions" multiple="true" value="topic-0"></ion-accordion-group>
+    <div id="lesson-empty" class="study-empty" hidden>ما لقينا موضوعاً بهذا البحث. جرّب مصطلحاً آخر.</div>
+   </section>
+
+   <section id="study-flash" class="study-view">
+    <div class="study-header-small"><h2>بطاقات حفظ ذكية</h2><ion-chip color="primary"><ion-label id="flash-counter">1 / 44</ion-label></ion-chip></div>
+    <p class="secondary">اقرأ السؤال، حاول تتذكر الجواب، وبعدها اقلب البطاقة. تگدر تخلّي الأسئلة الصعبة بالمراجعة.</p>
+    <button type="button" class="flash-card" id="flash-card" aria-label="اقلب بطاقة السؤال لإظهار الجواب"><span id="flash-kind">سؤال</span><strong id="flash-text"></strong><small>اضغط لقلب البطاقة</small></button>
+    <div class="study-action-row"><ion-button id="flash-prev" fill="outline"><ion-icon name="arrow-forward-outline" slot="start"></ion-icon> السابق</ion-button><ion-button id="flash-hard" color="tertiary" fill="outline"><ion-icon name="bookmark-outline" slot="start"></ion-icon> أحتاج أراجعها</ion-button><ion-button id="flash-next">التالي <ion-icon name="arrow-back-outline" slot="end"></ion-icon></ion-button></div>
+   </section>
+
+   <section id="study-matching" class="study-view">
+    <div class="study-header-small"><h2>لعبة مطابقة المصطلحات</h2><ion-chip color="secondary"><ion-label id="match-score">0 / 4</ion-label></ion-chip></div>
+    <p class="secondary">اختَر مصطلحاً من جهة، وبعدين اختَر تفسيره الصحيح. أسئلة الفصل الذي تدرسه.</p>
+    <div id="match-game" class="match-layout"><div id="match-terms" class="match-col"></div><div id="match-defs" class="match-col"></div></div>
+    <div class="study-action-row"><ion-button id="match-reset" fill="outline"><ion-icon name="refresh-outline" slot="start"></ion-icon> جولة جديدة</ion-button><span id="match-status" role="status" class="secondary"></span></div>
+   </section>
+
+   <section id="study-coach" class="study-view">
+    <div class="study-header-small"><h2>اسأل عن موضوعك</h2></div>
+    <ion-card><ion-card-content>
+      <p class="secondary">هذا مساعد بحث محلي داخل ملخصات المنهج، مو محادثة ذكاء اصطناعي عامة أو إجابات من الإنترنت. يطلع الجواب من الدروس الموجودة فقط.</p>
+      <ion-textarea id="coach-input" label="شنو تريد تفهم؟" label-placement="stacked" fill="outline" rows="3" placeholder="مثلاً: شنو الفرق بين الأعصاب الحسية والحركية؟"></ion-textarea>
+      <ion-button id="coach-ask" expand="block"><ion-icon name="search-outline" slot="start"></ion-icon> ابحث عن تفسير</ion-button>
+      <div id="coach-replies" aria-live="polite"></div>
+    </ion-card-content></ion-card>
+   </section>
+
+   <section id="study-parent" class="study-view">
+    <div class="study-header-small"><h2>متابعة ولي الأمر</h2></div>
+    <ion-card><ion-card-content>
+      <p class="secondary">متابعة تقدم الطالب **على هذا الجهاز فقط**. لا توجد بعد حسابات ولي أمر منفصلة أو مزامنة بين الأجهزة.</p>
+      <div class="parent-grid">
+       <div><strong id="parent-read">0</strong><span>موضوعاً تمت قراءته</span></div>
+       <div><strong id="parent-correct">0%</strong><span>دقة أسئلة الفهم</span></div>
+       <div><strong id="parent-review">0</strong><span>بطاقة تحتاج مراجعة</span></div>
+       <div><strong id="parent-days">0</strong><span>يوم دراسة مسجّل</span></div>
+      </div>
+      <h3 class="study-subhead">الفصول التي بدأتها</h3>
+      <div id="parent-chapters"></div>
+      <ion-button expand="block" fill="outline" id="export-report"><ion-icon name="download-outline" slot="start"></ion-icon> تنزيل تقرير المتابعة</ion-button>
+    </ion-card-content></ion-card>
+   </section>
+  </main>
+ </ion-content>
+ <ion-modal id="voice-modal">
+  <ion-header class="ion-no-border"><ion-toolbar><ion-title>صوت المعلّمة B</ion-title><ion-buttons slot="end"><ion-button id="voice-modal-close"><ion-icon slot="icon-only" name="close-outline"></ion-icon></ion-button></ion-buttons></ion-toolbar></ion-header>
+  <ion-content><div class="voice-settings">
+   <ion-chip color="secondary"><ion-icon name="shield-checkmark-outline"></ion-icon><ion-label>صوت B فقط</ion-label></ion-chip>
+   <h2>هوية صوتية واحدة لكل دروس نَبْض</h2>
+   <p>التسجيل المرجعي يحتوي شرح فيزياء بصوت B. نستخدمه للمقارنة والتحقق، **مو كشرح أحياء**. لا نستخدم تحويل النص إلى كلام بصوت مختلف أو صوت المتحدث A.</p>
+   <label class="field-label" for="voice-ref-input">استورد تسجيل B المرجعي إلى جهازك</label>
+   <input type="file" id="voice-ref-input" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/ogg">
+   <div class="secondary small" id="voice-reference-state">لم يتم استيراد المرجع على هذا الجهاز.</div>
+   <audio controls id="voice-reference-player" preload="none" hidden></audio>
+   <p class="voice-warning">لإنتاج الشروحات الجديدة بنفس الصوت نحتاج محرك استنساخ مرخّصاً وتسجيلات يتم فحصها بعد التوليد. لا تُنشر العينة الشخصية في مستودع GitHub العام تلقائياً.</p>
+   <h3>تسجيلات الأحياء</h3>
+   <div id="lesson-voice-status">لا توجد تسجيلات دروس B معتمدة بعد.</div>
+   <p class="secondary">داخل كل درس تگدر ترفع تسجيله الناتج من B بعد فحصه سمعياً. قبل الرفع يبقى النص مكتوباً، وما ينطق التطبيق بصوت بديل.</p>
+  </div></ion-content>
+ </ion-modal>
+ <ion-toast id="learn-toast" duration="2600" position="bottom"></ion-toast>
+</ion-app>
+</body></html>
