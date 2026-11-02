@@ -9,7 +9,7 @@ async function get(k){const db=await initDb();return new Promise((ok,bad)=>{let 
 function valid(b){return b&&b.format==="NABD_PRIVATE_QUESTION_BANK_V1"&&b.version===1&&b.source_total_pages===143&&Array.isArray(b.questions)&&Array.isArray(b.page_audit)&&b.questions.length>300&&b.questions.every(q=>typeof q.id==="string"&&Number.isInteger(q.pdf_page)&&q.pdf_page>=1&&q.pdf_page<=143&&typeof q.question==="string"&&typeof q.source_segment_normalized==="string"&&typeof q.review_status==="string")}
 function drawFilters(){const menu=$("chapter-filter");menu.replaceChildren();const all=document.createElement("ion-select-option");all.value="all";all.textContent="جميع الفصول";menu.append(all);for(let i=1;i<=11;i++){const e=document.createElement("ion-select-option");e.value=String(i);e.textContent="الفصل "+i;menu.append(e)}menu.value="all"}
 function filter(){if(!bank)return;let ch=$("chapter-filter").value||"all",q=String($("question-search").value||"").trim(),status=$("question-filter").value||"all";filtered=bank.questions.filter(x=>(ch==="all"||x.chapter===Number(ch))&&(!q||x.question.includes(q)||x.source_segment_normalized.includes(q))&&(status==="all"||(status==="marked"&&x.page_years_mentioned.length)||(status==="needs"&&x.review_status!=="auto_split_needs_review")));cursor=0;render()}
-function render(){if(!bank)return;const q=filtered[cursor];$("quiz-panel").classList.remove("hidden");$("prev").disabled=cursor===0;$("next").disabled=cursor>=filtered.length-1;$("reveal").disabled=!q;$("open-page").disabled=!q;$("self-correct").disabled=!q;$("self-wrong").disabled=!q;
+function render(){if(!bank)return;const q=filtered[cursor];$("quiz-panel").classList.remove("hidden");$("prev").disabled=cursor===0;$("next").disabled=cursor>=filtered.length-1;$("reveal").disabled=!q;$("open-page").disabled=!q;$("self-correct").disabled=!q;$("self-wrong").disabled=!q;$("open-topic-lab").disabled=!q;
 $("answer").classList.add("hidden");$("reveal").textContent="أظهر الجواب المستخرج";
 if(!q){$("save-correction").disabled=true;$("manual-review").disabled=true; $("question-text").textContent="لا توجد أسئلة مطابقة للبحث.";$("question-page").textContent="";$("question-number").textContent="";$("question-chapter").textContent="";$("years-note").textContent="";$("review-warning").textContent="";$("score-note").textContent="لا توجد نتائج.";return}
 $("save-correction").disabled=false;$("manual-review").disabled=false;$("manual-review").textContent=manual[q.id]?"✓ سبق قارنت هذا السؤال بالأصل":"علّم السؤال: قارنته بالأصل";$("manual-review-note").textContent=manual[q.id]?"مراجعة شخصية بتاريخ "+new Date(manual[q.id]).toLocaleDateString("ar-IQ")+"؛ لا تعني التدقيق الوزاري المعتمد.":"ما زال يحتاج مقارنة حرفية بصفحة الملزمة، بما فيها الرسوم أو الأجزاء المقطوعة.";$("question-number").textContent=q.id;$("question-page").textContent="PDF ص "+q.pdf_page;$("question-chapter").textContent="الفصل "+q.chapter;$("progress").textContent=(cursor+1)+" / "+filtered.length;$("question-text").textContent=corrections[q.id]?.question||q.question;
@@ -18,6 +18,24 @@ $("review-warning").textContent=q.review_status==="auto_split_needs_review"?"ا�
 $("answer").textContent=corrections[q.id]?.answer||q.answer_draft||q.source_segment_normalized;$("edited-question").value=corrections[q.id]?.question||q.question;$("edited-answer").value=corrections[q.id]?.answer||q.answer_draft||"";$("edited-ministerial-year").value=corrections[q.id]?.year||"";$("edited-ministerial-round").value=corrections[q.id]?.round||"";$("edit-status").textContent=corrections[q.id]?"تصحيح محفوظ محلياً: راجع المصدر قبل الاعتماد.":"لا يوجد تصحيح يدوي محفوظ لهذا السؤال.";$("score-note").textContent="حالة التقييم الذاتي: "+(self[q.id]==="correct"?"أعرف الجواب":self[q.id]==="review"?"أحتاج مراجعة":"لم يُقيّم")+" · هذه ليست درجة امتحان مصححة آلياً.";
 }
 function assess(correct){if(!filtered[cursor])return;self[filtered[cursor].id]=correct?"correct":"review";try{localStorage.setItem(PROGRESS,JSON.stringify(self))}catch(_){};render();say(correct?"تمت إضافته لأسئلة تعرف جوابها":"أضفنا السؤال إلى المراجعة");}
+function openTopicLab(){
+ const q=filtered[cursor];if(!q)return;
+ const chapter=Number(q.chapter);
+ if(!Number.isInteger(chapter)||chapter<1||chapter>11){say("تعذّر تحديد الفصل العلمي من هذا السؤال");return}
+ // 3D referral is only at chapter level, NOT a certified question-to-structure map.
+ const topics=window.NABD_CURRICULUM?.chapters?.find(x=>x.id===chapter)?.topics||[];
+ const txt=String(corrections[q.id]?.question||q.question||"");
+ const terms=txt.replace(/[\u064b-\u065f\u0640]/g,"").replace(/[أإآ]/g,"ا").split(/[^\u0621-\u064A]+/).filter(x=>x.length>3);
+ let i=0,max=0;
+ for(let j=0;j<topics.length;j++){
+  const data=(topics[j][0]+" "+topics[j][2]+" "+topics[j][4]).replace(/[أإآ]/g,"ا");
+  const score=terms.filter(w=>data.includes(w)).length;
+  if(score>max){i=j;max=score;}
+ }
+ const link="simulations.html#c"+chapter+"t"+(max>0?i:0);
+ say("راح نفتح فقرة للمراجعة ضمن نفس الفصل. هذا ترشيح آلي، مو مطابقة تشريحية معتمدة للسؤال.");
+ location.href=link;
+}
 function openPage(){if(!filtered[cursor])return;if(!bookUrl){say("ارفع PDF الملزمة أولاً حتى نفتح الصفحة الأصلية.");return}window.open(bookUrl+"#page="+filtered[cursor].pdf_page,"_blank","noopener,noreferrer")}
 function manualCheck(){const q=filtered[cursor];if(!q)return;manual[q.id]=new Date().toISOString();try{localStorage.setItem(PROGRESS+"-manual",JSON.stringify(manual))}catch(_){}render();say("حفظنا علامة المراجعة الشخصية للسؤال "+q.id)}
 function auditCSV(){if(!bank)return;const headers=["id","chapter","pdf_page","review_status","has_answer_draft","page_has_years","personal_page_checked"];const quote=v=>'"'+String(v??"").replaceAll('"','""')+'"';const rows=bank.questions.map(q=>[q.id,q.chapter,q.pdf_page,q.review_status,!!q.answer_draft?.trim(),q.page_years_mentioned.length>0,!!manual[q.id]].map(quote).join(","));const out="\uFEFF"+headers.join(",")+"\n"+rows.join("\n");const url=URL.createObjectURL(new Blob([out],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="NABD_QBANK_"+bank.questions.length+"_REVIEW_AUDIT.csv";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),3000)}
@@ -65,7 +83,7 @@ async function importPdf(file){
  await store("sourcepdf",file);
  say("✓ تم التحقق من بصمة PDF المطابقة للملزمة المعتمدة؛ يمكنك مقارنة الأسئلة بالصفحات الأصلية.");
 }
-function bind(){$("bank-input").onchange=e=>importBank(e.target.files?.[0]).catch(err=>$("bank-status").textContent=err.message);$("pdf-input").onchange=e=>importPdf(e.target.files?.[0]).catch(err=>say(err.message));$("chapter-filter").addEventListener("ionChange",filter);$("question-search").addEventListener("ionInput",filter);$("question-filter").addEventListener("ionChange",filter);$("prev").onclick=()=>{cursor=Math.max(0,cursor-1);render()};$("next").onclick=()=>{cursor=Math.min(filtered.length-1,cursor+1);render()};$("reveal").onclick=show;$("open-page").onclick=openPage;$("self-correct").onclick=()=>assess(true);$("self-wrong").onclick=()=>assess(false);$("manual-review").onclick=manualCheck;$("download-audit").onclick=auditCSV;$("save-correction").onclick=storeCorrection;$("export-corrections").onclick=exportCorrections}
+function bind(){$("bank-input").onchange=e=>importBank(e.target.files?.[0]).catch(err=>$("bank-status").textContent=err.message);$("pdf-input").onchange=e=>importPdf(e.target.files?.[0]).catch(err=>say(err.message));$("chapter-filter").addEventListener("ionChange",filter);$("question-search").addEventListener("ionInput",filter);$("question-filter").addEventListener("ionChange",filter);$("prev").onclick=()=>{cursor=Math.max(0,cursor-1);render()};$("next").onclick=()=>{cursor=Math.min(filtered.length-1,cursor+1);render()};$("reveal").onclick=show;$("open-page").onclick=openPage;$("open-topic-lab").onclick=openTopicLab;$("self-correct").onclick=()=>assess(true);$("self-wrong").onclick=()=>assess(false);$("manual-review").onclick=manualCheck;$("download-audit").onclick=auditCSV;$("save-correction").onclick=storeCorrection;$("export-corrections").onclick=exportCorrections}
 async function start(){bind();try{const b=await get("bank");if(valid(b)){bank=b;stats()}}catch(_){}try{const blob=await get("sourcepdf");if(blob instanceof Blob)bookUrl=URL.createObjectURL(blob)}catch(_){}}
 document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start):start();
 })();
