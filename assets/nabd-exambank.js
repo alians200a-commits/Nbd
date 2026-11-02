@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const $=id=>document.getElementById(id),DBNAME="nabd-source-exams-v1",STORE="private",PROGRESS="nabd-private-quiz-progress-v1";
-let bank=null,filtered=[],cursor=0,bookUrl=null,currentPdf=null,self={},manual={},corrections={};
-try{self=JSON.parse(localStorage.getItem(PROGRESS)||"{}")||{};manual=JSON.parse(localStorage.getItem(PROGRESS+"-manual")||"{}")||{};corrections=JSON.parse(localStorage.getItem(PROGRESS+"-corrections")||"{}")||{}}catch(_){}
+let bank=null,filtered=[],cursor=0,bookUrl=null,currentPdf=null,self={},manual={},corrections={},pageReview={};
+try{self=JSON.parse(localStorage.getItem(PROGRESS)||"{}")||{};manual=JSON.parse(localStorage.getItem(PROGRESS+"-manual")||"{}")||{};corrections=JSON.parse(localStorage.getItem(PROGRESS+"-corrections")||"{}")||{};pageReview=JSON.parse(localStorage.getItem(PROGRESS+"-page-review")||"{}")||{}}catch(_){}
 function say(msg){const t=$("exam-toast");t.message=msg;t.present()}
 function initDb(){return new Promise((ok,bad)=>{const r=indexedDB.open(DBNAME,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE)};r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error)})}
 async function store(k,value){const db=await initDb();return new Promise((ok,bad)=>{let tx=db.transaction(STORE,"readwrite"),q=tx.objectStore(STORE).put(value,k);q.onsuccess=()=>ok();q.onerror=()=>bad(q.error);tx.oncomplete=()=>db.close()})}
