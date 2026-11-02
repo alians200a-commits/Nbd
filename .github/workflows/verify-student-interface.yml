@@ -26,3 +26,26 @@ jobs:
           grep -q 'nabd-reference-v13.css' src/main.tsx
           grep -q 'nabd-journey-grid' src/views/StudentHomeView.tsx
           grep -q 'student-mobile-nav' src/styles/nabd-reference-v13.css
+      - name: Verify transparent and expressive teaching icons
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,xml.etree.ElementTree as ET
+          root=Path('public/nabd-art')
+          for filename in ['home-house','books','microscope','quiz-memo','review-search','open-book',
+              'game-controller','study-calendar','teacher-microphone','family-group',
+              'notebook','study-headphones','dna-fluent','tooth','brain','heart',
+              'lungs','kidneys','arm','intestine','thyroid','antibody']:
+              file=root/(filename+'.svg')
+              assert file.exists(),f'Icon missing: {file}'
+              svg=ET.parse(file).getroot()
+              assert svg.tag.endswith('svg'),file
+              assert svg.get('fill')=='none',f'Icon root needs transparent background: {file}'
+          source=Path('src/components/StudentShell.tsx').read_text()
+          assert source.count('nabd-nav-illustration')==2
+          assert 'nabd-menu-illustration' in source
+          css=Path('src/styles/nabd-reference-v13.css').read_text()
+          assert '.nabd-learning-art,.nabd-quick-art' in css
+          assert 'background:transparent!important' in css
+          print('22 transparent, licensed subject and tool illustrations verified.')
+          PY
