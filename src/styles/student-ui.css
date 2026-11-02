@@ -1,0 +1,166 @@
+/* NABD Student Design System 10.0
+   Light, age-flexible learning UI. Functional outline icons from lucide-react (ISC/MIT).
+   Semantic 3D assets are external and independently licensed. */
+:root {
+  --nabd-bg:#f6f8fc;
+  --nabd-paper:#ffffff;
+  --nabd-ink:#182943;
+  --nabd-sub:#52647b;
+  --nabd-line:#e0e7f1;
+  --nabd-blue:#2354a5;
+  --nabd-blue-deep:#1b417f;
+  --nabd-mint:#0b746c;
+  --nabd-violet:#6653a8;
+  --nabd-amber:#88601c;
+  --nabd-radius:20px;
+  --nabd-shadow:0 6px 26px rgba(24,51,91,.055);
+}
+body{font-family:'Tajawal','IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;color:var(--nabd-ink);background:var(--nabd-bg);-webkit-font-smoothing:antialiased}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed}
+button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #2168bf;outline-offset:3px}
+.nabd-app-shell{display:flex;min-height:100dvh;background:var(--nabd-bg);color:var(--nabd-ink);direction:rtl}
+.nabd-app-content{min-width:0;flex:1;display:flex;flex-direction:column}
+.nabd-app-main{width:100%;max-width:1320px;margin:0 auto;padding:26px 32px 75px;flex:1}
+.nabd-topbar{height:84px;position:sticky;top:0;z-index:22;background:rgba(255,255,255,.96);border-bottom:1px solid var(--nabd-line);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 30px;backdrop-filter:blur(12px)}
+.nabd-topbar-heading{display:flex;align-items:center;gap:14px;min-width:0}
+.nabd-topbar-text{display:flex;flex-direction:column;gap:4px;line-height:1.35}
+.nabd-topbar-text small{color:var(--nabd-sub);font-size:12px}
+.nabd-topbar-text strong{font-size:19px;font-weight:800;color:var(--nabd-ink)}
+.nabd-topbar-actions{display:flex;align-items:center;gap:12px}
+.nabd-review-shortcut,.nabd-topbar-help,.nabd-menu-button,.nabd-close-drawer{background:#fff;border:1px solid var(--nabd-line);color:var(--nabd-ink);min-height:44px;border-radius:13px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:9px 14px;font-size:13px;font-weight:800}
+.nabd-review-shortcut{color:var(--nabd-blue);position:relative}
+.nabd-review-bubble{background:#aa3648;color:#fff;border-radius:999px;min-width:21px;height:21px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.nabd-menu-button,.nabd-close-drawer{display:none;width:46px;padding:0}
+.nabd-review-shortcut:hover,.nabd-topbar-help:hover{background:#f1f6ff;border-color:#bdd0ee}
+.nabd-sidebar{width:258px;flex:0 0 258px;height:100dvh;position:sticky;top:0;background:#fff;border-left:1px solid var(--nabd-line);display:flex;flex-direction:column;z-index:35}
+.nabd-sidebar-head{padding:23px 19px 22px;border-bottom:1px solid var(--nabd-line);display:flex;align-items:center;justify-content:space-between}
+.nabd-brand{display:flex;gap:11px;align-items:center;background:transparent;border:0;padding:0;color:var(--nabd-ink);text-align:right;min-height:52px}
+.nabd-brand-symbol{display:flex;align-items:center;justify-content:center;width:47px;height:47px;border-radius:14px;background:#e7f0ff;color:var(--nabd-blue)}
+.nabd-brand strong{display:block;font-size:26px;line-height:1.15;font-weight:900}
+.nabd-brand small{display:block;font-size:11px;color:var(--nabd-sub);margin-top:4px}
+.nabd-sidebar-inner{overflow-y:auto;overscroll-behavior:contain;padding:23px 13px;flex:1}
+.nabd-nav-caption{color:var(--nabd-sub);font-size:12px;font-weight:800;margin:0 15px 12px}
+.nabd-side-nav{display:flex;flex-direction:column;gap:5px}
+.nabd-side-link{display:flex;align-items:center;gap:13px;min-height:50px;width:100%;border:0;background:transparent;border-radius:12px;padding:10px 14px;color:#3d506b;font-weight:800;font-size:14px;text-align:right;transition:background-color .18s,color .18s}
+.nabd-side-link:hover{background:#f1f5fb;color:var(--nabd-blue)}
+.nabd-side-link.is-active{background:#e9f2ff;color:#1c4b92}
+.nabd-side-count{margin-inline-start:auto;background:#fff0ed;color:#a44430;padding:2px 7px;border-radius:50px;font-size:12px}
+.nabd-more-details{border-top:1px solid var(--nabd-line);margin-top:23px;padding-top:15px}
+.nabd-more-details summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 13px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;color:var(--nabd-ink);list-style:none}
+.nabd-more-details summary::-webkit-details-marker{display:none}
+.nabd-more-details summary span{display:flex;align-items:center;gap:10px}
+.nabd-more-details[open] summary>svg{transform:rotate(180deg)}
+.nabd-more-details nav{margin-top:5px}
+.nabd-more-details .nabd-side-link{font-size:13px}
+.nabd-sidebar-footer{padding:15px 18px 20px;border-top:1px solid var(--nabd-line);display:flex;align-items:center;gap:10px;background:#fbfcff}
+.nabd-sidebar-footer .nabd-footer-icon{display:flex;align-items:center;justify-content:center;width:39px;height:39px;border-radius:12px;background:#e7f5f1;color:var(--nabd-mint)}
+.nabd-sidebar-footer p{margin:0;line-height:1.55}
+.nabd-sidebar-footer strong{display:block;font-size:12px;color:var(--nabd-ink)}
+.nabd-sidebar-footer small{display:block;font-size:11px;color:var(--nabd-sub)}
+.nabd-drawer-backdrop,.nabd-mobile-tabs{display:none}
+.nabd-student-home{display:flex;flex-direction:column;gap:31px;padding-bottom:32px}
+.nabd-welcome{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(230px,.75fr);gap:18px;background:#eaf2fc;border:1px solid #d9e6f7;border-radius:28px;overflow:hidden;min-height:300px;box-shadow:var(--nabd-shadow)}
+.nabd-welcome-copy{padding:33px 36px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.nabd-eyebrow{display:flex;align-items:center;gap:8px;color:#22529a;font-size:13px;font-weight:900;margin-bottom:15px}
+.nabd-welcome h1{font-size:clamp(30px,3.3vw,43px);line-height:1.45;color:#173359;font-weight:900;letter-spacing:-.4px;margin:0}
+.nabd-welcome h1 span{display:block;color:#2354a5}
+.nabd-welcome p{font-size:15px;color:#465e78;line-height:1.95;margin:13px 0 21px;max-width:510px}
+.nabd-primary-button{display:inline-flex;align-items:center;gap:10px;background:var(--nabd-blue);color:#fff;border:1px solid var(--nabd-blue-deep);border-radius:14px;font-size:15px;font-weight:900;padding:13px 20px;min-height:52px;transition:background .18s,transform .18s}
+.nabd-primary-button:hover{background:#183e83;transform:translateY(-1px)}
+.nabd-primary-button svg:last-child{margin-inline-start:5px}
+.nabd-hero-visual{min-height:265px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:15px;padding:22px 24px;background:linear-gradient(145deg,#e2ebfa,#edf5ff);border-right:1px solid #d9e6f7}
+.nabd-anatomy-picture{width:190px;height:178px;border-radius:36px;background:#f8fbff;border:1px solid #cddcef;box-shadow:0 8px 18px #31579f13;display:flex;align-items:center;justify-content:center;color:#3867a3}
+.nabd-hero-caption{display:flex;align-items:center;gap:7px;background:#fff;border:1px solid #d8e5f5;border-radius:50px;color:#365774;font-size:12px;font-weight:800;padding:8px 13px}
+.nabd-learning-layout{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:23px;align-items:stretch}
+.nabd-section-block{min-width:0}
+.nabd-section-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:0 0 16px}
+.nabd-section-heading h2{font-size:23px;font-weight:900;color:var(--nabd-ink);line-height:1.4;margin:3px 0 0}
+.nabd-overline{display:block;color:var(--nabd-blue);font-size:12px;font-weight:800}
+.nabd-small-hint{font-size:12px;color:var(--nabd-sub)}
+.nabd-action-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.nabd-action-card{background:#fff;border:1px solid var(--nabd-line);border-radius:21px;min-height:198px;padding:20px;display:flex;flex-direction:column;align-items:flex-start;text-align:right;transition:border-color .2s,box-shadow .2s,transform .2s;box-shadow:var(--nabd-shadow);color:var(--nabd-ink);gap:13px}
+.nabd-action-card:hover{border-color:#b5c9e8;box-shadow:0 13px 33px rgba(35,75,130,.1);transform:translateY(-2px)}
+.nabd-action-icon{width:59px;height:59px;border-radius:18px;display:flex;align-items:center;justify-content:center}
+.tone-blue .nabd-action-icon,.tone-blue.nabd-chapter-art{background:#e8f1ff;color:#2055a6}
+.tone-mint .nabd-action-icon,.tone-mint.nabd-chapter-art{background:#e6f5f1;color:#096c64}
+.tone-violet .nabd-action-icon,.tone-violet.nabd-chapter-art{background:#f0ebfa;color:#62509e}
+.tone-amber .nabd-action-icon,.tone-amber.nabd-chapter-art{background:#fff3db;color:#855d1e}
+.tone-orange.nabd-chapter-art{background:#fff0e6;color:#955020}
+.tone-rose.nabd-chapter-art{background:#fff0f3;color:#a34e66}
+.tone-sky.nabd-chapter-art{background:#e9f6fd;color:#1e668a}
+.nabd-action-copy strong{display:block;font-weight:900;font-size:17px;line-height:1.45}
+.nabd-action-copy small{display:block;font-size:13px;line-height:1.7;margin-top:4px;color:var(--nabd-sub)}
+.nabd-action-bottom{display:flex;align-items:center;justify-content:space-between;width:100%;margin-top:auto;padding-top:10px;border-top:1px solid #edf1f6;font-size:12px;font-weight:900;color:var(--nabd-blue)}
+.nabd-side-column{display:flex;flex-direction:column;gap:14px}
+.nabd-progress-panel,.nabd-todo-panel{background:#fff;border:1px solid var(--nabd-line);border-radius:21px;padding:21px;box-shadow:var(--nabd-shadow)}
+.nabd-panel-heading{display:flex;align-items:center;gap:11px;font-size:14px;font-weight:900;color:var(--nabd-ink)}
+.nabd-panel-icon{width:43px;height:43px;background:#edf3ff;color:var(--nabd-blue);border-radius:12px;display:flex;align-items:center;justify-content:center}
+.nabd-todo-panel .nabd-panel-icon{background:#eef7ef;color:#236c54}
+.nabd-progress-main{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:16px 0 10px}
+.nabd-progress-main strong{color:var(--nabd-blue);font-size:33px;line-height:1.2;font-weight:900}
+.nabd-progress-main strong small{font-size:14px;color:var(--nabd-sub)}
+.nabd-progress-main span{font-size:12px;color:var(--nabd-sub)}
+.nabd-progress-track{height:10px;background:#e6edf7;border-radius:30px;overflow:hidden}
+.nabd-progress-track span{display:block;height:100%;background:#177e73;border-radius:30px}
+.nabd-progress-panel p,.nabd-todo-panel p{font-size:12px;line-height:1.9;color:var(--nabd-sub);margin:12px 0 10px}
+.nabd-todo-panel>strong{display:block;margin-top:14px;font-size:14px}
+.nabd-text-link{display:inline-flex;align-items:center;gap:7px;min-height:42px;border:0;background:transparent;padding:7px 0;color:var(--nabd-blue);font-weight:900;font-size:13px}
+.nabd-text-link:hover{text-decoration:underline}
+.nabd-chapter-section{min-width:0}
+.nabd-chapter-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.nabd-chapter-tile{border:1px solid var(--nabd-line);background:#fff;padding:15px;display:flex;align-items:center;gap:12px;text-align:right;min-width:0;border-radius:18px;box-shadow:var(--nabd-shadow);transition:border-color .2s,transform .2s}
+.nabd-chapter-tile:hover{border-color:#abc6e9;transform:translateY(-2px)}
+.nabd-chapter-art{width:59px;height:63px;flex:0 0 59px;display:flex;align-items:center;justify-content:center;border-radius:15px}
+.nabd-chapter-details{display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:4px}
+.nabd-chapter-details small{font-size:11px;color:var(--nabd-sub)}
+.nabd-chapter-details strong{font-size:14px;font-weight:900;color:var(--nabd-ink)}
+.nabd-chapter-details>span{font-size:11px;color:var(--nabd-blue);display:flex;gap:5px;align-items:center;font-weight:800}
+.nabd-helper-note{display:flex;align-items:center;gap:13px;border:1px solid #d5e7e4;background:#f0f8f6;border-radius:18px;padding:17px 21px;color:#0b6b62}
+.nabd-helper-note div{flex:1}.nabd-helper-note strong{font-weight:900;font-size:14px;color:#15594f}.nabd-helper-note p{margin:4px 0 0;font-size:12px;line-height:1.8;color:#3d6b64}
+.nabd-helper-note button{width:42px;height:42px;border:1px solid #b5d4cc;background:white;color:#0b655e;border-radius:12px;display:flex;align-items:center;justify-content:center}
+.nabd-bottom-nav{display:none}
+.nabd-app-footnote{text-align:center;padding:14px 20px 28px;font-size:11px;color:#61748b}
+@media(max-width:1150px){.nabd-learning-layout{grid-template-columns:minmax(0,1fr)}.nabd-side-column{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.nabd-chapter-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1023px){
+ .nabd-sidebar{position:fixed;right:0;top:0;bottom:0;transform:translateX(102%);transition:transform .22s ease;width:min(300px,89vw);height:100dvh;box-shadow:-18px 0 45px #1b355d17}
+ .nabd-sidebar.is-open{transform:translateX(0)}
+ .nabd-menu-button,.nabd-close-drawer{display:flex}
+ .nabd-drawer-backdrop{position:fixed;display:block;inset:0;border:0;background:rgba(13,31,58,.42);z-index:34;width:100%}
+ .nabd-topbar{height:72px;padding-inline:20px}
+ .nabd-app-main{padding:24px 20px 108px}
+ .nabd-bottom-nav{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;background:#fff;border-top:1px solid #dae3ef;box-shadow:0 -6px 25px #20364c12;padding:7px 7px calc(8px + env(safe-area-inset-bottom));z-index:28}
+ .nabd-bottom-link{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;min-height:54px;border:0;border-radius:12px;background:transparent;color:#52647b;font-size:11px;font-weight:900}
+ .nabd-bottom-link.is-active{color:#1c4c93;background:#eef4fd}
+ .nabd-bottom-link svg{width:22px;height:22px}
+ .nabd-app-footnote{padding-bottom:20px}
+}
+@media(max-width:640px){
+ .nabd-topbar{padding-inline:13px}.nabd-topbar-text strong{font-size:16px}
+ .nabd-topbar-text small{font-size:10px}
+ .nabd-topbar-help span,.nabd-review-shortcut-label{display:none}
+ .nabd-topbar-help,.nabd-review-shortcut{width:44px;padding:0}
+ .nabd-topbar-actions{gap:6px}
+ .nabd-app-main{padding:15px 13px 106px}
+ .nabd-student-home{gap:25px}
+ .nabd-welcome{grid-template-columns:1fr;gap:0;min-height:0;border-radius:22px}
+ .nabd-welcome-copy{padding:24px 22px 22px}
+ .nabd-welcome h1{font-size:29px}.nabd-welcome p{font-size:14px}
+ .nabd-hero-visual{display:none}
+ .nabd-section-heading h2{font-size:21px}
+ .nabd-small-hint{display:none}
+ .nabd-action-grid{gap:9px}
+ .nabd-action-card{padding:14px;min-height:191px;border-radius:17px;gap:11px}
+ .nabd-action-icon{width:50px;height:50px;border-radius:14px}
+ .nabd-action-copy strong{font-size:15px}.nabd-action-copy small{font-size:12px;line-height:1.6}
+ .nabd-side-column{grid-template-columns:1fr}
+ .nabd-chapter-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .nabd-chapter-tile{padding:10px;gap:9px;align-items:flex-start;flex-direction:column}
+ .nabd-chapter-art{width:50px;height:50px;flex-basis:50px}
+ .nabd-chapter-details strong{font-size:13px}
+ .nabd-helper-note{padding:15px}
+ .nabd-helper-note p{font-size:11px}
+}
+@media(max-width:370px){.nabd-action-grid{grid-template-columns:1fr}.nabd-action-card{min-height:142px}.nabd-bottom-link{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important}}
