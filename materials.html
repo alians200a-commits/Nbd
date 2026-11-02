@@ -1,0 +1,27 @@
+<!doctype html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نَبْض | الكتاب والملزمة الأصلية</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/css/ionic.bundle.css">
+<link rel="stylesheet" href="assets/nabd-ionic.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.js"></script>
+<style>main{max-width:850px;margin:auto;padding:20px 15px 70px}.box{background:white;border:1px solid #dae3ee;padding:19px;border-radius:15px;margin-top:16px}.box h2{font-size:19px}.box p{font-size:13px;color:#52677e;line-height:1.9}input{max-width:100%;font:inherit;font-size:13px;margin:10px 0}.pdf-window{width:100%;height:min(75vh,820px);border:1px solid #d4e0ed;border-radius:8px;background:#f3f7fc}.msg{background:#fff5e4;padding:13px;border-radius:12px;color:#81561f;font-size:12px;line-height:1.8}.chapter-actions{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}a{color:#2257ad}</style>
+</head><body><ion-app mode="md"><ion-header class="ion-no-border"><ion-toolbar><ion-buttons slot="start"><ion-button href="learn.html" aria-label="العودة إلى الدروس"><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon></ion-button></ion-buttons><ion-title>مصادر المنهج الأصلية</ion-title></ion-toolbar></ion-header><ion-content><main>
+<h1>الكتاب والملزمة — بدون حذف صفحات</h1><p>افتح ملف الكتاب وملف الملزمة الأصليين على جهازك. يتم العرض محلياً داخل المتصفح ولا ترفع الملفات إلى GitHub.</p>
+<div class="msg">هذه طريقة لحفظ **كل صفحات المصدر** كما هي. لا تعني أن كل سؤال وزاري صار تفاعلياً بعد، ولا يصح اعتبار النص المستخرج آلياً نسخة حرفية خالية من الأخطاء.</div>
+<section class="box"><h2>كتاب الأحياء — 136 صفحة</h2><p>اختر الملف الأصلي: كتاب-الاحياء-الثالث-متوسط-lit79fu.pdf</p><input id="book-input" type="file" accept="application/pdf,.pdf" aria-label="اختر كتاب الأحياء"><div class="chapter-actions"><button id="book-open" disabled>افتح الملف الأصلي</button><button id="book-save" disabled>احفظ على هذا الجهاز</button></div><p id="book-status" role="status"></p></section>
+<section class="box"><h2>الملزمة — 143 صفحة</h2><p>اختر الملف الأصلي: احياء_3_متوسط_الاستاذ_يوسف_حاتم_2027.pdf</p><input id="booklet-input" type="file" accept="application/pdf,.pdf" aria-label="اختر ملزمة الأحياء"><div class="chapter-actions"><button id="booklet-open" disabled>افتح الملف الأصلي</button><button id="booklet-save" disabled>احفظ على هذا الجهاز</button></div><p id="booklet-status" role="status"></p></section>
+<section class="box" id="pdf-preview" hidden><h2 id="preview-title">معاينة المصدر</h2><div class="chapter-actions"><a id="open-separately" target="_blank" rel="noopener noreferrer">افتح في عارض PDF</a></div><iframe id="pdf-frame" class="pdf-window" title="معاينة PDF المصدر الأصلي"></iframe><p>إذا هاتفك ما يعرض PDF داخل الصفحة، اضغط «افتح في عارض PDF».</p></section>
+<p>عند فتح ملفات تحتوي بيانات تخص الطالب أو المدرسة، لا تنقلها إلى مستودع عام بدون مراجعة حقوقها وموافقتك.</p>
+</main></ion-content></ion-app>
+<script>
+(()=>{"use strict";const kinds=["book","booklet"],dbName="nabd-private-pdfs",names={book:"كتاب الأحياء",booklet:"ملزمة الأحياء"};const $=id=>document.getElementById(id);const chosen={};let current=null;
+function openDB(){return new Promise((ok,bad)=>{const r=indexedDB.open(dbName,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains("pdfs"))r.result.createObjectStore("pdfs")};r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error)})}
+async function put(k,blob){const db=await openDB();return new Promise((ok,bad)=>{const t=db.transaction("pdfs","readwrite"),r=t.objectStore("pdfs").put(blob,k);r.onsuccess=()=>ok();r.onerror=()=>bad(r.error);t.oncomplete=()=>db.close()})}
+async function get(k){const db=await openDB();return new Promise((ok,bad)=>{const t=db.transaction("pdfs","readonly"),r=t.objectStore("pdfs").get(k);r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error);t.oncomplete=()=>db.close()})}
+function openPreview(k){const b=chosen[k];if(!(b instanceof Blob))return;if(current)URL.revokeObjectURL(current);current=URL.createObjectURL(b);$("preview-title").textContent=names[k];$("pdf-frame").src=current;$("open-separately").href=current;$("pdf-preview").hidden=false;$("pdf-preview").scrollIntoView({behavior:"smooth"});}
+async function validate(f){if(!f)return false;if(f.size<20000||f.size>50*1024*1024)return false;const sig=new Uint8Array(await f.slice(0,5).arrayBuffer());return new TextDecoder().decode(sig)==="%PDF-"}
+async function init(){for(const k of kinds){$(k+"-input").addEventListener("change",async e=>{const f=e.target.files?.[0];if(!await validate(f)){$(k+"-status").textContent="هذا ليس ملف PDF سليماً أو حجمه غير مناسب";return}chosen[k]=f;$(k+"-status").textContent="جاهز للفتح: "+f.name;$(k+"-open").disabled=false;$(k+"-save").disabled=false});$(k+"-open").onclick=()=>openPreview(k);$(k+"-save").onclick=()=>put(k,chosen[k]).then(()=>$(k+"-status").textContent="✓ حفظت ملف المصدر الكامل على الجهاز").catch(err=>$(k+"-status").textContent=err.message);get(k).then(b=>{if(b instanceof Blob){chosen[k]=b;$(k+"-open").disabled=false;$(k+"-save").disabled=false;$(k+"-status").textContent="✓ نسخة المصدر السابقة موجودة على الجهاز"}}).catch(()=>{})}}
+document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init):init();
+})();
+</script></body></html>
