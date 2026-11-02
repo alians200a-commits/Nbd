@@ -8,7 +8,7 @@ async function store(k,value){const db=await initDb();return new Promise((ok,bad
 async function get(k){const db=await initDb();return new Promise((ok,bad)=>{let tx=db.transaction(STORE,"readonly"),q=tx.objectStore(STORE).get(k);q.onsuccess=()=>ok(q.result);q.onerror=()=>bad(q.error);tx.oncomplete=()=>db.close()})}
 function valid(b){return b&&b.format==="NABD_PRIVATE_QUESTION_BANK_V1"&&b.version===1&&b.source_total_pages===143&&Array.isArray(b.questions)&&Array.isArray(b.page_audit)&&b.questions.length>300&&b.questions.every(q=>typeof q.id==="string"&&Number.isInteger(q.pdf_page)&&q.pdf_page>=1&&q.pdf_page<=143&&typeof q.question==="string"&&typeof q.source_segment_normalized==="string"&&typeof q.review_status==="string")}
 function drawFilters(){const menu=$("chapter-filter");menu.replaceChildren();const all=document.createElement("ion-select-option");all.value="all";all.textContent="جميع الفصول";menu.append(all);for(let i=1;i<=11;i++){const e=document.createElement("ion-select-option");e.value=String(i);e.textContent="الفصل "+i;menu.append(e)}menu.value="all"}
-function filter(){if(!bank)return;let ch=$("chapter-filter").value||"all",q=String($("question-search").value||"").trim(),status=$("question-filter").value||"all";filtered=bank.questions.filter(x=>(ch==="all"||x.chapter===Number(ch))&&(!q||x.question.includes(q)||x.source_segment_normalized.includes(q))&&(status==="all"||(status==="marked"&&x.page_years_mentioned.length)||(status==="needs"&&(x.v4_source_audit?.priority==="HIGH"||(!x.v4_source_audit&&(!x.answer_draft?.trim()||x.review_status!=="auto_split_needs_review"))))));cursor=0;render()}
+function filter(){if(!bank)return;let ch=$("chapter-filter").value||"all",q=String($("question-search").value||"").trim(),status=$("question-filter").value||"all";filtered=bank.questions.filter(x=>(ch==="all"||x.chapter===Number(ch))&&(!q||x.question.includes(q)||x.source_segment_normalized.includes(q))&&(status==="all"||(status==="inline"&&Array.isArray(x.practice_parts)&&x.practice_parts.length>0)||(status==="marked"&&x.page_years_mentioned.length)||(status==="needs"&&(x.v4_source_audit?.priority==="HIGH"||(!x.v4_source_audit&&(!x.answer_draft?.trim()||x.review_status!=="auto_split_needs_review"))))));cursor=0;render()}
 function renderInlineParts(q){
  const panel=$("inline-practice"),area=$("inline-practice-items");
  panel.classList.add("hidden");area.replaceChildren();
@@ -23,8 +23,8 @@ function renderInlineParts(q){
   row.append(label);
   const answer=document.createElement("p");answer.className="answer hidden";answer.textContent=p.answer_from_page;answer.style.margin="10px 0";
   const controls=document.createElement("div");controls.className="controls";
-  const show=document.createElement("ion-button");show.fill="outline";show.size="small";show.textContent="أظهر الجواب المطبوعة بالملزمة";
-  show.onclick=()=>{answer.classList.toggle("hidden");show.textContent=answer.classList.contains("hidden")?"أظهر الجواب المطبوعة بالملزمة":"إخفاء الجواب"};
+  const show=document.createElement("ion-button");show.fill="outline";show.size="small";show.textContent="أظهر الجواب المطبوع في الملزمة";
+  show.onclick=()=>{answer.classList.toggle("hidden");show.textContent=answer.classList.contains("hidden")?"أظهر الجواب المطبوع في الملزمة":"إخفاء الجواب"};
   const got=document.createElement("ion-button");got.fill="clear";got.color="success";got.size="small";got.textContent="عرفته";
   const missed=document.createElement("ion-button");missed.fill="clear";missed.color="warning";missed.size="small";missed.textContent="أعيد مراجعته";
   const key="source-part:"+p.part_id;
