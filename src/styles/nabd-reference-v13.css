@@ -209,3 +209,49 @@ body,.student-app{background:#FBF9FF;color:#25233F}
 .student-more-grid>button .student-more-icon svg{width:23px;height:23px;stroke-width:2}
 .nabd-learning-art img,.nabd-quick-art img,.nabd-tracker-mascot img{image-rendering:auto}
 .student-chapter-figure img{filter:drop-shadow(0 5px 8px rgba(95,67,120,.08))}
+
+/* الإصدار 14 — الرسومات وحدها شفافة تماماً بلا دائرة أو مستطيل خلف الأيقونة. */
+.nabd-learning-art,.nabd-quick-art,.nabd-hello-avatar,
+.nabd-achievement-art,.student-chapter-figure,
+.student-nav-symbol,.student-more-icon,
+.nabd-heading-star,.student-brand-mark{
+ background:transparent!important;
+ border:0!important;
+ box-shadow:none!important;
+ backdrop-filter:none!important;
+}
+.nabd-quick-art{width:86px;height:83px}
+.nabd-quick-art img{width:82px;height:82px;max-height:82px;max-width:82px;object-fit:contain;filter:none}
+.nabd-learning-art{flex:0 0 91px;width:91px;height:105px}
+.nabd-learning-art img{max-width:91px;max-height:103px;filter:none}
+.nabd-hello-avatar{width:46px;height:46px}
+.nabd-hello-avatar img{width:44px;height:44px;object-fit:contain}
+.nabd-achievement-art{width:64px;height:64px;flex:0 0 64px}
+.nabd-achievement-art img{width:59px;height:59px;object-fit:contain}
+.nabd-tracker-mascot img,.nabd-hero-brain,.nabd-hero-books{filter:none}
+.student-chapter-figure{width:90px;height:95px;flex:0 0 90px;display:flex;align-items:center;justify-content:center}
+.student-chapter-figure img{width:88px;height:88px;max-width:88px;max-height:88px;object-fit:contain;filter:none}
+.student-mobile-nav button .student-nav-symbol,
+.student-mobile-nav button.is-current .student-nav-symbol{background:transparent!important;color:inherit!important;border:0!important}
+.student-mobile-nav button.is-current{color:#613BC0}
+.student-more-grid>button .student-more-icon{background:transparent!important}
+.student-more-grid>button:nth-child(4n+2) .student-more-icon,
+.student-more-grid>button:nth-child(4n+3) .student-more-icon,
+.student-more-grid>button:nth-child(4n+4) .student-more-icon{background:transparent!important}
+.student-action-card .student-action-art,
+.student-action-card.student-tint-mint .student-action-art,
+.student-action-card.student-tint-peach .student-action-art,
+.student-action-card.student-tint-sky .student-action-art{background:transparent!important;border:0!important}
+.student-action-card .student-action-art svg{width:33px;height:33px;stroke-width:2.3}
+@media(max-width:720px){
+ .nabd-quick-art{width:75px;height:74px}
+ .nabd-quick-art img{width:74px;height:74px}
+ .nabd-learning-art{flex-basis:74px;width:74px;height:92px}
+ .nabd-learning-art img{width:74px;height:90px}
+ .student-chapter-figure{width:76px;height:82px;flex-basis:76px}
+ .student-chapter-figure img{max-width:74px;max-height:78px}
+}
+@media(max-width:375px){
+ .nabd-learning-art{flex-basis:61px;width:61px}
+ .nabd-learning-art img{max-width:61px}
+}
