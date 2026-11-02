@@ -5,13 +5,14 @@ import {
   ShieldPlus, Wind
 } from 'lucide-react';
 import { TABLER_CHAPTERS } from '../data/tablerData';
+import { BiologySymbolIcon } from '../components/BiologySymbolIcon';
 import { useApp } from '../context/AppContext';
 import { TabType } from '../components/Sidebar';
 
 interface Props {
   onNavigateTab: (tab: TabType, params?: { chapter?: number }) => void;
 }
-const icons = [Brain, Bone, Activity, BookOpen, HeartPulse, Wind, Droplets, Dna, Eye, FlaskConical, ShieldPlus];
+const chapterIcons = ['nerve','skeleton','arm','intestine','blood-vessel','lungs','kidneys','dna','eye','thyroid'] as const;
 const colors = ['blue','violet','orange','mint','rose','sky','blue','violet','orange','mint','rose'];
 export const TablerChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
   const { state } = useApp();
@@ -30,12 +31,12 @@ export const TablerChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
       </header>
       <ol className="nabd-course-list">
         {TABLER_CHAPTERS.map((ch, i) => {
-          const Icon = icons[i];
+          
           const done = !!state.finishedTopics[String(ch.id)];
           return (
             <li key={ch.id} className="nabd-course-row">
               <span className="nabd-course-number" aria-hidden="true">{String(ch.id).padStart(2, '0')}</span>
-              <div className={`nabd-course-illustration tone-${colors[i]}`}><Icon size={31} strokeWidth={1.8} aria-hidden="true" /></div>
+              <div className={`nabd-course-illustration tone-${colors[i]}`}>{i < chapterIcons.length ? <BiologySymbolIcon name={chapterIcons[i]} size={36} /> : <ShieldPlus size={31} strokeWidth={1.8} aria-hidden="true" />}</div>
               <div className="nabd-course-title">
                 <span>الفصل {ch.id} · يبدأ من صفحة {ch.page}</span>
                 <strong>{ch.name}</strong>
