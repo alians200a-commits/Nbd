@@ -2,7 +2,7 @@ import React from 'react';
 
 export type BiologySymbol =
   | 'nerve' | 'skeleton' | 'arm' | 'intestine' | 'blood-vessel'
-  | 'lungs' | 'kidneys' | 'dna' | 'eye' | 'thyroid' | 'cell-nuclei';
+  | 'lungs' | 'kidneys' | 'dna' | 'eye' | 'thyroid' | 'cell-nuclei' | 'liver' | 'stomach' | 'ear';
 
 interface Props {
   name: BiologySymbol;
