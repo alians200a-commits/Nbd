@@ -111,7 +111,7 @@ function Editor(){
    <label style={{...labelStyle,display:'flex',alignItems:'center'}}><input type="checkbox" checked={chapterInfo.visible} onChange={e=>setChapterField('visible',e.target.checked)}/> إظهار الفصل للطلاب</label>
    <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap',marginTop:17}}>{imageUpload('chapter')}{preview(chapterInfo.image)}{chapterInfo.image&&<button type="button" style={miniBtn} onClick={()=>setChapterField('image','')}><X size={16}/> حذف ربط الصورة</button>}</div>
   </section>}
-  {section==='lessons'&&<div style={{display:'grid',gridTemplateColumns:'minmax(210px,.62fr) minmax(260px,1fr)',gap:13,marginTop:16}}>
+  {section==='lessons'&&<div className="ad-cms-columns" style={{marginTop:16}}>
     <section style={sectionStyle}>
      <input style={fieldStyle} type="search" placeholder="ابحث عن الدرس…" value={search} onChange={e=>setSearch(e.target.value)}/>
      <div style={{display:'grid',gap:5,maxHeight:530,overflowY:'auto',marginTop:12}}>
@@ -138,7 +138,7 @@ function Editor(){
      <div style={{display:'flex',gap:10,justifyContent:'space-between',flexWrap:'wrap'}}>{imageUpload('lesson')}<button type="button" style={{...miniBtn,color:'#ae4051',background:'#fff1f3'}} onClick={removeLesson}><Trash2 size={16}/> حذف الدرس</button></div>
     </>:<p className="ad-muted">اختَر درساً أو أضف درساً جديداً.</p>}</section>
    </div>}
-  {section==='announcements'&&<div style={{display:'grid',gridTemplateColumns:'minmax(200px,.6fr) 1fr',gap:13}}>
+  {section==='announcements'&&<div className="ad-cms-columns">
     <section style={sectionStyle}><button type="button" style={{...miniBtn,marginBottom:10}} onClick={addAnnouncement}><PlusCircle size={17}/> إعلان جديد</button>{data.announcements.map(a=><button key={a.id} style={{...miniBtn,width:'100%',marginBottom:6,justifyContent:'space-between'}} onClick={()=>setAnnouncementId(a.id)}>{a.title}{a.visible?<Eye size={14}/>:<EyeOff size={14}/>}</button>)}</section>
     <section style={sectionStyle}>{announcement?<><label style={labelStyle}>العنوان<input style={fieldStyle} value={announcement.title} onChange={e=>setAnnouncementField('title',e.target.value)}/></label>
      <label style={labelStyle}>نص الإعلان<textarea style={fieldStyle} rows={5} value={announcement.text} onChange={e=>setAnnouncementField('text',e.target.value)}/></label>
