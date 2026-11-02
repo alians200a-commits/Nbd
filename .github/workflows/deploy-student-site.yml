@@ -34,7 +34,7 @@ jobs:
           rm -f dist/voice_production.html dist/audio-library.html
           rm -f dist/assets/nabd-voice-center.js dist/assets/nabd-ch1-audio.js dist/assets/nabd-voice-player.js
           rm -f dist/nabd-voice/manifest.json
-          test -s dist/admin.html
+          test ! -e dist/admin.html
           test ! -e dist/voice_production.html
           test ! -e dist/audio-library.html
           test ! -e dist/nabd-voice/manifest.json
