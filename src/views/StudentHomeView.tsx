@@ -18,7 +18,6 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
   const sessions = state.studySessions || [];
   const chaptersDone = TABLER_CHAPTERS.filter(c => Boolean(state.finishedTopics[String(c.id)])).length;
   const next = TABLER_CHAPTERS.find(c => !state.finishedTopics[String(c.id)]) || TABLER_CHAPTERS[0];
-  const remaining = (state.homework || []).filter(h => !h.done).length;
 
   // Only real locally stored study sessions and quiz submissions are counted.
   const weekly = useMemo(() => {
@@ -107,7 +106,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         {!anyActivity&&<p className="nabd-empty-activity">لا يوجد نشاط مسجّل هذا الأسبوع بعد. ابدأ باختبار قصير!</p>}
         <button type="button" className="nabd-achievement" onClick={()=>onNavigateTab(mistakes?'vault':'planner')}>
           <span className="nabd-achievement-art"><img src={artBase+'trophy.svg'} alt=""/></span>
-          <span><strong>{mistakes?'خطوتك القادمة: راجع أخطاءك':'أحسنت! البداية تصنع الفرق'}</strong><small>{mistakes?mistakes+' أسئلة تنتظر مراجعتك':remaining?'لديك '+remaining+' واجبات في خطة الدراسة':'ابدأ درساً جديداً اليوم'}</small></span><ChevronLeft size={18}/>
+          <span><strong>{mistakes?'خطوتك القادمة: راجع أخطاءك':'أحسنت! البداية تصنع الفرق'}</strong><small>{mistakes?mistakes+' أسئلة تنتظر مراجعتك':'ابدأ درساً جديداً اليوم'}</small></span><ChevronLeft size={18}/>
         </button>
         <p className="nabd-tracker-note"><CheckCircle2 size={14}/> الأرقام من نشاطك المحفوظ فقط. {studyMinutes? 'مدة جلساتك المسجلة: '+studyMinutes+' دقيقة.':''}</p>
       </section>
