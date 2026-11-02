@@ -33,7 +33,7 @@ jobs:
           rm -f dist/voice_production.html dist/audio-library.html
           rm -f dist/assets/nabd-voice-center.js dist/assets/nabd-ch1-audio.js dist/assets/nabd-voice-player.js
           rm -f dist/nabd-voice/manifest.json
-          test -s dist/admin.html
+          test ! -e dist/admin.html
           test ! -e dist/voice_production.html
           test ! -e dist/audio-library.html
           test ! -e dist/nabd-voice/manifest.json
@@ -56,7 +56,7 @@ jobs:
               assert Path('dist/nabd-art/'+name+'.svg').is_file(),name
           for name in ('learn.html','simulations.html','exam-bank.html','materials.html'):
               assert Path('dist/'+name).is_file(),name
-          assert Path('dist/admin.html').is_file(), 'Missing built-in administration entry'
+          assert not Path('dist/admin.html').exists(), 'Admin page leaked into public site'
           assert Path('dist/assets/nabd-learn.js').is_file()
           assert Path('dist/data/nabd-curriculum.js').is_file()
           print('React app, original artwork, core routes and legacy learning pages verified')
