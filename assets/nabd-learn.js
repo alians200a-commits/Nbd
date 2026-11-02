@@ -45,7 +45,34 @@ async function importRef(f){if(!f)return;if(f.size>12e6||f.size<1000)return say(
 async function listenTopic(key,title){try{const blob=await io("nabd/lesson/"+key);if(!(blob instanceof Blob))return say("ماكو شرح مسجل بهذا الموضوع بصوت B بعد.");if(player)player.pause();player=new Audio(URL.createObjectURL(blob));await player.play();say("تشغيل شرح B: "+title)}catch(e){say("تعذر التشغيل: "+e.message)}}
 async function uploadTopic(key,title){if(!(await io("__reference_B").catch(()=>null) instanceof Blob))return say("استورد مرجع B أولاً من إعدادات الصوت");const f=await pick();if(!f)return;if(f.size>12e6||f.size<1000)return say("حجم التسجيل غير مناسب");const alert=document.createElement("ion-alert");alert.header="اعتماد بصوت B";alert.message="هل هذا تسجيل أحياء جديد بصوت B ذاته، وفحصت اللهجة والنطق وحقوق الاستخدام؟";alert.buttons=[{text:"إلغاء",role:"cancel"},{text:"نعم، فحصته",role:"confirm"}];document.body.append(alert);await alert.present();const ans=await alert.onDidDismiss();alert.remove();if(ans.role!=="confirm")return;if(await sha(f)==="c2a2ab1834b9d3e2d205fd4a6d228ca8fac30a37c0212d9bcf6206aebdeff618")return say("هذا تسجيل الفيزياء، وليس شرح أحياء.");try{await io("nabd/lesson/"+key,f);say("تم حفظ تسجيل B لدرس "+title);countAudio()}catch(e){say("تعذر الحفظ: "+e.message)}}
 async function countAudio(){try{const database=await openDB();const keys=await new Promise((ok,bad)=>{const t=database.transaction("audios","readonly"),r=t.objectStore("audios").getAllKeys();r.onsuccess=()=>ok(r.result);r.onerror=()=>bad(r.error)});database.close();const count=keys.filter(k=>String(k).startsWith("nabd/lesson/")).length;$("lesson-voice-status").textContent="تسجيلات أحياء B الموجودة على هذا الجهاز: "+count+" من 44. لا توجد قراءة صوتية بديلة."}catch(e){$("lesson-voice-status").textContent="مخزن الصوت غير متاح: "+e.message}}
-function bind(){$("study-menu").addEventListener("ionChange",e=>{if(e.detail?.value)switchSection(e.detail.value)});$("chapter-choice").addEventListener("ionChange",e=>{if(e.detail?.value)switchChapter(e.detail.value)});$("topic-search").addEventListener("ionInput",drawLessons);$("flash-card").onclick=()=>{flipped=!flipped;showFlash()};$("flash-prev").onclick=()=>move(-1);$("flash-next").onclick=()=>move(1);$("flash-hard").onclick=()=>{const x=questions()[flash];state.review[x.k]=Date.now();save();say("حفظنا البطاقة للمراجعة")};$("match-reset").onclick=newMatch;$("coach-ask").onclick=ask;$("export-report").onclick=exportParent;$("open-voice").onclick=async()=>{$("voice-modal").present();const b=await io("__reference_B").catch(()=>null);if(b instanceof Blob){$("voice-reference-state").textContent="✓ مرجع B موجود على الجهاز";const a=$("voice-reference-player");a.src=URL.createObjectURL(b);a.hidden=false}await countAudio()};$("voice-modal-close").onclick=()=>$("voice-modal").dismiss();$("voice-ref-input").onchange=e=>importRef(e.target.files?.[0]);}
+async function importVoicePack(file){
+ if(!file)return;
+ if(file.size>80*1024*1024)throw Error("حزمة الصوت كبيرة جداً");
+ const reference=await io("__reference_B").catch(()=>null);
+ if(!(reference instanceof Blob))throw Error("استورد مرجع B الأصلي أولاً حتى نثبت هوية الصوت المطلوب");
+ const data=JSON.parse(await file.text());
+ if(data.format!=="NABD_B_LESSON_AUDIO_PACK_V1"||data.speaker!=="B"||!Array.isArray(data.clips))throw Error("الحزمة ليست مخصصة لشروحات نَبْض بصوت B");
+ if(data.clips.length>44)throw Error("عدد المقاطع أكبر من المنهج");
+ if(!window.confirm("هل استمعت إلى عينات الصوت الجديدة وتأكدت أنها نفس صوت B العراقي، وراجعت حقوق استخدامها؟"))return;
+ let imported=0,total=0;
+ const keys=new Set();
+ for(const item of data.clips){
+  if(!item||typeof item.key!=="string"||typeof item.base64!=="string"||!/^nabd\/lesson\/(1[01]|[1-9])\/[0-3]$/.test(item.key)||keys.has(item.key))throw Error("مفتاح درس صوتي غير صالح أو مكرر");
+  keys.add(item.key);
+  const parts=item.base64.replace(/\s/g,"");
+  if(parts.length>12*1024*1024)throw Error("مقطع كبير جداً");
+  const raw=atob(parts),bytes=new Uint8Array(raw.length);
+  for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+  total+=bytes.byteLength;
+  if(total>64*1024*1024)throw Error("حجم الحزمة تجاوز 64 ميغابايت");
+  if(item.sha256){const h=await crypto.subtle.digest("SHA-256",bytes);const actual=[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("");if(actual!==item.sha256)throw Error("فشل فحص الملف "+item.key);}
+  const blob=new Blob([bytes],{type:"audio/mpeg"});
+  await io(item.key,blob);imported++;
+ }
+ $("voice-batch-state").textContent="✓ استوردت "+imported+" من تسجيلات الدروس بصوت B بعد مراجعتك. الملفات على هذا الجهاز فقط.";
+ await countAudio();say("تم استيراد "+imported+" ملفاً صوتياً");
+}
+function bind(){$("study-menu").addEventListener("ionChange",e=>{if(e.detail?.value)switchSection(e.detail.value)});$("chapter-choice").addEventListener("ionChange",e=>{if(e.detail?.value)switchChapter(e.detail.value)});$("topic-search").addEventListener("ionInput",drawLessons);$("flash-card").onclick=()=>{flipped=!flipped;showFlash()};$("flash-prev").onclick=()=>move(-1);$("flash-next").onclick=()=>move(1);$("flash-hard").onclick=()=>{const x=questions()[flash];state.review[x.k]=Date.now();save();say("حفظنا البطاقة للمراجعة")};$("match-reset").onclick=newMatch;$("coach-ask").onclick=ask;$("export-report").onclick=exportParent;$("open-voice").onclick=async()=>{$("voice-modal").present();const b=await io("__reference_B").catch(()=>null);if(b instanceof Blob){$("voice-reference-state").textContent="✓ مرجع B موجود على الجهاز";const a=$("voice-reference-player");a.src=URL.createObjectURL(b);a.hidden=false}await countAudio()};$("voice-modal-close").onclick=()=>$("voice-modal").dismiss();$("voice-ref-input").onchange=e=>importRef(e.target.files?.[0]);$("voice-batch-input").onchange=e=>importVoicePack(e.target.files?.[0]).catch(err=>say(err.message));}
 function init(){for(const c of C.chapters){const o=el("ion-select-option",c.id+". "+c.title);o.value=String(c.id);$("chapter-choice").append(o)}bind();const id=Number(location.hash.match(/chapter-(\d+)/)?.[1]||1);ch=C.chapters.find(c=>c.id===id)||C.chapters[0];$("chapter-choice").value=String(ch.id);save();drawLessons();showFlash();newMatch();parentReport();if(new URLSearchParams(location.search).get("voice")==="1")$("open-voice").click();const tab=new URLSearchParams(location.search).get("tab");if(["flash","matching","coach","parent"].includes(tab))switchSection(tab)}
 document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init):init();
 })();
