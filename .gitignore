@@ -1,0 +1,6 @@
+*.m4a
+*.wav
+*.mp3
+*.pdf
+.env
+node_modules/

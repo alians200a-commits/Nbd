@@ -1,0 +1,7 @@
+الموضوع,صفحة الكتاب,رابط GLB المعلن,المصدر,الرخصة,ملاحظة
+القلب,57,https://cdn.jsdelivr.net/gh/organui/heart-3d@c72ce6654ff8e282942f97750d3104f55ef4fc3d/public/models/heart.glb,https://organui.com/docs/components/heart,CC BY 4.0,نموذج تشريحي من BodyParts3D
+الأمعاء,41,https://cdn.jsdelivr.net/gh/organui/intestines-3d@8386b2327715f32b2ec62b403b94a3e5f6a307e2/public/models/intestines.glb,https://organui.com/docs/components/intestines,CC BY-SA 2.1 JP,نموذج مقتبس من BodyParts3D
+الخلية الحيوانية,6,https://organui.com/models/cell.glb,https://organui.com/docs/components/cell,CC0 1.0,نموذج خلية تخطيطي CC0، وليس خلية عصبية
+الرئتان,71,https://cdn.humanatlas.io/digital-objects/ref-organ/lung-female/v1.4/assets/3d-vh-f-lung.glb,https://github.com/Opening-Science/open-twin-xr/blob/main/docs/MODEL_PIPELINE.md,CC BY 4.0 — تحقّق من بيانات الإصدار قبل النشر التجاري,نموذج مرجعي من Human Reference Atlas
+جريب الشعرة,101,https://organui.com/models/hair.glb,https://organui.com/docs/components/hair,CC0 1.0,نموذج تعليمي تخطيطي CC0
+القلب – مرجع أنثوي,57,https://cdn.humanatlas.io/digital-objects/ref-organ/heart-female/v1.3/assets/3d-vh-f-heart.glb,https://github.com/Opening-Science/open-twin-xr/blob/main/docs/MODEL_PIPELINE.md,CC BY 4.0 — تحقّق من بيانات الإصدار قبل النشر التجاري,قلب مرجعي مستقل من Human Reference Atlas
