@@ -23,5 +23,13 @@
   "ministerial_year_and_round_question_links_verified": 0,
   "official_auto_grading_approved": 0,
   "preserves_original_question_count": true,
-  "notes": "The 13 study parts are components of three existing source questions, not 13 additional independent ministerial questions. The private workbook original and audio are not committed. Text spacing normalized for exercises; no character-by-character certification."
+  "notes": "The 13 study parts are components of three existing source questions, not 13 additional independent ministerial questions. The private workbook original and audio are not committed. Text spacing normalized for exercises; no character-by-character certification.",
+  "version_patch": "V5.1_mobile_page_review",
+  "source_inline_practice_importable": true,
+  "page_by_page_user_audit_available": true,
+  "page_by_page_user_audit_count": 143,
+  "page_audit_notes_local_only": true,
+  "private_v5_json_exported_to_user": true,
+  "private_v5_json_published_to_github": false,
+  "public_certification_status": "NOT_CERTIFIED"
 }
