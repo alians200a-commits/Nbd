@@ -17,6 +17,7 @@ jobs:
           node --check assets/nabd-exambank.js
           node --check assets/nabd-process.js
           node --check assets/nabd-ch1-audio.js
+          node --check assets/nabd-topic-challenges.js
           node --check data/nabd-curriculum.js
       - name: Verify source links, 3D nucleus picking and lesson voice keys
         run: |
@@ -38,6 +39,21 @@ jobs:
               ids=set(re.findall(r'id="([^"]+)"',h))
               refs=set(re.findall(r'\$\("([^"]+)"\)',j))
               assert not refs-ids,(htmlpath,refs-ids)
+          # Per-topic practice is not claimed to be a high-fidelity individual simulation.
+          challenge=Path('assets/nabd-topic-challenges.js').read_text()
+          assert '44 distinct source-linked exercises' in challenge
+          assert 'nabd:topic-change' in challenge
+          assert 'assets/nabd-topic-challenges.js' in Path('simulations.html').read_text()
+          cover=json.loads(Path('data/NABD_44_TOPIC_3D_COVERAGE.json').read_text())
+          assert cover['total']==44
+          assert len(cover['topics'])==44
+          status=json.loads(Path('data/NABD_QBANK_V4_1_AUDIT_METADATA.json').read_text())
+          assert status['question_candidates']==491
+          assert status['unanswered_extraction_candidates']==82
+          assert status['high_priority_editorial_review']==118
+          assert status['ministerial_year_and_round_exact_question_links_certified']==0
+          assert 'open-topic-lab' in Path('exam-bank.html').read_text()
+          assert 'storeCorrection' in Path('assets/nabd-exambank.js').read_text()
           process_js=Path('assets/nabd-process.js').read_text()
           assert 'const SYSTEMS=' in process_js
           assert process_js.count('"stages":')==11, 'Expected eleven chapter sequences'
