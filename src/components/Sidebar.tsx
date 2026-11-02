@@ -15,6 +15,7 @@ export type TabType =
   | 'sources'
   | 'curriculum'
   | 'experiments'
+  | 'membraneSim'
   | 'reflex'
   | 'ministryExam'
   | 'figureStudio'
@@ -45,6 +46,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab, isOpe
   ];
 
   const advancedItems: { id: TabType; label: string; icon: string }[] = [
+    { id: 'membraneSim', label: 'محاكاة الغشاء والنقل 3D', icon: 'flask-2' },
     { id: 'curriculum', label: 'الكتاب المنهجي (132 ص)', icon: 'book' },
     { id: 'experiments', label: 'الأبحاث والتجارب (16)', icon: 'flask-2' },
     { id: 'reflex', label: 'محاكاة المنعكس العصبي', icon: 'brain' },

@@ -19,6 +19,7 @@ import { useApp } from '../context/AppContext';
 
 interface TablerLabViewProps {
   initialChapter?: number;
+  onNavigateTab?: (tab: any, params?: any) => void;
 }
 
 // Detailed anatomical structures and labeling data for interactive inspection
@@ -80,7 +81,7 @@ const ORGAN_DETAILS: Record<string, {
   }
 };
 
-export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter }) => {
+export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, onNavigateTab }) => {
   const { completeTopic, addPoints } = useApp();
   const [selectedIdx, setSelectedIdx] = useState<number>(0);
   const [modelStatus, setModelStatus] = useState<string>('جاري تجهيز المجسم التشريحي…');
@@ -126,6 +127,37 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter }) 
 
   return (
     <div className="space-y-5 pb-12">
+      {/* Featured 3D Simulation Banner: Membrane Transport */}
+      <div className="bg-gradient-to-r from-[#0b1f33] to-[#123659] border border-[#1e4875] p-4 sm:p-5 rounded-3xl text-white flex flex-wrap items-center justify-between gap-4 shadow-sm">
+        <div className="flex items-center gap-3.5">
+          <div className="w-11 h-11 rounded-2xl bg-cyan-500/20 text-cyan-300 flex items-center justify-center font-bold border border-cyan-500/30">
+            <Sparkles size={22} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm sm:text-base font-bold text-white m-0">
+                مختبر حركة الجزيئات وانتشار الغشاء الخلوي (3D)
+              </h3>
+              <span className="badge bg-cyan-500/20 text-cyan-300 text-[10px] px-2 py-0.5 rounded-full border border-cyan-500/30 font-bold">
+                محاكاة تفاعلية
+              </span>
+            </div>
+            <p className="text-xs text-cyan-100/70 mt-0.5 m-0">
+              تمثيل ثلاثي الأبعاد للانتشار البسيط، الانتشار الميسر بالقنوات، والنقل النشط بمضخة ATP
+            </p>
+          </div>
+        </div>
+        {onNavigateTab && (
+          <button
+            onClick={() => onNavigateTab('membraneSim')}
+            className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-extrabold text-xs transition flex items-center gap-1.5 shadow-md"
+          >
+            <span>فتح محاكاة الغشاء والنقل 3D</span>
+            <RotateCw size={14} />
+          </button>
+        )}
+      </div>
+
       {/* Top Header */}
       <div className="bg-white border border-[#e6e8eb] p-5 rounded-3xl shadow-sm flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">

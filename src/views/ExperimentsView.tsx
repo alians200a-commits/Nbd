@@ -7,14 +7,19 @@ import {
   HelpCircle,
   Lightbulb,
   ArrowRight,
-  Info
+  Info,
+  Activity,
+  Layers,
+  Sparkles
 } from 'lucide-react';
 import { EXPERIMENTS } from '../data';
 import { Experiment } from '../types';
 import { useApp } from '../context/AppContext';
+import { MembraneTransport3D } from '../components/MembraneTransport3D';
 
 export const ExperimentsView: React.FC = () => {
   const { addPoints } = useApp();
+  const [viewMode, setViewMode] = useState<'experiments' | 'membrane3d'>('experiments');
   const [selectedExpIdx, setSelectedExpIdx] = useState<number>(0);
   const [activeStateIdx, setActiveStateIdx] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
@@ -212,14 +217,52 @@ export const ExperimentsView: React.FC = () => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-[#effbff]">استوديو الأبحاث والتجارب العلمية</h2>
-            <p className="text-xs text-[#82a4b8]">16 تجربة تفاعلية مصممة خصيصاً لمنهج الأحياء الثالث المتوسط</p>
+            <p className="text-xs text-[#82a4b8]">16 تجربة تفاعلية + مختبر حركة الجزيئات وانتشار الغشاء الخلوي ثلاثي الأبعاد</p>
           </div>
         </div>
+
+        {/* View Mode Toggle */}
+        <div className="flex items-center gap-1.5 bg-[#091728] p-1.5 rounded-2xl border border-[#1b3752]">
+          <button
+            onClick={() => setViewMode('experiments')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+              viewMode === 'experiments' ? 'bg-[#15463f] text-[#6bf4c7]' : 'text-[#7e9fb1] hover:text-[#effbff]'
+            }`}
+          >
+            <FlaskConical size={14} />
+            <span>تجارب المنهج الـ16</span>
+          </button>
+          <button
+            onClick={() => setViewMode('membrane3d')}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
+              viewMode === 'membrane3d' ? 'bg-[#0054a6] text-white shadow-md' : 'text-[#7e9fb1] hover:text-[#effbff]'
+            }`}
+          >
+            <Activity size={14} />
+            <span>محاكاة انتشار الغشاء الخلوي 3D</span>
+            <span className="badge bg-cyan-400 text-slate-900 text-[10px] px-1.5 py-0.2 rounded font-bold">جديد</span>
+          </button>
+        </div>
+
         <div className="text-xs text-[#f2c575] bg-[#212718] border border-[#44461c] px-3 py-1.5 rounded-xl font-bold">
           +15 نقطة لكل تجربة صحيحة
         </div>
       </div>
 
+      {viewMode === 'membrane3d' ? (
+        <div className="space-y-4">
+          <div className="bg-[#0b1f33] border border-[#214161] rounded-3xl p-5 text-white">
+            <h3 className="text-lg font-extrabold text-[#effbff] flex items-center gap-2">
+              <Sparkles className="text-amber-400" size={20} />
+              محاكاة حركة الجزيئات والانتشار في الغشاء الخلوي (الفصل الأول - ص 10)
+            </h3>
+            <p className="text-xs text-[#8cb9cc] mt-1">
+              حرّك المجسم، بدّل بين آليات الانتشار البسيط والانتشار الميسر والنقل الفعال بمضخة ATP، واختبر توازن التراكيز.
+            </p>
+          </div>
+          <MembraneTransport3D />
+        </div>
+      ) : (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Experiments List Sidebar */}
         <div className="lg:col-span-4 bg-[#0d1e32] border border-[#213f5c] rounded-3xl p-5">
@@ -346,6 +389,7 @@ export const ExperimentsView: React.FC = () => {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 };

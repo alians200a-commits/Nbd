@@ -16,6 +16,7 @@ import { TablerSourcesView } from './views/TablerSourcesView';
 // Comprehensive Curriculum & Scientific Views
 import { CurriculumView } from './views/CurriculumView';
 import { ExperimentsView } from './views/ExperimentsView';
+import { MembraneSimView } from './views/MembraneSimView';
 import { ReflexView } from './views/ReflexView';
 import { MinisterialExamView } from './views/MinisterialExamView';
 import { FigureStudioView } from './views/FigureStudioView';
@@ -47,7 +48,7 @@ export const AppContent: React.FC = () => {
         return <TablerChaptersView onNavigateTab={handleNavigateTab} />;
       case 'lab':
       case 'atlas':
-        return <TablerLabView initialChapter={targetChapter} />;
+        return <TablerLabView initialChapter={targetChapter} onNavigateTab={handleNavigateTab} />;
       case 'quiz':
         return <TablerQuizView />;
       case 'vault':
@@ -60,6 +61,8 @@ export const AppContent: React.FC = () => {
         return <TablerSourcesView />;
 
       // Advanced Biology & Research Labs
+      case 'membraneSim':
+        return <MembraneSimView />;
       case 'curriculum':
         return (
           <CurriculumView
