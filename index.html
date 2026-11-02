@@ -13,6 +13,7 @@
 <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.js"></script>
 <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 <script defer src="assets/nabd-ionic.js"></script>
+<script defer src="assets/nabd-voice-player.js"></script>
 </head>
 <body>
 <ion-app mode="md">
@@ -86,6 +87,17 @@
        <ion-select id="organ-select" label="اختر العضو" label-placement="stacked" interface="popover" value="brain" aria-label="اختر المجسم التشريحي"></ion-select>
        <div class="lab-status" id="model-status" role="status">جاري تجهيز النموذج…</div>
        <div class="source-line">
+         <div class="task-row">
+           <ion-icon name="volume-high-outline" aria-hidden="true" style="color:var(--ion-color-secondary);font-size:24px"></ion-icon>
+           <div class="text"><strong>شرح بصوت المعلّمة B فقط</strong><small id="voice-lesson-status">إذا ماكو تسجيل معتمد، ما نستخدم صوت المتصفح.</small></div>
+         </div>
+         <div class="voice-actions" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+           <ion-button size="small" fill="solid" id="play-voice-clip"><ion-icon name="play-outline" slot="start"></ion-icon>اسمع الشرح</ion-button>
+           <ion-button size="small" fill="outline" id="upload-voice-link" href="voice_production.html">إضافة تسجيل B</ion-button>
+         </div>
+         <audio id="voice-lesson-player" controls preload="none" hidden style="width:100%;margin-top:10px" aria-label="شرح المجسم بصوت المعلّمة B المعتمد"></audio>
+       </div>
+       <div class="source-line">
         <div class="task-row"><div class="text"><strong>مصدر المجسم الأصلي</strong><small id="lab-license">مراجعة الترخيص والتوثيق التشريحي مطلوبة</small></div>
         <ion-button fill="outline" size="small" id="open-source" data-action="source">GitHub <ion-icon name="open-outline" slot="end"></ion-icon></ion-button></div>
        </div>
@@ -144,7 +156,7 @@
  <ion-modal id="more-modal" aria-label="أدوات إضافية" initial-breakpoint="0.65" breakpoints="0,0.65,1">
   <ion-header class="ion-no-border"><ion-toolbar><ion-title>أدوات نَبْض</ion-title><ion-buttons slot="end"><ion-button data-action="close-more" aria-label="إغلاق"><ion-icon name="close-outline"></ion-icon></ion-button></ion-buttons></ion-toolbar></ion-header>
   <ion-content class="more-sheet"><ion-list lines="full">
-    <ion-item button detail="true" data-action="teacher"><ion-icon name="chatbubbles-outline" slot="start" color="primary"></ion-icon><ion-label><h3>المعلّمة الصوتية B</h3><p>استوديو الصوت — الخدمة الحية غير مكتملة</p></ion-label></ion-item>
+    <ion-item button detail="true" data-action="teacher"><ion-icon name="chatbubbles-outline" slot="start" color="primary"></ion-icon><ion-label><h3>المعلّمة الصوتية B</h3><p>تسجيلات بصوت B فقط، بدون استبدال صوت المتصفح</p></ion-label></ion-item>
     <ion-item button detail="true" data-action="atlas"><ion-icon name="body-outline" slot="start" color="secondary"></ion-icon><ion-label><h3>الأطلس المرجعي الموسع</h3><p>استكشف مصادر التشريح الأصلية</p></ion-label></ion-item>
     <ion-item button detail="true" data-action="sources"><ion-icon name="library-outline" slot="start" color="primary"></ion-icon><ion-label><h3>المصادر والتراخيص</h3><p>مكونات Ionic وIonicons ونماذج OrganUI</p></ion-label></ion-item>
   </ion-list></ion-content>
