@@ -117,7 +117,7 @@ async function importPdf(file){
 function refreshPageAudit(){
  if(!bank)return;
  const select=$("audit-page"),mode=$("audit-page-filter").value||"all",old=Number(select.value)||1;
- const pages=bank.page_audit.filter(p=>mode==="all"||(mode==="without"&&!p.markers_found)||(mode==="unchecked"&&!pageReview[p.pdf_page]));
+ const pages=bank.page_audit.filter(p=>mode==="all"||(mode==="without"&&!bank.questions.some(x=>x.pdf_page===p.pdf_page))||(mode==="unchecked"&&!pageReview[p.pdf_page]));
  select.replaceChildren();
  for(const pg of pages){const opt=document.createElement("ion-select-option");opt.value=String(pg.pdf_page);opt.textContent="صفحة "+pg.pdf_page+(pg.markers_found?"":" — دون سؤال مستخرج");select.appendChild(opt)}
  if(!pages.length){$("audit-page-description").textContent="جميع الصفحات في هذا المرشح تمت مراجعتها شخصياً.";return}
