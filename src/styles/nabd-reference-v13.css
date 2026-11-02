@@ -1,6 +1,6 @@
 /* نَبْض — منظومة واجهة المتعلم 13
    تكوين مستلهم من المرجع المرسل: ثلاث شاشات تعليمية، ألوان باستيلية،
-   رسومات Fluent Emoji المرخّصة MIT، دون توليد أيقونات بالذكاء الاصطناعي. */
+   رسومات Fluent Emoji المرخّصة MIT وHealth Icons CC0، بأشكال المصدر الأصلية. */
 :root{
  --violet:#7048D4;--violet-dark:#452593;--ink:#25233F;--muted:#625E7C;
  --canvas:#FBF9FF;--line:#EAE2F5;--focus:#542FAF;
@@ -59,7 +59,7 @@ body,.student-app{background:#FBF9FF;color:#25233F}
 .nabd-learning-level{font-size:10px;color:#6041AA;background:#F6F0FF;border-radius:999px;padding:3px 7px;font-weight:800;white-space:nowrap}
 .nabd-tone-honey .nabd-learning-level{color:#936016;background:#FFF9E9}
 .nabd-tone-mint .nabd-learning-level{color:#11795D;background:#F4FFF9}
-.nabd-learning-page{display:inline-flex;align-items:center;gap:2px;color:#906F1C;font-size:11px;background:#ffffffbd;padding:3px 6px;border-radius:999px;white-space:nowrap}
+.nabd-learning-page{display:inline-flex;align-items:center;gap:2px;color:#76520E;font-size:11px;background:#ffffffbd;padding:3px 6px;border-radius:999px;white-space:nowrap}
 .nabd-learning-page svg{color:#F4B923}
 .nabd-learning-card h3{font-size:16px;font-weight:900;color:#2D2943;margin:10px 0 2px;line-height:1.3}
 .nabd-learning-card p{font-size:11px;color:#5E586D;margin:0 0 8px;line-height:1.55}
@@ -121,7 +121,7 @@ body,.student-app{background:#FBF9FF;color:#25233F}
 .nabd-more-shortcuts button{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid #E8E1F1;border-radius:999px;color:#5C43A5;font-size:12px;font-weight:850;min-height:43px;padding:8px 13px}
 .nabd-more-shortcuts button:nth-child(2){color:#147A63;background:#F1FBF6}
 .nabd-more-shortcuts button:nth-child(3){color:#986213;background:#FFF9E9}
-.nabd-study-disclaimer{font-size:11px;line-height:1.8;color:#7B718A;margin:17px 0 0}
+.nabd-study-disclaimer{font-size:11px;line-height:1.8;color:#685C7B;margin:17px 0 0}
 .student-mobile-nav{background:#fff;border-top:1px solid #EEE7F5}
 .student-mobile-nav button{color:#59536A}
 .student-mobile-nav button:nth-child(1) .student-nav-symbol{color:#7551D6;background:#F0E9FE}
