@@ -13,11 +13,11 @@ function clearScene(){if(engine?.dispose)engine.dispose();engine=null;const view
 function buttons(parts){const root=$("part-buttons");root.replaceChildren();for(let [id,title] of parts){const b=document.createElement("ion-button");b.fill="outline";b.size="small";b.textContent=title;b.onclick=()=>check(id);root.append(b)}}
 function setScene(){clearScene();const obj=activeTopic();if(!obj)return;const {c,t}=obj,k=ch+"/"+ti;special=SPECIAL[k]||null;
 $("page-label").textContent="الفصل "+ch+" · صفحة "+t[1];$("topic-title").textContent=t[0];$("explanation").textContent=t[2];$("answer-status").textContent="ابدأ النشاط، ثم راجع الإجابة على ضوء شرح الفقرة.";
-if(special){$("neuron-stage").hidden=false;$("model-stage").hidden=true;$("source-name").textContent="مشهد عصبي تعليمي مجسم بالبرمجة، وليس صورة تشريحية فائقة الدقة";$("source-link").href="https://github.com/mrdoob/three.js";$("task-title").textContent=special.target==="nucleus"?"أشّر على النواة نفسها":"أشّر على جسم الخلية (خارج النواة)";$("task-hint").textContent="الكرة الصغيرة داخل جسم الخلية هي النواة. مساحة جسم الخلية حول النواة تمثل جزءاً مختلفاً؛ اختيار أحدهما لا يساوي الآخر.";buttons(PARTS);startNeuron();}
+if(special){$("neuron-stage").hidden=false;$("model-stage").hidden=true;$("source-name").textContent="مشهد عصبي تعليمي مجسم بالبرمجة، وليس صورة تشريحية فائقة الدقة";$("source-link").href="https://github.com/mrdoob/three.js";$("task-title").textContent=special.target==="nucleus"?"أشّر على النواة نفسها":"أشّر على جسم الخلية (خارج النواة)";$("task-hint").textContent="الكرة الصغيرة داخل جسم الخلية هي النواة. مساحة جسم الخلية حول النواة تمثل جزءاً مختلفاً؛ اختيار أحدهما لا يساوي الآخر.";buttons(PARTS);const hint=document.createElement("ion-button");hint.id="show-nucleus-hint";hint.fill="outline";hint.color="tertiary";hint.size="small";hint.textContent="دلّني على النواة";hint.onclick=()=>engine?.hint?.();$("part-buttons").append(hint);startNeuron();}
 else{$("task-title").textContent=t[4];$("task-hint").textContent="حرّك النموذج إذا توفر، ثم حاول إجابة السؤال قبل عرض حل المصدر. هذا نشاط فهم وليس محاكاة فسيولوجية مكتملة.";const m=variants[k]||MODELS[ch];if(m){$("source-name").textContent="ملف GLB من OrganUI / "+m;$("source-link").href="https://github.com/organui/"+m+"-3d";$("organ-3d").src="https://cdn.jsdelivr.net/gh/organui/"+m+"-3d@main/public/models/"+m+".glb";$("scene-status").textContent="تحميل المجسم المرجعي… يتحكم الطالب بتدويره والتكبير."}else{$("source-name").textContent="لا يتوفر نموذج ثلاثي الأبعاد مدقّق لهذه الفقرة حتى الآن";$("source-link").href="https://github.com/organui";$("scene-status").textContent="عرض شرح علمي وسؤال فهم دون الادعاء بوجود مجسم غير متاح."}
 buttons([["reveal","أظهر الجواب الأصلي من الملخص"],["understood","فهمت الفقرة"],["review","أحتاج مراجعة"]]);}
 }
-function check(id){if(special){if(id===special.target){$("answer-status").textContent="✓ إجابة صحيحة: اخترت "+(id==="nucleus"?"النواة":"جسم الخلية")+" بوصفه جزءاً مستقلاً. هذا يمنع خطأ اعتبار جسم الخلية كله نواة.";correct=true}else{$("answer-status").textContent="✕ غير صحيح: "+PARTS.find(p=>p[0]===id)?.[1]+" ليس "+(special.target==="nucleus"?"النواة نفسها":"المنطقة الخارجية لجسم الخلية")+". حاول الضغط على الجزء المطلوب في المجسم أو اختيار اسمه."}return}
+function check(id){if(special){if(id===special.target){$("answer-status").textContent="✓ إجابة صحيحة: اخترت "+(id==="nucleus"?"النواة":"جسم الخلية")+" بوصفه جزءاً مستقلاً. هذا يمنع خطأ اعتبار جسم الخلية كله نواة.";correct=true}else{$("answer-status").textContent="✕ غير صحيح: "+PARTS.find(p=>p[0]===id)?.[1]+" ليس "+(special.target==="nucleus"?"النواة نفسها":"المنطقة الخارجية لجسم الخلية")+". شوف الجزء البنفسجي الصغير داخل الجسم، أو اضغط زر «دلّني على النواة»."}return}
 const t=activeTopic()?.t;if(!t)return;
 if(id==="reveal"){$("answer-status").textContent="جواب السؤال في ملخص الدرس: "+t[5];return}
 if(id==="understood"){$("answer-status").textContent="✓ سجّلنا مراجعتك ذاتياً. حل أسئلة الملزمة المرتبطة بالصفحة للتأكد من فهمك.";saveProgress(true);return}
@@ -31,19 +31,35 @@ const THREE=await import("three");if(!special||ch+"/"+ti!==thisTopic)return;thre
 const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(42,1,.1,100);camera.position.set(0,0,5.7);camera.lookAt(0,0,0);const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true,powerPreference:"low-power"});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));host.append(renderer.domElement);
 const light=new THREE.HemisphereLight(0xffffff,0x89aacc,2.4);scene.add(light);const direct=new THREE.DirectionalLight(0xffffff,1.6);direct.position.set(-3,5,7);scene.add(direct);
 const clickable=[];function mesh(geom,color,name,x,y,z){const m=new THREE.Mesh(geom,new THREE.MeshStandardMaterial({color,roughness:.55,metalness:.04}));m.position.set(x,y,z);m.userData.part=name;scene.add(m);clickable.push(m);return m}
-mesh(new THREE.SphereGeometry(.91,32,20),0x54b9a8,"soma",-0.45,0,0);
-mesh(new THREE.SphereGeometry(.27,32,20),0x684cae,"nucleus",-0.46,.05,.87);
-mesh(new THREE.SphereGeometry(.12,24,12),0xb3a0ea,"nucleus",-0.46,.05,1.09);
+const soma=mesh(new THREE.SphereGeometry(.91,32,20),0x54b9a8,"soma",-0.45,0,0);soma.material.transparent=true;soma.material.opacity=.61;soma.material.depthWrite=false;
+const nucleus=mesh(new THREE.SphereGeometry(.32,40,28),0x684cae,"nucleus",-0.46,.05,.95);
+const nucleolus=mesh(new THREE.SphereGeometry(.115,28,22),0xd1b3ff,"nucleus",-0.46,.05,1.24);
 const cylinder=(a,b,r,color,name)=>{const start=new THREE.Vector3(...a),end=new THREE.Vector3(...b),dir=end.clone().sub(start),g=new THREE.CylinderGeometry(r*.82,r,dir.length(),10);const m=mesh(g,color,name,...start.clone().add(end).multiplyScalar(.5).toArray());m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),dir.normalize());return m};
 for(let i=0;i<6;i++){const rad=i*Math.PI*2/6;const base=[-1.1+Math.cos(rad)*.21,Math.sin(rad)*.55,-.08];const end=[-1.54+Math.cos(rad)*.44,Math.sin(rad)*1.1,-.2];cylinder(base,end,.07,0x4ab5a2,"dendrite");}
 cylinder([.3,.05,-.06],[1.7,.05,-.06],.14,0xdda969,"axon");cylinder([1.65,.05,-.06],[2.1,.5,-.06],.06,0xdda969,"axon");cylinder([1.65,.05,-.06],[2.15,-.38,-.06],.06,0xdda969,"axon");
 let frame=0,disposed=false,raf=0;
 const fit=()=>{if(disposed)return;const w=host.clientWidth,h=host.clientHeight;camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix();renderer.setSize(w,h,false)};fit();
 const resize=typeof ResizeObserver!=="undefined"?new ResizeObserver(fit):null;resize?.observe(host);
-const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();const click=e=>{const bounds=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-bounds.left)/bounds.width*2-1,-(e.clientY-bounds.top)/bounds.height*2+1);ray.setFromCamera(pointer,camera);const hits=ray.intersectObjects(clickable,false);if(hits.length)check(hits[0].object.userData.part);else $("answer-status").textContent="حاول النقر على أحد أجزاء الخلية الظاهرة.";};
+const ray=new THREE.Raycaster(),pointer=new THREE.Vector2();
+const nucleusPoint=new THREE.Vector3(-.46,.05,1.12);
+function showHint(){const world=scene.localToWorld(nucleusPoint.clone()),p=world.project(camera);nucleus.material.emissive.setHex(0x6f2ccb);nucleus.material.emissiveIntensity=1.15;$("answer-status").textContent="شوف الكرة البنفسجية الصغيرة المضيئة بوسط جسم الخلية: هاي هي النواة. اضغط عليها مباشرة، أو اختَر زر «النواة» أدناه.";}
+const click=e=>{
+ const bounds=renderer.domElement.getBoundingClientRect();
+ pointer.set((e.clientX-bounds.left)/bounds.width*2-1,-(e.clientY-bounds.top)/bounds.height*2+1);
+ // A mobile finger covers a small nucleus: prioritize taps near its projected centre.
+ // The rest of the soma remains a distinct, independently assessed part.
+ const p=scene.localToWorld(nucleusPoint.clone()).project(camera);
+ const screenX=bounds.left+(p.x+1)*bounds.width/2;
+ const screenY=bounds.top+(1-p.y)*bounds.height/2;
+ const tolerance=Math.max(30,Math.min(bounds.width,bounds.height)*.075);
+ if(Math.hypot(e.clientX-screenX,e.clientY-screenY)<=tolerance){check("nucleus");return;}
+ ray.setFromCamera(pointer,camera);const hits=ray.intersectObjects(clickable,false);
+ if(hits.length)check(hits[0].object.userData.part);
+ else $("answer-status").textContent="اضغط على الجزء المطلوب. زر «دلّني على النواة» يساعدك تميّزها عن جسم الخلية.";
+};
 renderer.domElement.addEventListener("pointerdown",click);
 const loop=()=>{if(disposed)return;scene.rotation.y=Math.sin(frame/140)*.12;frame++;renderer.render(scene,camera);raf=requestAnimationFrame(loop)};loop();$("scene-status").textContent="المجسم جاهز: النواة كرة بنفسجية مستقلة داخل جسم الخلية. جرّب اللمس.";
-engine={dispose(){disposed=true;cancelAnimationFrame(raf);renderer.domElement.removeEventListener("pointerdown",click);resize?.disconnect();renderer.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}});renderer.domElement.remove()}};
+engine={hint:showHint,dispose(){disposed=true;cancelAnimationFrame(raf);renderer.domElement.removeEventListener("pointerdown",click);resize?.disconnect();renderer.dispose();scene.traverse(o=>{o.geometry?.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}});renderer.domElement.remove()}};
 }catch(e){$("scene-status").textContent="تعذر تشغيل الرسم ثلاثي الأبعاد: "+e.message+". تظل أزرار تحديد النواة وجسم الخلية متاحة وتصحيحها منفصل."}}
 function initialize(){const s=$("sim-chapter");for(const c of curr.chapters){const opt=document.createElement("ion-select-option");opt.value=String(c.id);opt.textContent=c.id+". "+c.title;s.append(opt)}
 s.addEventListener("ionChange",e=>{if(e.detail?.value&&Number(e.detail.value)!==ch)selectTopic(Number(e.detail.value),0)});$("sim-topic").addEventListener("ionChange",e=>{const i=Number(e.detail?.value);if(Number.isInteger(i)&&i!==ti)selectTopic(ch,i)});
