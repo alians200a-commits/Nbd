@@ -1,81 +1,92 @@
-name: Approve NABD Gemini female voice sample
+name: "لوحة الإدارة | اعتماد ونشر صوت الدرس"
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/approve-nabd-gemini-voice.yml'
   workflow_dispatch:
+    inputs:
+      source_run:
+        description: 'رقم عملية توليد الصوت من قسم Actions'
+        required: true
+        type: string
+      confirm_review:
+        description: 'أؤكد أني سمعت التسجيل ودققت النص واللهجة ووافقت على نشره للطلاب'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   actions: read
   contents: write
 
 jobs:
-  approve:
+  approve-and-publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 9
     env:
-      SOURCE_RUN: '41539456758'
-      SOURCE_ARTIFACT: 'gemini31-neuron-baghdad-review'
+      INPUT_RUN_ID: ${{ inputs.source_run }}
+      HUMAN_REVIEWED: ${{ inputs.confirm_review }}
+      SOURCE_ARTIFACT: gemini31-neuron-baghdad-review
     steps:
-      - name: Checkout the real student app
+      - name: Verify publisher approval and source run
+        run: |
+          set -eu
+          test "$HUMAN_REVIEWED" = "true" || { echo "::error::يجب الاستماع والموافقة قبل النشر"; exit 1; }
+          [[ "$INPUT_RUN_ID" =~ ^[0-9]{8,16}$ ]] || { echo "::error::رقم تشغيل غير صالح"; exit 1; }
+      - name: Checkout current student application
         uses: actions/checkout@v4
-      - name: Retrieve verified Gemini 3.1 output from completed Actions run
+        with:
+          persist-credentials: true
+      - name: Download completed Gemini voice draft
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -eu
-          mkdir -p /tmp/nabd-source-voice
-          gh run download "$SOURCE_RUN" --repo "$GITHUB_REPOSITORY" --name "$SOURCE_ARTIFACT" --dir /tmp/nabd-source-voice
-          test -s /tmp/nabd-source-voice/neuron_baghdad_gemini31_review.wav
-          test -s /tmp/nabd-source-voice/narration.json
-      - name: Verify provenance and save approved voice WAV
+          mkdir -p /tmp/nabd-approved-source
+          gh run download "$INPUT_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "$SOURCE_ARTIFACT" --dir /tmp/nabd-approved-source
+          test -s /tmp/nabd-approved-source/neuron_baghdad_gemini31_review.wav
+          test -s /tmp/nabd-approved-source/narration.json
+      - name: Validate provenance and publish audio-only student catalog
         run: |
-          set -eu
-          mkdir -p public/nabd-voice
           python3 - <<'PY'
-          import json,hashlib
+          import json,hashlib,re,shutil,wave,os
           from pathlib import Path
-          obj=json.loads(Path('/tmp/nabd-source-voice/narration.json').read_text(encoding='utf-8'))
-          assert obj['model']=='gemini-3.1-flash-tts-preview', 'Wrong synthesis model'
-          assert obj['voice']=='Sulafat', 'Wrong voice'
-          assert 'الخلية العصبية' in obj['text'], 'Wrong lesson'
-          import wave
-          w=wave.open('/tmp/nabd-source-voice/neuron_baghdad_gemini31_review.wav','rb')
-          seconds=w.getnframes()/w.getframerate()
-          assert 10 < seconds < 120, 'Invalid clip duration'
-          print('Real Gemini WAV verified, length:', round(seconds,1),'sec')
+          meta=json.loads(Path('/tmp/nabd-approved-source/narration.json').read_text(encoding='utf-8'))
+          assert meta.get('model')=='gemini-3.1-flash-tts-preview','الصوت مو من نموذج Gemini 3.1 المعتمد'
+          assert meta.get('voice')=='Sulafat','هوية المعلّمة غير مطابقة'
+          key=meta.get('lesson_key','chapter1/lesson/01')
+          assert re.fullmatch(r'chapter(?:[1-9]|1[01])/lesson/0[1-4]',key),'معرّف الدرس غير صالح'
+          assert meta.get('text') and meta.get('topic'),'نص الدرس أو عنوانه غير موجود'
+          src=Path('/tmp/nabd-approved-source/neuron_baghdad_gemini31_review.wav')
+          with wave.open(str(src),'rb') as w:
+              duration=w.getnframes()/w.getframerate()
+          assert 5 < duration < 600,'مدة الملف الصوتي غير منطقية'
+          directory=Path('public/nabd-voice')
+          directory.mkdir(parents=True,exist_ok=True)
+          filename=key.replace('/','-')+'.wav'
+          dst=directory/filename
+          shutil.copyfile(src,dst)
+          index_path=directory/'library.json'
+          index=json.loads(index_path.read_text(encoding='utf-8')) if index_path.exists() else {'version':1,'clips':{}}
+          assert isinstance(index.get('clips'),dict)
+          index['version']=1
+          index['clips'][key]={'title':meta['topic'],'file':filename,'voice':'Sulafat','approved':True}
+          index_path.write_text(json.dumps(index,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          admin=Path('admin/voice-approvals')
+          admin.mkdir(parents=True,exist_ok=True)
+          metadata={'lesson_key':key,'voice':'Sulafat','model':meta['model'],
+                    'topic':meta['topic'],'transcript':meta['text'],
+                    'audio_sha256':hashlib.sha256(dst.read_bytes()).hexdigest(),
+                    'source_run':os.environ['INPUT_RUN_ID'],'human_approved':True,
+                    'note':'المعلومات الإدارية ليست ضمن موقع الطالب؛ المستودع العام يعرض الشيفرة المصدرية.'}
+          (admin/(key.replace('/','-')+'.json')).write_text(json.dumps(metadata,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          print('Approved Gemini clip published for',key,'file',filename,'seconds',round(duration,1))
           PY
-          cp /tmp/nabd-source-voice/neuron_baghdad_gemini31_review.wav public/nabd-voice/neuron-baghdad-sulafat.wav
-          test -s public/nabd-voice/neuron-baghdad-sulafat.wav
-          python3 - <<'PY'
-          import json,hashlib
-          from pathlib import Path
-          src=json.loads(Path('/tmp/nabd-source-voice/narration.json').read_text(encoding='utf-8'))
-          audio=Path('public/nabd-voice/neuron-baghdad-sulafat.wav')
-          approval={
-              'version':1,
-              'voice_style_approved_by_owner':True,
-              'voice_name':'Sulafat',
-              'model':'gemini-3.1-flash-tts-preview',
-              'style':'معلمة أنثى دافئة باللهجة العراقية البغدادية',
-              'lesson':'الخلية العصبية',
-              'speaker_style_sample':audio.name,
-              'audio_sha256':hashlib.sha256(audio.read_bytes()).hexdigest(),
-              'transcript':src['text'],
-              'source_workflow_run':'41539456758',
-              'note':'اعتماد المستخدم للصوت فقط؛ بقية الدروس تحتاج تدقيق علمي ونطق قبل النشر. ليس نسخة مستنسخة من الصوت B.'
-          }
-          Path('public/nabd-voice/manifest.json').write_text(json.dumps(approval,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-          PY
-      - name: Commit playback-ready audio to the student application
+      - name: Commit published lesson only after administrator review
         run: |
           set -eu
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f public/nabd-voice/neuron-baghdad-sulafat.wav
-          git add public/nabd-voice/manifest.json
+          git add -f public/nabd-voice/*.wav
+          git add public/nabd-voice/library.json admin/voice-approvals/
           if ! git diff --staged --quiet; then
-            git commit -m "Approve Gemini 3.1 Sulafat Baghdadi biology voice sample"
+            git commit -m "Publish human-approved Gemini 3.1 Iraqi teacher lesson"
             git push
           fi
