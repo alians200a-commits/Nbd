@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { TABLER_MODELS, TABLER_CHAPTERS, TablerModel } from '../data/tablerData';
 import { useApp } from '../context/AppContext';
+import { BiologySymbolIcon, BiologySymbol } from '../components/BiologySymbolIcon';
 
 interface TablerLabViewProps {
   initialChapter?: number;
@@ -102,14 +103,19 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, on
   const currentModel: TablerModel = TABLER_MODELS[selectedIdx] || TABLER_MODELS[0];
   const modelUrl = `https://cdn.jsdelivr.net/gh/organui/${currentModel.slug}-3d@main/public/models/${currentModel.slug}.glb`;
   const currentChapter = TABLER_CHAPTERS.find(c => c.id === currentModel.chapter);
-  const organDetail = ORGAN_DETAILS[currentModel.slug] || ORGAN_DETAILS.brain;
+  const organDetail = ORGAN_DETAILS[currentModel.slug] || {
+    tagline: 'مجسم مرجعي للمشاهدة؛ التفاصيل العلمية التفاعلية لهذا العضو قيد المراجعة.',
+    parts: [],
+    audioGuide: 'لا يوجد تسجيل معتمد لهذا المجسم بعد.'
+  };
+  const modelIcons: Record<string, BiologySymbol> = {brain:'nerve','spinal-cord':'nerve',skeleton:'skeleton',muscles:'arm',stomach:'stomach',liver:'liver' as BiologySymbol,heart:'blood-vessel',lungs:'lungs',kidneys:'kidneys',eye:'eye',ear:'eye',thyroid:'thyroid',spleen:'cell-nuclei'};
 
   useEffect(() => {
     const viewer = modelViewerRef.current;
     if (!viewer) return;
 
     const onLoad = () => setModelStatus('المجسم ثلاثي الأبعاد جاهز. اسحب للتدوير 360° وكبّر للتفاصيل.');
-    const onError = () => setModelStatus('تم تفعيل المحاكي التشريحي الداخلي عالي الدقة.');
+    const onError = () => setModelStatus('تعذر تحميل هذا المجسم المرجعي. جرّب نموذجاً آخر أو افتح الدرس النصي؛ لم يتم تحميل بديل دقيق.');
 
     viewer.addEventListener('load', onLoad);
     viewer.addEventListener('error', onError);
@@ -276,7 +282,7 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, on
           <div className="bg-white border border-[#e6e8eb] rounded-3xl p-5 shadow-sm space-y-4">
             <h4 className="text-sm font-black text-[#182433] flex items-center gap-2">
               <Info size={16} className="text-[#0054a6]" />
-              <span>فحص تراكيب {currentModel.name} والأسئلة الوزارية الخاصة بها:</span>
+              <span>فحص تراكيب {currentModel.name} وأسئلة مراجعة مرتبطة بها:</span>
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -309,7 +315,7 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, on
 
                 <div className="bg-[#fff9db] border border-[#f59f00] p-3 rounded-xl text-[#7a4e00] space-y-1">
                   <strong className="block text-[11px] font-bold">
-                    🎯 التوجيه الوزاري المؤكد:
+                    نقطة مراجعة دراسية — السنة الوزارية غير موثقة:
                   </strong>
                   <p>{organDetail.parts[selectedPartIdx].ministerialTip}</p>
                 </div>
@@ -322,7 +328,7 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, on
         <div className="lg:col-span-4 space-y-4">
           <div className="bg-white border border-[#e6e8eb] rounded-3xl p-5 shadow-sm space-y-3">
             <h3 className="text-sm font-black text-[#182433] pb-2 border-b border-[#f1f3f5]">
-              قائمة المجسمات التشريحية (14 مجسماً)
+              مجسمات تشريحية مرجعية
             </h3>
 
             <div className="space-y-1.5 max-h-[500px] overflow-y-auto pr-1">
@@ -341,7 +347,7 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, on
                         : 'bg-[#f8fafc] border-[#e6e8eb] text-[#2b354f] hover:bg-white hover:border-[#b8e2fb]'
                     }`}
                   >
-                    <span>{model.name}</span>
+                    <span className="flex items-center gap-2.5">{modelIcons[model.slug] ? <BiologySymbolIcon name={modelIcons[model.slug]} size={28} /> : <BookOpen size={21} aria-hidden="true" />}{model.name}</span>
                     <span className={`text-[10px] px-2 py-0.5 rounded-md ${
                       isSelected ? 'bg-white/20 text-white' : 'bg-[#e6e8eb] text-[#626976]'
                     }`}>
