@@ -108,7 +108,7 @@ export const TablerLabView: React.FC<TablerLabViewProps> = ({ initialChapter, on
     parts: [],
     audioGuide: 'لا يوجد تسجيل معتمد لهذا المجسم بعد.'
   };
-  const modelIcons: Record<string, BiologySymbol> = {brain:'nerve','spinal-cord':'nerve',skeleton:'skeleton',muscles:'arm',stomach:'stomach',liver:'liver' as BiologySymbol,heart:'blood-vessel',lungs:'lungs',kidneys:'kidneys',eye:'eye',ear:'eye',thyroid:'thyroid',spleen:'cell-nuclei'};
+  const modelIcons: Record<string, BiologySymbol> = {brain:'nerve','spinal-cord':'nerve',skeleton:'skeleton',muscles:'arm',stomach:'stomach',liver:'liver',heart:'blood-vessel',lungs:'lungs',kidneys:'kidneys',eye:'eye',ear:'ear',thyroid:'thyroid',spleen:'cell-nuclei'};
 
   useEffect(() => {
     const viewer = modelViewerRef.current;
