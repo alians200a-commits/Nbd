@@ -28,8 +28,8 @@ export class GithubAdmin {
   async verify(){
     const user=await this.request<{login:string}>('https://api.github.com/user');
     if(user.login.toLowerCase()!=='alians200a-commits')throw Error('الدخول مخصص لحساب مالك المشروع فقط');
-    const repo=await this.request<{permissions?:{admin?:boolean;push?:boolean}}>('');
-    if(!repo.permissions?.push && !repo.permissions?.admin)throw Error('الحساب لا يملك صلاحية تعديل مشروع نَبْض');
+    const repo=await this.request<{owner?:{login?:string}}>('');
+    if(repo.owner?.login?.toLowerCase()!=='alians200a-commits')throw Error('لا يمكن التحقق من ملكية المشروع');
     // Verify Actions scope before displaying actionable controls.
     await this.request('/actions/workflows?per_page=1');
     return user.login;
