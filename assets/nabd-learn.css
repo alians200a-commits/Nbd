@@ -22,3 +22,14 @@
 .study-subhead{font-size:16px;margin:17px 0 12px}.parent-progress-row{padding:10px 0;border-bottom:1px solid #e7edf3;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;font-size:13px}.parent-progress-row ion-progress-bar{width:100%}
 .voice-settings{padding:20px 18px 40px}.voice-settings h2{font-size:20px;margin:12px 0}.voice-settings h3{font-size:16px;margin:24px 0 9px}.voice-settings p{line-height:1.95;font-size:13px;color:#62758a}.voice-settings .field-label{display:block;margin:14px 0 9px;font-size:13px;font-weight:700}.voice-settings input{max-width:100%;font-size:12px}.voice-settings audio{width:100%;margin:13px 0}.voice-warning{padding:12px 13px;border-radius:10px;background:#fff5e6;color:#835625!important}
 @media(max-width:600px){.study-controls{grid-template-columns:1fr;gap:6px}.study-header h1{font-size:23px}.study-container{padding:12px 11px 60px}.match-button{min-height:100px;font-size:11px;padding:8px}}
+
+/* Student review player: native HTML audio controls, original Ionic list container */
+.recording-item{width:100%;padding:13px 4px;display:flex;flex-direction:column;align-items:flex-start;gap:9px;color:#304761}
+.recording-item strong{font-size:14px}
+.recording-item p{font-size:12px;color:#73859b;margin:0}
+.recording-item audio{display:block;width:min(100%,570px);margin-top:2px}
+.recording-item audio[hidden]{display:none}
+.recording-item select{max-width:420px;width:100%;min-height:44px;padding:9px;border:1px solid #ced9e7;border-radius:10px;color:#29415d;background:#fff;font:inherit}
+.recording-review{display:flex;align-items:center;gap:6px;font-size:12px;color:#51657d;line-height:1.8}
+.recording-review input{accent-color:#087e75;width:17px;height:17px}
+#chapter-audio-import{max-width:100%;font:inherit;font-size:12px}
