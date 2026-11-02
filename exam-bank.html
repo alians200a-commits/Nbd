@@ -47,7 +47,11 @@
    <ion-select-option value="unchecked">صفحات لم تُراجع يدوياً</ion-select-option>
   </ion-select>
  </div>
- <div id="audit-page-description" class="readiness" role="status">استورد ملف بنك الأسئلة لعرض تغطية الصفحات.</div>
+ <div id="audit-page-description" class="readiness" role="status">استورد ملف بنك الأسئلة لعرض تغطية الصفحات.</div><details id="source-extracted-details" style="margin:13px 0">
+ <summary style="cursor:pointer;color:#2257ad;font-size:13px;font-weight:700">اقرأ النص المستخرج كاملاً من الصفحة (غير مدقّق حرفياً)</summary>
+ <pre id="source-page-text" style="white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl;font-size:12px;line-height:1.8;max-height:360px;overflow:auto;padding:12px;background:#f3f7fb;border:1px solid #dce5f0;border-radius:9px"></pre>
+ <p class="help">النص المستخرج قد لا يحافظ على ترتيب الجداول أو الرسوم. صورة PDF الأصلية هي المرجع للتحقق من الحروف والسنوات.</p>
+ </details>
  <ion-textarea id="audit-page-note" fill="outline" label="ملاحظتك على الصفحة" label-placement="stacked" auto-grow="true" rows="2" placeholder="هل يوجد سؤال ناقص أو صورة أو جدول يجب تفريغه؟"></ion-textarea>
  <div class="controls">
   <ion-button id="audit-open-source" fill="outline">افتح صفحة PDF</ion-button>
