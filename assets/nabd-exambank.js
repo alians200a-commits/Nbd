@@ -114,6 +114,52 @@ async function importPdf(file){
  await store("sourcepdf",file);
  say("✓ تم التحقق من بصمة PDF المطابقة للملزمة المعتمدة؛ يمكنك مقارنة الأسئلة بالصفحات الأصلية.");
 }
+function refreshPageAudit(){
+ if(!bank)return;
+ const select=$("audit-page"),mode=$("audit-page-filter").value||"all",old=Number(select.value)||1;
+ const pages=bank.page_audit.filter(p=>mode==="all"||(mode==="without"&&!p.markers_found)||(mode==="unchecked"&&!pageReview[p.pdf_page]));
+ select.replaceChildren();
+ for(const pg of pages){const opt=document.createElement("ion-select-option");opt.value=String(pg.pdf_page);opt.textContent="صفحة "+pg.pdf_page+(pg.markers_found?"":" — دون سؤال مستخرج");select.appendChild(opt)}
+ if(!pages.length){$("audit-page-description").textContent="جميع الصفحات في هذا المرشح تمت مراجعتها شخصياً.";return}
+ select.value=pages.some(x=>x.pdf_page===old)?String(old):String(pages[0].pdf_page);
+ showAuditPage();
+}
+function showAuditPage(){
+ if(!bank)return;
+ const page=Number($("audit-page").value)||1;
+ const pg=bank.page_audit.find(p=>p.pdf_page===page);
+ const count=bank.questions.filter(q=>q.pdf_page===page).length,record=pageReview[page];
+ $("audit-page-description").textContent=pg?
+   "صفحة PDF "+page+" — "+count+" سؤال مرشح — "+(pg.markers_found?"وجد الاستخراج علامة سؤال":"لم يستخرج النظام علامة سؤال مستقلة")+" — "+(record?"راجعتها شخصياً بتاريخ "+new Date(record.checkedAt).toLocaleDateString("ar-IQ"):"تحتاج مقارنة الصورة الأصلية"):
+   "تعذّر تحديد بيانات الصفحة";
+ $("audit-page-note").value=record?.note||"";
+ $("audit-page-counter").textContent=Object.keys(pageReview).length+" من "+bank.page_audit.length+" صفحة تمت مراجعتها شخصياً (ليست شهادة تدقيق حرفي).";
+}
+function openAuditPage(){
+ if(!bookUrl){say("استورد ملف PDF الأصلي المطابق لبصمته أولاً");return}
+ const p=Number($("audit-page").value)||1;
+ window.open(bookUrl+"#page="+p,"_blank","noopener,noreferrer");
+}
+function saveAuditPage(){
+ if(!bank||!bookUrl){say("الملزمة الأصلية مطلوبة للمراجعة. ارفع PDF أولاً.");return}
+ const p=Number($("audit-page").value)||0;
+ if(!Number.isInteger(p)||p<1||p>bank.source_total_pages)return;
+ if(!confirm("هل فتحت صورة صفحة PDF رقم "+p+" وراجعت وجود أسئلتها وفروعها وجداولها؟"))return;
+ pageReview[p]={checkedAt:new Date().toISOString(),note:String($("audit-page-note").value||"").trim(),
+  verifiedQuestionAndAnswerCharacters:false,ministerialBindingApproved:false};
+ try{localStorage.setItem(PROGRESS+"-page-review",JSON.stringify(pageReview))}catch(e){say("تعذر حفظ سجل الصفحات");return}
+ refreshPageAudit();say("حفظنا مراجعة صفحة "+p+" مع الإبقاء على حالة التصديق الرسمية غير معتمدة");
+}
+function exportPageAudit(){
+ if(!bank)return;
+ const payload={format:"NABD_QBANK_PRIVATE_PAGE_REVIEW_V1",generatedAt:new Date().toISOString(),
+   sourceSha256:bank.source_pdf_sha256,pagesTotal:bank.source_total_pages,
+   certifiedAsVerbatim:false,ministerialBindingsOfficiallyVerified:0,
+   reviews:pageReview,unreviewedPages:bank.page_audit.map(x=>x.pdf_page).filter(x=>!pageReview[x])};
+ const url=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}));
+ const a=document.createElement("a");a.href=url;a.download="NABD_PAGE_SOURCE_AUDIT.json";
+ document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
+}
 function bind(){$("bank-input").onchange=e=>importBank(e.target.files?.[0]).catch(err=>$("bank-status").textContent=err.message);$("pdf-input").onchange=e=>importPdf(e.target.files?.[0]).catch(err=>say(err.message));$("chapter-filter").addEventListener("ionChange",filter);$("question-search").addEventListener("ionInput",filter);$("question-filter").addEventListener("ionChange",filter);$("prev").onclick=()=>{cursor=Math.max(0,cursor-1);render()};$("next").onclick=()=>{cursor=Math.min(filtered.length-1,cursor+1);render()};$("reveal").onclick=show;$("open-page").onclick=openPage;$("open-topic-lab").onclick=openTopicLab;$("self-correct").onclick=()=>assess(true);$("self-wrong").onclick=()=>assess(false);$("manual-review").onclick=manualCheck;$("download-audit").onclick=auditCSV;$("save-correction").onclick=storeCorrection;$("export-corrections").onclick=exportCorrections}
 async function start(){bind();try{const b=await get("bank");if(valid(b)){bank=b;stats()}}catch(_){}try{const blob=await get("sourcepdf");if(blob instanceof Blob)bookUrl=URL.createObjectURL(blob)}catch(_){}}
 document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start):start();
