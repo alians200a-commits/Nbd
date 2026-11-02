@@ -26,7 +26,7 @@ const activity=el("ion-button","اختبر الفقرة داخل المختبر 
 activity.fill="outline";activity.color="secondary";activity.size="small";
 activity.onclick=()=>{location.href="simulations.html#c"+ch.id+"t"+i};
 body.append(activity);
-const voice=el("div",undefined,"topic-audio");if(id==="1/0"){const listen=el("ion-button","استمع لشرح الخلية العصبية");listen.fill="outline";listen.size="small";listen.onclick=()=>playApprovedNeuron();voice.append(listen)}else{voice.append(el("p","التسجيل الصوتي لهذا الدرس غير متوفر بعد.","topic-audio-label"))}body.append(voice);acc.append(body);holder.append(acc)});
+const voice=el("div",undefined,"topic-audio"),audioKey="chapter"+ch.id+"/lesson/"+String(i+1).padStart(2,"0"),clip=approvedVoices[audioKey];if(clip?.approved){const listen=el("ion-button","استمع إلى شرح المعلّمة");listen.fill="outline";listen.size="small";listen.onclick=()=>playApprovedClip(clip);voice.append(listen)}else{voice.append(el("p","التسجيل الصوتي لهذا الدرس غير متوفر بعد.","topic-audio-label"))}body.append(voice);acc.append(body);holder.append(acc)});
 $("lesson-empty").hidden=found!==0;}
 function showFlash(){const x=questions();if(!x.length)return;flash=(flash+x.length)%x.length;const a=x[flash];$("flash-counter").textContent=(flash+1)+" / "+x.length;$("flash-kind").textContent=flipped?"الإجابة":"السؤال";$("flash-text").textContent=flipped?a.t[5]:a.t[4];}
 function move(d){flash+=d;flipped=false;showFlash()}
@@ -41,8 +41,27 @@ for(const {x} of matches){const box=el("article",undefined,"coach-answer");box.a
 function parentReport(){const completed=Object.keys(state.read).length,total=state.total||0;$("parent-read").textContent=completed;$("parent-correct").textContent=total?Math.round((state.right||0)/total*100)+"%":"—";$("parent-review").textContent=Object.keys(state.review).length;$("parent-days").textContent=Object.keys(state.days).length;
 const r=$("parent-chapters");r.replaceChildren();for(const c of C.chapters){const done=c.topics.filter((_,i)=>state.read[c.id+"/"+i]).length;if(!done)continue;const p=el("div",undefined,"parent-progress-row");p.append(el("span",c.title),el("strong",done+" / 4"));const bar=el("ion-progress-bar");bar.value=done/4;bar.color="secondary";p.append(bar);r.append(p)}if(!r.children.length)r.append(el("p","ماكو موضوع مسجل كمقروء بعد.","secondary"));}
 function exportParent(){const report={project:"نَبْض",kind:"تقرير متابعة محلي",date:new Date().toISOString(),read:Object.keys(state.read).length,questions:state.total,correct:state.right,review:Object.keys(state.review).length,days:Object.keys(state.days).length};const u=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:"application/json"}));const a=el("a");a.href=u;a.download="NABD_Parent_Report.json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),10000);}
-function playApprovedNeuron(){try{if(player){player.pause();player.currentTime=0}player=new Audio("nabd-voice/neuron-baghdad-sulafat.wav");player.play().catch(()=>say("تعذّر تشغيل التسجيل المعتمد، تحقق من اتصالك."));}catch(e){say("الصوت غير متاح: "+(e?.message||"خطأ غير معروف"))}}
+let approvedVoices={};
+async function loadApprovedVoices(){
+ try{
+  const r=await fetch("nabd-voice/library.json",{cache:"no-store"});
+  if(!r.ok)throw Error("فهرس الشروحات غير متوفر");
+  const data=await r.json();
+  const clips={};
+  for(const [key,value] of Object.entries(data.clips||{})){
+   if(!/^chapter(?:[1-9]|1[01])\/lesson\/0[1-4]$/.test(key))continue;
+   if(!value||value.approved!==true||typeof value.file!=="string"||! /^[a-z0-9][a-z0-9_-]*\.wav$/.test(value.file))continue;
+   clips[key]=value;
+  }
+  approvedVoices=clips;drawLessons();
+ }catch(e){approvedVoices={};drawLessons()}
+}
+function playApprovedClip(clip){
+ if(!clip||!clip.approved||! /^[a-z0-9][a-z0-9_-]*\.wav$/.test(clip.file))return say("التسجيل غير متاح");
+ try{if(player){player.pause();player.currentTime=0}player=new Audio("nabd-voice/"+clip.file);player.play().catch(()=>say("تعذّر تشغيل التسجيل المعتمد، تحقق من اتصالك."));}
+ catch(e){say("الصوت غير متاح: "+(e?.message||"خطأ غير معروف"))}
+}
 function bind(){$("study-menu").addEventListener("ionChange",e=>{if(e.detail?.value)switchSection(e.detail.value)});$("chapter-choice").addEventListener("ionChange",e=>{if(e.detail?.value)switchChapter(e.detail.value)});$("topic-search").addEventListener("ionInput",drawLessons);$("flash-card").onclick=()=>{flipped=!flipped;showFlash()};$("flash-prev").onclick=()=>move(-1);$("flash-next").onclick=()=>move(1);$("flash-hard").onclick=()=>{const x=questions()[flash];state.review[x.k]=Date.now();save();say("حفظنا البطاقة للمراجعة")};$("match-reset").onclick=newMatch;$("coach-ask").onclick=ask;$("export-report").onclick=exportParent;}
-function init(){for(const c of C.chapters){const o=el("ion-select-option",c.id+". "+c.title);o.value=String(c.id);$("chapter-choice").append(o)}bind();const id=Number(location.hash.match(/chapter-(\d+)/)?.[1]||1);ch=C.chapters.find(c=>c.id===id)||C.chapters[0];$("chapter-choice").value=String(ch.id);save();drawLessons();showFlash();newMatch();parentReport();const tab=new URLSearchParams(location.search).get("tab");if(["flash","matching","coach","parent"].includes(tab))switchSection(tab)}
+function init(){for(const c of C.chapters){const o=el("ion-select-option",c.id+". "+c.title);o.value=String(c.id);$("chapter-choice").append(o)}bind();const id=Number(location.hash.match(/chapter-(\d+)/)?.[1]||1);ch=C.chapters.find(c=>c.id===id)||C.chapters[0];$("chapter-choice").value=String(ch.id);save();drawLessons();loadApprovedVoices();showFlash();newMatch();parentReport();const tab=new URLSearchParams(location.search).get("tab");if(["flash","matching","coach","parent"].includes(tab))switchSection(tab)}
 document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init):init();
 })();
