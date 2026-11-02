@@ -36,6 +36,8 @@ export function AdminApp(){
   const [runs,setRuns]=useState<WorkflowRun[]>([]);
   const [approvals,setApprovals]=useState<WorkflowRun[]>([]);
   const [commits,setCommits]=useState<Commit[]>([]);
+  const [liveFeatures,setLiveFeatures]=useState(studentFeatures);
+  const [liveViewsCount,setLiveViewsCount]=useState(discoveredViews.length);
   const [published,setPublished]=useState<Record<string,PublicClip>>({});
   const [chapter,setChapter]=useState(1);
   const [lesson,setLesson]=useState(1);
@@ -62,6 +64,25 @@ export function AdminApp(){
       setPublished(content.clips||{});
     }catch{setPublished({});}
   }
+  const refreshFeatureInventory=async(client:GithubAdmin)=>{
+    try{
+      const [appCode,views]=await Promise.all([
+        client.request<{content:string;encoding:string}>('/contents/src/App.tsx?ref=main'),
+        client.request<{name:string;type:string}[]>('/contents/src/views?ref=main')
+      ]);
+      if(appCode.encoding==='base64'){
+        const bin=atob(appCode.content.replace(/\\s/g,''));
+        const bytes=Uint8Array.from(bin,x=>x.charCodeAt(0));
+        const source=new TextDecoder().decode(bytes);
+        const ids=[...source.matchAll(/\\bcase\\s+['"]([a-zA-Z0-9]+)['"]\\s*:/g)].map(x=>x[1]);
+        if(ids.length){
+          const known=new Map(studentFeatures.map(x=>[x.id,x]));
+          setLiveFeatures([...new Set(ids)].map(id=>known.get(id)||{id,title:id,enabled:true}));
+        }
+      }
+      if(Array.isArray(views))setLiveViewsCount(views.filter(x=>x.type==='file'&&x.name.endsWith('.tsx')).length);
+    }catch{/* Present local build inventory if GitHub repository inventory is unavailable. */}
+  };
   const refresh=async(client=api)=>{
     if(!client)return;
     setLoading(true);
@@ -71,6 +92,7 @@ export function AdminApp(){
       ]);
       setRuns(voiceResults);setApprovals(approvalResults);setCommits(changeResults);
       await loadPublic();
+      await refreshFeatureInventory(client);
       setMessage('');
     }catch(e){flash((e as Error).message,'error')}
     finally{setLoading(false)}
@@ -214,7 +236,7 @@ export function AdminApp(){
             <div className="ad-stat"><span className="ad-stat-icon purple"><BookOpen size={22}/></span><strong>{biologyChapters.length}</strong><small>فصل دراسي</small></div>
             <div className="ad-stat"><span className="ad-stat-icon green"><Headphones size={22}/></span><strong>{publishedEntries.length}</strong><small>تسجيل صوتي منشور</small></div>
             <div className="ad-stat"><span className="ad-stat-icon gold"><Clock3 size={22}/></span><strong>{runs.filter(x=>x.status!=='completed').length}</strong><small>محاولات قيد التنفيذ</small></div>
-            <div className="ad-stat"><span className="ad-stat-icon blue"><Sparkles size={22}/></span><strong>{studentFeatures.length}</strong><small>ميزة متصلة بالتطبيق</small></div>
+            <div className="ad-stat"><span className="ad-stat-icon blue"><Sparkles size={22}/></span><strong>{liveFeatures.length}</strong><small>ميزة متصلة بالتطبيق</small></div>
           </div>
           <div className="ad-two-columns">
             <section className="ad-panel"><div className="ad-section-top"><h3>مهام سريعة</h3><span>الإدارة</span></div><div className="ad-quick-grid">
@@ -293,9 +315,9 @@ export function AdminApp(){
           </section>
         </div>}
         {page==='features'&&<>
-          <section className="ad-panel"><div className="ad-section-top"><div><h3>أقسام التطبيق المكتشفة تلقائياً</h3><p>هذا الفهرس يتجدد من ملفات المشروع الفعلية مع كل بناء جديد.</p></div><span className="ad-chip">{studentFeatures.length} قسم</span></div>
-            <div className="ad-feature-grid">{studentFeatures.map(item=><div className="ad-feature" key={item.id}><span className="ad-feature-symbol"><CheckCircle2 size={19}/></span><div><b>{item.title}</b><small>{item.id}</small></div><span className="ad-online">موجود</span></div>)}</div>
-            <p className="ad-footnote">كذلك يكتشف النظام {discoveredViews.length} ملف عرض تعليمي. أي صفحة عرض جديدة أو مسار جديد في التطبيق تظهر هنا بعد رفع التحديث وبناء الموقع.</p>
+          <section className="ad-panel"><div className="ad-section-top"><div><h3>أقسام التطبيق المكتشفة تلقائياً</h3><p>هذا الفهرس يتجدد من ملفات المشروع الفعلية مع كل بناء جديد.</p></div><span className="ad-chip">{liveFeatures.length} قسم</span></div>
+            <div className="ad-feature-grid">{liveFeatures.map(item=><div className="ad-feature" key={item.id}><span className="ad-feature-symbol"><CheckCircle2 size={19}/></span><div><b>{item.title}</b><small>{item.id}</small></div><span className="ad-online">موجود</span></div>)}</div>
+            <p className="ad-footnote">كذلك يكتشف النظام {liveViewsCount} ملف عرض تعليمي. أي صفحة عرض جديدة أو مسار جديد في التطبيق تظهر هنا بعد رفع التحديث وبناء الموقع.</p>
           </section>
           <section className="ad-panel"><div className="ad-section-top"><h3>آخر التعديلات على المشروع</h3><RefreshCw size={18}/></div>
             {commits.map(c=><div className="ad-change" key={c.sha}><span className="ad-change-icon"><CheckCircle2 size={18}/></span><div><b>{c.commit.message.split('\n')[0]}</b><small>{c.commit.author?.date?fmtDate(c.commit.author.date):''} · {c.sha.slice(0,7)}</small></div></div>)}
