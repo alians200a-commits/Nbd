@@ -120,7 +120,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         <button type="button" className="nabd-quick-action qa-honey" onClick={()=>onNavigateTab('quiz')}><span className="nabd-quick-art"><img src={artBase+'quiz-memo.svg'} alt=""/></span><strong>اختبر نفسك</strong><small>أسئلة لتثبيت المعلومة</small></button>
         <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><img src={artBase+'review-search.svg'} alt=""/></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
       </div>
-      <div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html?voice=1')}><Headphones size={19}/> استمع إلى المعلّمة B</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
+      <div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html')}><Headphones size={19}/> استمع إلى شرح الخلية العصبية</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
       <p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية التي لم تُراجع بعد تُعرض بحسب حالتها الفعلية؛ لا تُحتسب ميزة غير مكتملة إنجازاً دراسياً.</p>
     </section>
   </div>;
