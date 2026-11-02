@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: npm ci --no-audit --no-fund
+      - run: npm install --no-audit --no-fund
       - name: Compile separate private administrator bundle
         run: npm run build:admin
       - name: Produce a single offline HTML file without public dependencies
