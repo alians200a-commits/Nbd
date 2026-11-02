@@ -1,0 +1,28 @@
+name: Verify student interface build
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  student-interface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install open-source dependencies
+        run: npm install --no-audit --no-fund
+      - name: Compile TypeScript and build React
+        run: npm run build
+      - name: Confirm student landing page resources
+        run: |
+          test -f dist/index.html
+          test -f dist/nabd-art/brain.svg
+          test -f dist/nabd-art/books.svg
+          test -f dist/nabd-art/microscope.svg
+          test -f dist/nabd-art/trophy.svg
+          grep -q 'nabd-reference-v13.css' src/main.tsx
+          grep -q 'nabd-journey-grid' src/views/StudentHomeView.tsx
+          grep -q 'student-mobile-nav' src/styles/nabd-reference-v13.css
