@@ -47,6 +47,17 @@ jobs:
           cover=json.loads(Path('data/NABD_44_TOPIC_3D_COVERAGE.json').read_text())
           assert cover['total']==44
           assert len(cover['topics'])==44
+          v5=json.loads(Path('data/NABD_QBANK_V5_PUBLIC_AUDIT.json').read_text())
+          assert v5['parent_candidate_question_records']==491
+          assert v5['inline_answer_subparts_in_existing_parent_records']==13
+          assert v5['source_image_reviewed_parent_questions_for_inline_answers']==3
+          assert v5['answer_extraction_missing_count']==79
+          assert v5['high_priority_review_count']==115
+          assert v5['ministerial_year_and_round_question_links_verified']==0
+          assert 'inline-practice' in Path('exam-bank.html').read_text()
+          assert 'function renderInlineParts' in Path('assets/nabd-exambank.js').read_text()
+          assert 'pulseActive' in Path('assets/nabd-simulations.js').read_text()
+          assert 'startPulse' in Path('assets/nabd-simulations.js').read_text()
           status=json.loads(Path('data/NABD_QBANK_V4_1_AUDIT_METADATA.json').read_text())
           assert status['question_candidates']==491
           assert status['unanswered_extraction_candidates']==82
