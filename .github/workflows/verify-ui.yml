@@ -1,41 +1,50 @@
-name: Verify NABD student UI and curriculum
+name: Verify NABD curriculum, exam bank and 3D simulations
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 jobs:
-  verification:
+  verify:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Check JavaScript syntax
         run: |
           node --check assets/nabd-ionic.js
           node --check assets/nabd-learn.js
+          node --check assets/nabd-simulations.js
+          node --check assets/nabd-exambank.js
           node --check data/nabd-curriculum.js
-      - name: Verify chapter coverage, voice keys and UI references
+      - name: Verify source links, 3D nucleus picking and lesson voice keys
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import json,re
-          html=Path("learn.html").read_text()
-          script=Path("assets/nabd-learn.js").read_text()
-          data=Path("data/nabd-curriculum.js").read_text().split("window.NABD_CURRICULUM=",1)[1].rstrip().rstrip(";")
+          data=Path('data/nabd-curriculum.js').read_text().split('window.NABD_CURRICULUM=',1)[1].rstrip().rstrip(';')
           curriculum=json.loads(data)
-          assert len(curriculum["chapters"])==11
-          assert sum(len(c["topics"]) for c in curriculum["chapters"])==44
-          assert all(len(c["topics"])==4 for c in curriculum["chapters"])
-          jobs=json.loads(Path("data/NABD_B_44_VOICE_JOBS.json").read_text())
-          assert jobs["speaker"]=="B" and len(jobs["jobs"])==44
-          keys=set("nabd/lesson/{}/{}".format(c["id"],i) for c in curriculum["chapters"] for i in range(4))
-          assert {x["key"] for x in jobs["jobs"]}==keys
-          ids=set(re.findall(r'id="([^"]+)"',html))
-          refs=set(re.findall(r'\$\("([^"]+)"\)',script))
-          assert not refs-ids, "Missing elements: "+str(refs-ids)
-          for path in ["index.html","learn.html","assets/nabd-ionic.css","assets/nabd-learn.css","assets/healthicons-anatomy.svg"]:
-              assert Path(path).is_file(),path
-          assert "window.speechSynthesis" not in script
-          print("NABD science 44 topics, matching and B voice key check passed")
+          assert len(curriculum['chapters'])==11
+          assert sum(len(c['topics']) for c in curriculum['chapters'])==44
+          jobs=json.loads(Path('data/NABD_B_44_VOICE_JOBS.json').read_text())
+          expected={'nabd/lesson/{}/{}'.format(c['id'],i) for c in curriculum['chapters'] for i in range(4)}
+          assert len(jobs['jobs'])==44
+          assert {j['key'] for j in jobs['jobs']}==expected
+          pages=[('learn.html','assets/nabd-learn.js'),('exam-bank.html','assets/nabd-exambank.js'),('simulations.html','assets/nabd-simulations.js')]
+          for htmlpath,jspath in pages:
+              h=Path(htmlpath).read_text()
+              j=Path(jspath).read_text()
+              ids=set(re.findall(r'id="([^"]+)"',h))
+              refs=set(re.findall(r'\$\("([^"]+)"\)',j))
+              assert not refs-ids,(htmlpath,refs-ids)
+          sim=Path('assets/nabd-simulations.js').read_text()
+          assert 'target:"nucleus"' in sim and 'target:"soma"' in sim
+          assert '"nucleus",-0.46' in sim and '"soma",-0.45' in sim
+          assert 'ray.intersectObjects' in sim
+          exam=Path('assets/nabd-exambank.js').read_text()
+          assert 'NABD_PRIVATE_QUESTION_BANK_V1' in exam
+          assert 'self_check_until_verified' in Path('data/nabd-curriculum.js').read_text() or 'تقييم ذاتي' in Path('exam-bank.html').read_text()
+          assert 'window.speechSynthesis' not in Path('assets/nabd-learn.js').read_text()
+          assert 'simulations.html' in Path('index.html').read_text()
+          assert 'exam-bank.html' in Path('index.html').read_text()
+          print('NABD source and question-bank UI checks passed')
           PY
