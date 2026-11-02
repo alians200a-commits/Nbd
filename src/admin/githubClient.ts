@@ -11,7 +11,6 @@ export class GithubAdmin {
       headers:{
         Accept:'application/vnd.github+json',
         Authorization:'Bearer '+this.token,
-        'X-GitHub-Api-Version':'2022-11-28',
         ...(options.body?{'Content-Type':'application/json'}:{}),
         ...options.headers
       },
