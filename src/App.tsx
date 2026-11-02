@@ -23,6 +23,9 @@ import { OrganSimView } from './views/OrganSimView';
 import { GamesView } from './views/GamesView';
 import { ParentsView } from './views/ParentsView';
 import './styles/student-ui.css';
+import { StudentShell } from './components/StudentShell';
+import { StudentHomeView } from './views/StudentHomeView';
+import { StudentChaptersView } from './views/StudentChaptersView';
 
 const mobileTabs = [
   { id:'home', label:'الرئيسية', icon:Home },
@@ -55,8 +58,8 @@ export const AppContent: React.FC = () => {
 
   const activeView = () => {
     switch (currentTab) {
-      case 'home': return <TablerHomeView onNavigateTab={navigate} />;
-      case 'chapters': return <TablerChaptersView onNavigateTab={navigate} />;
+      case 'home': return <StudentHomeView onNavigateTab={navigate} />;
+      case 'chapters': return <StudentChaptersView onNavigateTab={navigate} />;
       case 'lab':
       case 'atlas': return <TablerLabView initialChapter={targetChapter} onNavigateTab={navigate} />;
       case 'quiz': return <TablerQuizView />;
@@ -75,32 +78,11 @@ export const AppContent: React.FC = () => {
       case 'organSim': return <OrganSimView />;
       case 'games': return <GamesView />;
       case 'parents': return <ParentsView />;
-      default: return <TablerHomeView onNavigateTab={navigate} />;
+      default: return <StudentHomeView onNavigateTab={navigate} />;
     }
   };
 
-  const selectedNav = currentTab === 'curriculum' ? 'chapters' : currentTab === 'atlas' ? 'lab' : currentTab;
-
-  return (
-    <div className="nabd-app-shell" dir="rtl">
-      <a href="#nabd-main" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-4">تجاوز القائمة إلى المحتوى</a>
-      <Sidebar currentTab={currentTab} onSelectTab={navigate} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-      <div className="nabd-app-content">
-        <Header currentTab={currentTab} onNavigateTab={navigate} onToggleSidebar={() => setIsSidebarOpen(open => !open)} />
-        <main id="nabd-main" className="nabd-app-main">{activeView()}</main>
-        <div className="nabd-app-footnote">نَبْض · تعلم الأحياء خطوة بخطوة · الثالث المتوسط</div>
-      </div>
-      <nav className="nabd-bottom-nav" aria-label="التنقل الرئيسي على الهاتف">
-        {mobileTabs.map(({id,label,icon: Icon}) => (
-          <button key={id} className={`nabd-bottom-link ${selectedNav === id ? 'is-active' : ''}`}
-            onClick={() => navigate(id)} aria-label={label} aria-current={selectedNav === id ? 'page' : undefined}>
-            <Icon strokeWidth={1.9} aria-hidden="true" />
-            <span>{label}</span>
-          </button>
-        ))}
-      </nav>
-    </div>
-  );
+  return <StudentShell currentTab={currentTab} onNavigateTab={navigate}>{activeView()}</StudentShell>;
 };
 
 export default function App() {
