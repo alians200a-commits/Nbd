@@ -15,6 +15,20 @@
 <div id="question-text" class="question" aria-live="polite"></div><p id="years-note" class="help"></p><div class="controls"><ion-button id="reveal" color="secondary">أظهر الجواب المستخرج</ion-button><ion-button id="open-page" fill="outline">صفحة المصدر PDF</ion-button></div>
 <div class="answer hidden" id="answer"></div><div id="review-warning" class="warn"></div>
 <div class="controls"><ion-button id="self-correct" fill="outline" color="success"><ion-icon name="checkmark-outline" slot="start"></ion-icon>عرفت جوابه</ion-button><ion-button id="self-wrong" fill="outline" color="danger"><ion-icon name="bookmark-outline" slot="start"></ion-icon>أعيد مراجعته</ion-button></div>
-<p class="help" id="score-note">هذا تقييم ذاتي، وليس تصحيحاً وزارياً آلياً.</p><div class="controls"><ion-button id="manual-review" color="secondary" fill="outline">علّم السؤال: قارنته بالأصل</ion-button><ion-button id="download-audit" fill="clear">صدّر قائمة التدقيق</ion-button></div><p class="help" id="manual-review-note">العلامة شخصية للتنظيم فقط، وليست شهادة تدقيق معتمدة.</p></section>
+<p class="help" id="score-note">هذا تقييم ذاتي، وليس تصحيحاً وزارياً آلياً.</p><div class="controls"><ion-button id="manual-review" color="secondary" fill="outline">علّم السؤال: قارنته بالأصل</ion-button><ion-button id="download-audit" fill="clear">صدّر قائمة التدقيق</ion-button></div><p class="help" id="manual-review-note">العلامة شخصية للتنظيم فقط، وليست شهادة تدقيق معتمدة.</p>
+<ion-accordion-group style="margin-top:16px">
+  <ion-accordion value="edit">
+    <ion-item slot="header" color="light"><ion-label><strong>تدقيق نص السؤال والجواب من صفحة المصدر</strong></ion-label></ion-item>
+    <div slot="content" style="padding:16px 10px">
+      <div class="warn">لا تكتب جواباً من الذاكرة. افتح صفحة PDF وقارن النص كاملاً قبل الحفظ. لا يتحول السؤال إلى وزاري موثّق أو تصحيح آلي بمجرد تسجيل هذه الملاحظة.</div>
+      <ion-textarea id="edited-question" auto-grow="true" rows="3" label="نص السؤال بعد المطابقة" label-placement="stacked" fill="outline"></ion-textarea>
+      <ion-textarea id="edited-answer" auto-grow="true" rows="5" label="نص الجواب بعد المطابقة" label-placement="stacked" fill="outline"></ion-textarea>
+      <ion-input id="edited-ministerial-year" type="number" min="1990" max="2035" label="سنة وزارية مطبوعة بجوار هذا السؤال (اختياري)" label-placement="stacked" fill="outline"></ion-input>
+      <ion-input id="edited-ministerial-round" label="الدور الوزاري المطبوع بجوار السؤال (اختياري)" label-placement="stacked" fill="outline"></ion-input>
+      <div class="controls"><ion-button id="save-correction" color="secondary">احفظ التدقيق على الجهاز</ion-button><ion-button id="export-corrections" fill="outline">صدّر تصحيحاتي</ion-button></div>
+      <p id="edit-status" class="help">أي تعديل هنا محلي فقط، وتظهر الإجابة المنقحة بعد الحفظ. لا يُعدّ توثيقاً وزارياً رسمياً.</p>
+    </div>
+  </ion-accordion>
+</ion-accordion-group></section>
 <section class="section"><h2>تدقيق السنوات الوزارية</h2><p class="help">الملزمة تذكر سنوات امتحانية بجانب الأسئلة. استخراج الصفحة لا يثبت وحده ارتباط سنة محددة بسؤال، لذا تظهر الحالة «غير موثّق» إلى أن يُفحص موضعها في PDF الأصلي.</p><div id="audit" class="help">أرفق المصدر لعرض فهرس التدقيق.</div></section>
 </main></ion-content><ion-toast id="exam-toast" duration="2500" position="bottom"></ion-toast></ion-app></body></html>
