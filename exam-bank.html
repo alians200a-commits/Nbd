@@ -36,5 +36,24 @@
     </div>
   </ion-accordion>
 </ion-accordion-group></section>
-<section class="section"><h2>تدقيق السنوات الوزارية</h2><p class="help">الملزمة تذكر سنوات امتحانية بجانب الأسئلة. استخراج الصفحة لا يثبت وحده ارتباط سنة محددة بسؤال، لذا تظهر الحالة «غير موثّق» إلى أن يُفحص موضعها في PDF الأصلي.</p><div id="audit" class="help">أرفق المصدر لعرض فهرس التدقيق.</div></section>
+<section class="section"><h2>تدقيق السنوات الوزارية</h2><p class="help">الملزمة تذكر سنوات امتحانية بجانب الأسئلة. استخراج الصفحة لا يثبت وحده ارتباط سنة محددة بسؤال، لذا تظهر الحالة «غير موثّق» إلى أن يُفحص موضعها في PDF الأصلي.</p><div id="audit" class="help">أرفق المصدر لعرض فهرس التدقيق.</div><div class="section" id="page-audit-panel" style="margin:14px 0 0">
+ <h3 style="font-size:17px;margin:0 0 10px">مراجعة كل صفحات الملزمة الـ143</h3>
+ <p class="help">راجع حتى الصفحات التي لا يظهر فيها سؤال مستقل؛ قد تحتوي على فروع أو صور. فحصك هنا **شخصي** ولا يمنح إجابات أو سنوات وزارية اعتماداً رسمياً.</p>
+ <div class="filters">
+  <ion-select id="audit-page" interface="popover" label="اختر صفحة PDF" label-placement="stacked" value="1" aria-label="الصفحة المراد تدقيقها"></ion-select>
+  <ion-select id="audit-page-filter" interface="popover" label="تصفية الصفحات" label-placement="stacked" value="all" aria-label="تصفية سجل تغطية الصفحات">
+   <ion-select-option value="all">كل الصفحات</ion-select-option>
+   <ion-select-option value="without">صفحات لم يُستخرج منها سؤال</ion-select-option>
+   <ion-select-option value="unchecked">صفحات لم تُراجع يدوياً</ion-select-option>
+  </ion-select>
+ </div>
+ <div id="audit-page-description" class="readiness" role="status">استورد ملف بنك الأسئلة لعرض تغطية الصفحات.</div>
+ <ion-textarea id="audit-page-note" fill="outline" label="ملاحظتك على الصفحة" label-placement="stacked" auto-grow="true" rows="2" placeholder="هل يوجد سؤال ناقص أو صورة أو جدول يجب تفريغه؟"></ion-textarea>
+ <div class="controls">
+  <ion-button id="audit-open-source" fill="outline">افتح صفحة PDF</ion-button>
+  <ion-button id="audit-mark-page" color="secondary" fill="outline">سجّل مراجعة الصفحة</ion-button>
+  <ion-button id="audit-export-pages" fill="clear">صدّر سجل الصفحات</ion-button>
+ </div>
+ <p id="audit-page-counter" class="help">لم تُسجَّل أي مراجعة حتى الآن.</p>
+</div></section>
 </main></ion-content><ion-toast id="exam-toast" duration="2500" position="bottom"></ion-toast></ion-app></body></html>
