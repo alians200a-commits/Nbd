@@ -1,0 +1,93 @@
+/* NABD V12 | Student-first design system
+   MIT/ISC open-source UI and real subject illustrations; no generated icon assets.
+   WCAG 2.2 AA contrast targets; 44+ CSS px interactive surfaces. */
+:root{
+ --violet:#2457A6;--violet-dark:#153E78;--ink:#14293F;--muted:#52647A;
+ --canvas:#F6F9FC;--line:#DCE6EF;--mint:#E2F4EF;--lavender:#E9F0FC;
+ --peach:#FFF0DF;--sky:#E8F5FA;--focus:#205CB6;
+ --study-blue:#2457A6;--study-teal:#096E68;--study-orange:#A55C15;
+ --study-red:#AE3854;--study-bg:#F6F9FC;
+}
+body,.student-app{background:#F6F9FC;color:#14293F}
+.student-app{background:#F6F9FC;min-height:100dvh}
+.student-topbar{background:#fff;border-bottom:1px solid #E1E9F1;backdrop-filter:none}
+.student-topbar-inner{max-width:1160px;min-height:74px}
+.student-brand-mark{background:#E7F0FC;color:#2056A0;border-radius:14px;box-shadow:none}
+.student-brand small{font-size:12px}
+.student-desktop-nav button{color:#344A63;border-radius:11px}
+.student-desktop-nav button.is-current{background:#EAF2FF;color:#184B93}
+.student-desktop-nav button:hover{background:#F1F6FC;color:#184B93}
+.student-reminder-button,.student-menu-button{border-color:#DAE5F0;color:#2052A0}
+.student-count-bubble{background:#AE3854}
+.student-page{max-width:1130px;padding:25px 24px 95px}
+.student-greeting{margin-bottom:18px;align-items:flex-start}
+.student-greeting h1{font-size:clamp(24px,3.2vw,34px);line-height:1.4;color:#14293F}
+.student-greeting p{color:#51637A;max-width:650px}
+.student-eyebrow{color:#1B548E}
+.student-greeting-stats>span{box-shadow:none;border:1px solid #E1EAF2;background:#fff;border-radius:14px}
+.student-greeting-stats strong{color:#194D92}
+.student-hero{background:#EAF3FE;border:1px solid #D5E5F5;border-radius:25px;box-shadow:none;min-height:250px}
+.student-hero-kicker{background:#fff;color:#1E5A96;border:1px solid #D8E6F3}
+.student-hero h2{color:#133E70;line-height:1.4}
+.student-hero p{color:#3C5670}
+.student-primary-button{background:#2457A6;border-radius:13px;box-shadow:none;min-height:50px}
+.student-primary-button:hover{background:#183F7B;transform:none}
+.student-hero-art img{transform:none;filter:none;width:clamp(140px,17vw,195px);height:clamp(140px,17vw,195px)}
+.student-hero-orbit,.student-hero-art:before{display:none}
+.student-section-title{margin:27px 0 13px}
+.student-section-title h2,.student-progress-panel h2{color:#14293F}
+.student-actions-grid{gap:13px}
+.student-action-card{background:#fff!important;border:1px solid #DFE8F1!important;border-radius:19px!important;box-shadow:none!important;text-align:right;min-height:170px;transition:border-color .16s,box-shadow .16s}
+.student-action-card:hover,.student-action-card:focus-visible{transform:none!important;border-color:#A7BEDD!important;box-shadow:0 6px 22px rgba(21,53,91,.075)!important}
+.student-action-card .student-action-art{background:#EAF2FE;border:1px solid #DDEBFA;border-radius:14px;display:grid;place-items:center;width:64px;height:64px}
+.student-action-card .student-action-art svg{color:#2457A6}
+.student-action-card.student-tint-mint .student-action-art{background:#E2F5F0;border-color:#D6EBE5}
+.student-action-card.student-tint-mint .student-action-art svg{color:#096E68}
+.student-action-card.student-tint-peach .student-action-art{background:#FFF1E2;border-color:#F8E3CA}
+.student-action-card.student-tint-peach .student-action-art svg{color:#955113}
+.student-action-card.student-tint-sky .student-action-art{background:#E8F5FB;border-color:#D4EBF6}
+.student-action-card.student-tint-sky .student-action-art svg{color:#206E93}
+.student-action-card strong{color:#14293F;font-size:18px}
+.student-action-card small{color:#52647A;font-size:13px}
+.student-action-chevron{color:#496A88}
+.student-course-card{box-shadow:none!important;background:#fff!important;border:1px solid #DEE8F1!important;border-radius:19px!important}
+.student-course-card:hover{transform:none!important;box-shadow:0 6px 22px rgba(21,53,91,.06)!important}
+.student-course-art{border-radius:15px}
+.student-course-label{color:#315F89}
+.student-course-info strong{color:#14293F}
+.student-course-cta{color:#1D579F}
+.student-progress-panel{background:#fff!important;border:1px solid #DFE8F1!important;border-radius:19px!important;box-shadow:none!important}
+.student-progress-track{background:#E1EAF4}
+.student-progress-track>span{background:#117B72}
+.student-extras button{border-color:#DFE8F1!important;background:#fff!important;color:#224D7A}
+.student-extras button:hover{background:#F0F6FC!important}
+.student-more-panel{background:#fff}
+.student-more-grid>button{border-color:#DFE8F1}
+.student-more-icon{background:#EAF2FC;color:#20579F}
+.student-mobile-nav{background:#fff;border-top:1px solid #DCE6EF;box-shadow:0 -5px 24px rgba(24,54,91,.035)}
+.student-mobile-nav button{min-height:58px;color:#485E74}
+.student-mobile-nav button.is-current{color:#1A529B}
+.student-nav-symbol{border-radius:12px}
+.student-mobile-nav button.is-current .student-nav-symbol{background:#E5F0FD}
+.student-chapter-row{background:#fff!important;border:1px solid #DDE8F0!important;box-shadow:none!important;border-radius:17px!important}
+.student-chapter-row:hover{transform:none!important;border-color:#A8BED7!important}
+.student-pill-primary{background:#2457A6!important;color:#fff!important}
+.student-pill-secondary{background:#EAF3FB!important;color:#1C538C!important}
+.student-chapter-search{border-color:#CADBE8;background:#fff}
+.student-trust-note{color:#627388}
+button{touch-action:manipulation}
+.student-app button:not(.student-more-panel button){-webkit-tap-highlight-color:transparent}
+@media(max-width:700px){
+ .student-page{padding:18px 15px 100px}
+ .student-greeting h1{font-size:26px}
+ .student-hero{min-height:0;border-radius:20px}
+ .student-hero-copy{padding:23px 20px}
+ .student-hero h2{font-size:27px}
+ .student-hero-art img{max-width:135px}
+ .student-actions-grid{gap:10px}
+ .student-action-card{min-height:150px;padding:15px}
+ .student-action-card .student-action-art{height:56px;width:56px}
+ .student-greeting-stats{gap:7px}
+ .student-greeting-stats>span{min-width:0}
+}
+@media(prefers-reduced-motion:reduce){.student-app *, .student-app *::before,.student-app *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
