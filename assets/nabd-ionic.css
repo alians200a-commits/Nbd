@@ -147,3 +147,11 @@ ion-note {font-size:11px;line-height:1.7}
 .anatomy-icon-tab{width:23px;height:23px;display:block;fill:#617c97;overflow:visible}
 ion-tab-button.tab-selected .anatomy-icon-tab,ion-tab-button[selected] .anatomy-icon-tab{fill:var(--ion-color-primary)}
 .model-reference{margin-bottom:8px;font-size:11px;color:#667a8e}
+
+/* Health Icons originals are displayed as-is from CC0 SVG sprite; only sizing/colors change. */
+.anatomy-figure{display:inline-grid;place-items:center;width:48px;height:48px;flex-shrink:0;background:#eaf1f9;border-radius:11px;color:#275a8d}
+.anatomy-pictogram{display:block;width:34px;height:34px;fill:currentColor}
+.chapter-preview ion-card-content{min-height:137px;display:flex;flex-direction:column;align-items:flex-start}
+.chapter-preview .chapter-title{margin-top:auto}
+.lesson-list .anatomy-figure{width:40px;height:40px}
+.lesson-list .anatomy-pictogram{width:30px;height:30px}
