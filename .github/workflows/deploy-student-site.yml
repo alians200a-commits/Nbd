@@ -29,11 +29,12 @@ jobs:
           mkdir -p dist/assets dist/data
           cp -R assets/. dist/assets/
           cp -R data/. dist/data/
-          find . -maxdepth 1 -type f -name '*.html' ! -name 'index.html' -exec cp {} dist/ \;
+          find . -maxdepth 1 -type f -name '*.html' ! -name 'index.html' ! -name 'admin.html' -exec cp {} dist/ \;
           # Only playback-ready voice is public; editing, imports and metadata are admin-only.
           rm -f dist/voice_production.html dist/audio-library.html
           rm -f dist/assets/nabd-voice-center.js dist/assets/nabd-ch1-audio.js dist/assets/nabd-voice-player.js
           rm -f dist/nabd-voice/manifest.json
+          test -s dist/admin.html
           test ! -e dist/voice_production.html
           test ! -e dist/audio-library.html
           test ! -e dist/nabd-voice/manifest.json
