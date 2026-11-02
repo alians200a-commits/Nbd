@@ -1,17 +1,24 @@
-name: Gemini 3.1 | Iraqi teacher narration
+name: "لوحة الإدارة | توليد شرح صوتي من Gemini 3.1"
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'voice-requests/**'
-      - '.github/workflows/gemini-baghdad-voice.yml'
   workflow_dispatch:
     inputs:
       request_file:
-        description: 'Narration request JSON inside voice-requests/'
+        description: 'ملف الدرس داخل voice-requests (في حالة عدم تعبئة الحقول الأخرى)'
         required: true
         type: string
         default: 'voice-requests/test-neuron-baghdad.json'
+      lesson_key:
+        description: 'معرّف الدرس: chapter1/lesson/01'
+        required: false
+        type: string
+      topic:
+        description: 'عنوان الدرس - اختياري عند استخدام ملف الطلب'
+        required: false
+        type: string
+      script:
+        description: 'نص الشرح المدقق - اختياري عند استخدام ملف الطلب'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -27,6 +34,9 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           INPUT_REQUEST: ${{ inputs.request_file }}
+          ADMIN_LESSON_KEY: ${{ inputs.lesson_key }}
+          ADMIN_TOPIC: ${{ inputs.topic }}
+          ADMIN_SCRIPT: ${{ inputs.script }}
         run: |
           python3 - <<'PY'
           import os, sys, json, re, base64, wave, time, urllib.request, urllib.error
@@ -43,6 +53,18 @@ jobs:
           if allowed not in candidate.parents or candidate.suffix != ".json" or not candidate.is_file():
               raise ValueError("ملف الدرس لازم يكون JSON داخل voice-requests فقط")
           request = json.loads(candidate.read_text(encoding="utf-8"))
+          custom_title = os.environ.get("ADMIN_TOPIC", "").strip()
+          custom_script = os.environ.get("ADMIN_SCRIPT", "").strip()
+          custom_key = os.environ.get("ADMIN_LESSON_KEY", "").strip()
+          if custom_title or custom_script:
+              if not (custom_title and custom_script and custom_key):
+                  raise ValueError("عند إدخال درس جديد يجب تعبئة عنوان الدرس والنص ومعرّف الدرس سويةً")
+              request = {"topic":custom_title,"text":custom_script,"voice":"Sulafat","lesson_key":custom_key}
+          elif custom_key:
+              request["lesson_key"] = custom_key
+          lesson_key = request.get("lesson_key", "chapter1/lesson/01")
+          if not isinstance(lesson_key,str) or not re.fullmatch(r"chapter(?:[1-9]|1[01])/lesson/0[1-4]",lesson_key):
+              raise ValueError("معرّف الدرس غير صالح؛ مثال chapter1/lesson/01")
           transcript = request.get("text", "").strip()
           topic = request.get("topic", "").strip()
           if not isinstance(transcript, str) or not (30 <= len(transcript) <= 3000):
@@ -108,7 +130,7 @@ jobs:
               with wave.open(str(out),"wb") as f:
                   f.setnchannels(1); f.setsampwidth(2); f.setframerate(rate); f.writeframes(audio)
           info={
-              "topic":topic,"text":transcript,"model":model,
+              "topic":topic,"text":transcript,"lesson_key":lesson_key,"model":model,
               "voice":voice,"accent_requested":"Iraqi Baghdadi Arabic",
               "generated_at":datetime.now(timezone.utc).isoformat(),
               "human_approved":False,
