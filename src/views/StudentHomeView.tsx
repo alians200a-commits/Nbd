@@ -6,7 +6,7 @@ import type { TabType } from '../components/Sidebar';
 
 interface Props { onNavigateTab: (tab: TabType, params?: { chapter?: number }) => void }
 const artBase = import.meta.env.BASE_URL + 'nabd-art/';
-const artMap = ['brain','bone','arm','intestine','heart','lungs','kidneys','books','eye','thyroid','trophy'];
+const artMap = ['brain','bone','arm','intestine','heart','lungs','kidneys','dna-fluent','eye','thyroid','antibody'];
 const courseTones = ['violet','honey','mint'] as const;
 const days = ['سبت','أحد','إثن','ثلا','أرب','خمي','جمع'];
 
