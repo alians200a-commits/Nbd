@@ -6,7 +6,7 @@ import type { TabType } from '../components/Sidebar';
 
 interface Props { onNavigateTab: (tab: TabType, params?: {chapter?: number}) => void }
 const artBase=import.meta.env.BASE_URL + 'nabd-art/';
-const artFor=['brain','bone','arm','intestine','heart','lungs','kidneys','dna','eye','thyroid','cell-nuclei'];
+const artFor=['brain','bone','arm','intestine','heart','lungs','kidneys','dna','eye','thyroid','antibody'];
 const colors=['lilac','peach','mint','sky','peach','lilac','sky','mint','lilac','peach','mint'];
 
 export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
