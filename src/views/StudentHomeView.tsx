@@ -90,7 +90,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
 
       <section className="nabd-tracker-panel" aria-labelledby="tracker-heading">
         <header className="nabd-tracker-head"><span className="nabd-tracker-label">متابعة التعلّم</span><button aria-label="خطة الدراسة" className="nabd-circle-utility" onClick={()=>onNavigateTab('planner')}><CalendarDays size={19}/></button></header>
-        <div className="nabd-tracker-mascot"><img src={artBase+'books.svg'} alt="" aria-hidden="true"/><h2 id="tracker-heading">إنجازاتك<br/>خطوة بخطوة</h2><span>استمرّ في التعلّم</span></div>
+        <div className="nabd-tracker-mascot"><img src={artBase+'open-book.svg'} alt="" aria-hidden="true"/><h2 id="tracker-heading">إنجازاتك<br/>خطوة بخطوة</h2><span>استمرّ في التعلّم</span></div>
         <div className="nabd-tracker-stats">
           <button type="button" className="nabd-stat-tile nabd-stat-violet" onClick={()=>onNavigateTab('chapters')}><BookOpenText size={23}/><strong>{completed}</strong><span>دروس راجعتها</span></button>
           <button type="button" className="nabd-stat-tile nabd-stat-honey" onClick={()=>onNavigateTab('quiz')}><ClipboardCheck size={23}/><strong>{tests.length}</strong><span>اختبارات أنجزتها</span></button>
@@ -117,8 +117,8 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
       <div className="nabd-quick-actions">
         <button type="button" className="nabd-quick-action qa-violet" onClick={()=>onNavigateTab('chapters')}><span className="nabd-quick-art"><img src={artBase+'books.svg'} alt=""/></span><strong>دروسي</strong><small>شرح واضح خطوة بخطوة</small></button>
         <button type="button" className="nabd-quick-action qa-mint" onClick={()=>onNavigateTab('lab')}><span className="nabd-quick-art"><img src={artBase+'microscope.svg'} alt=""/></span><strong>المختبر</strong><small>شاهد الأعضاء وتفاعل معها</small></button>
-        <button type="button" className="nabd-quick-action qa-honey" onClick={()=>onNavigateTab('quiz')}><span className="nabd-quick-art"><img src={artBase+'trophy.svg'} alt=""/></span><strong>اختبر نفسك</strong><small>أسئلة لتثبيت المعلومة</small></button>
-        <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><img src={artBase+'brain.svg'} alt=""/></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
+        <button type="button" className="nabd-quick-action qa-honey" onClick={()=>onNavigateTab('quiz')}><span className="nabd-quick-art"><img src={artBase+'quiz-memo.svg'} alt=""/></span><strong>اختبر نفسك</strong><small>أسئلة لتثبيت المعلومة</small></button>
+        <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><img src={artBase+'review-search.svg'} alt=""/></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
       </div>
       <div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html?voice=1')}><Headphones size={19}/> استمع إلى المعلّمة B</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
       <p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية التي لم تُراجع بعد تُعرض بحسب حالتها الفعلية؛ لا تُحتسب ميزة غير مكتملة إنجازاً دراسياً.</p>
