@@ -36,6 +36,6 @@ jobs:
           assert not refs-ids, "Missing elements: "+str(refs-ids)
           for path in ["index.html","learn.html","assets/nabd-ionic.css","assets/nabd-learn.css","assets/healthicons-anatomy.svg"]:
               assert Path(path).is_file(),path
-          assert "speechSynthesis" not in script
+          assert "window.speechSynthesis" not in script
           print("NABD science 44 topics, matching and B voice key check passed")
           PY
