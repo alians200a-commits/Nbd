@@ -60,7 +60,9 @@ jobs:
           html=html.replace(root_tag,root_tag+'\\n'+bundle,1)
           assert html.index('<div id="admin-root"') < html.index('<script>')
           assert html.index('<script>') < html.index('</body>')
-          assert html.count('<script>')==1
+          # React DOM contains an inert literal '<script>' in its minified source.
+          # Count the actual closing tag, not text fragments inside JS strings.
+          assert html.count('</script>')==1
           assert 'src="./assets/' not in html
           assert len(html)>100000
           out=Path('NABD_ADMIN_PRIVATE.html')
