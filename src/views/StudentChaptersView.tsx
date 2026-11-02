@@ -6,7 +6,7 @@ import type { TabType } from '../components/Sidebar';
 
 interface Props { onNavigateTab: (tab: TabType, params?: {chapter?: number}) => void }
 const artBase=import.meta.env.BASE_URL + 'nabd-art/';
-const artFor=['brain','bone','arm','intestine','heart','lungs','kidneys','dna','eye','thyroid','antibody'];
+const artFor=['brain','bone','arm','intestine','heart','lungs','kidneys','dna-fluent','eye','thyroid','antibody'];
 const colors=['lilac','peach','mint','sky','peach','lilac','sky','mint','lilac','peach','mint'];
 
 export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
@@ -17,14 +17,14 @@ export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
     <div className="student-page-heading">
       <span className="student-eyebrow"><Sparkles size={16}/> تعلّم خطوة خطوة</span>
       <h1>كل فصل حكاية اكتشاف</h1>
-      <p>اختَر جهازاً من جسم الإنسان، واقرأ درسه أو شوف مجسمه بالمختبر.</p>
+      <p>اختَر جهازاً من جسم الإنسان، واقرأ درسه أو شاهد مجسمه في المختبر.</p>
     </div>
     <label className="student-chapter-search">
       <Search size={20} aria-hidden="true" />
       <input aria-label="ابحث في فصول الأحياء" type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="ابحث عن فصل، عضو أو موضوع..." />
     </label>
     <div className="student-chapters-count">فصول المنهج <strong>{chapters.length} من 11</strong></div>
-    {chapters.length===0 && <div className="student-empty-state">ما لقينا فصل بهذا الاسم. جرّب اسم جهاز أو عضو ثاني.</div>}
+    {chapters.length===0 && <div className="student-empty-state">لم نعثر على فصل بهذا الاسم. جرّب البحث باسم الجهاز أو العضو.</div>}
     <div className="student-all-chapters">
       {chapters.map(c=>{
         const complete=Boolean(state.finishedTopics[String(c.id)]);
