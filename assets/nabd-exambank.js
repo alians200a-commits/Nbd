@@ -48,8 +48,23 @@ function exportCorrections(){
 }
 function show(){const a=$("answer");const visible=!a.classList.contains("hidden");a.classList.toggle("hidden",visible);$("reveal").textContent=visible?"أظهر الجواب المستخرج":"إخفاء الجواب"}
 function stats(){const pages=bank.page_audit;const noQuestion=pages.filter(p=>!p.markers_found).length;const exams=bank.questions.filter(q=>q.page_years_mentioned.length).length;$("bank-status").textContent="✓ استوردت "+bank.questions.length+" سؤالاً مرشحاً من 143 صفحة. صفحات بلا علامة سؤال نصية: "+noQuestion+". الأسئلة المدققة بشرياً: صفر.";$("audit").textContent="تم تحليل "+pages.length+" صفحة؛ "+exams+" مرشحاً يقع في صفحات تذكر سنوات امتحانية. الربط الدقيق للسنة بالسؤال والإجابات يحتاج مراجعة بصرية للملزمة.";drawFilters();filter()}
-async function importBank(file){if(!file)return;if(file.size>8*1024*1024)throw Error("ملف الأسئلة أكبر من الحد المسموح");const b=JSON.parse(await file.text());if(!valid(b))throw Error("هذا ليس ملف بنك أسئلة نَبْض المعتمد أو بناؤه غير صحيح");bank=b;await store("bank",b);stats();say("تم حفظ بنك الأسئلة بالكامل على جهازك.")}
-async function importPdf(file){if(!file)return;if(file.size>30*1024*1024)throw Error("حجم PDF غير مناسب");const first=await file.slice(0,5).text();if(first!=="%PDF-")throw Error("ملف المصدر ليس PDF سليماً");if(bookUrl)URL.revokeObjectURL(bookUrl);currentPdf=file;bookUrl=URL.createObjectURL(file);await store("sourcepdf",file);say("PDF الملزمة جاهز لفتح صفحة السؤال الأصلية")}
+async function importBank(file){if(!file)return;if(file.size>8*1024*1024)throw Error("ملف الأسئلة أكبر من الحد المسموح");const b=JSON.parse(await file.text());if(!valid(b))throw Error("هذا ليس ملف بنك أسئلة نَبْض المعتمد أو بناؤه غير صحيح");if(b.source_pdf_sha256!=="a8439096ba21b74f5e35927687616d0d23bb9bb2ce42000dcb638c59e527e2b6")throw Error("بنك الأسئلة لا يستند إلى ملف الملزمة الأصلي المعتمد.");bank=b;await store("bank",b);stats();say("تم حفظ بنك الأسئلة بالكامل على جهازك.")}
+async function importPdf(file){
+ if(!file)return;
+ if(file.size>30*1024*1024)throw Error("حجم PDF غير مناسب");
+ const first=await file.slice(0,5).text();
+ if(first!=="%PDF-")throw Error("ملف المصدر ليس PDF سليماً");
+ if(!window.crypto?.subtle)throw Error("تحتاج HTTPS للتحقق من مطابقة صفحة الملزمة الأصلية.");
+ const data=await file.arrayBuffer();
+ const digest=await crypto.subtle.digest("SHA-256",data);
+ const real=[...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,"0")).join("");
+ const expected=bank?.source_pdf_sha256||"a8439096ba21b74f5e35927687616d0d23bb9bb2ce42000dcb638c59e527e2b6";
+ if(real!==expected)throw Error("هذا ليس ملف الملزمة المعتمد؛ بصمته مختلفة. لا يجوز اعتماد مقارنة الصفحات من ملف آخر.");
+ if(bookUrl)URL.revokeObjectURL(bookUrl);
+ currentPdf=file;bookUrl=URL.createObjectURL(file);
+ await store("sourcepdf",file);
+ say("✓ تم التحقق من بصمة PDF المطابقة للملزمة المعتمدة؛ يمكنك مقارنة الأسئلة بالصفحات الأصلية.");
+}
 function bind(){$("bank-input").onchange=e=>importBank(e.target.files?.[0]).catch(err=>$("bank-status").textContent=err.message);$("pdf-input").onchange=e=>importPdf(e.target.files?.[0]).catch(err=>say(err.message));$("chapter-filter").addEventListener("ionChange",filter);$("question-search").addEventListener("ionInput",filter);$("question-filter").addEventListener("ionChange",filter);$("prev").onclick=()=>{cursor=Math.max(0,cursor-1);render()};$("next").onclick=()=>{cursor=Math.min(filtered.length-1,cursor+1);render()};$("reveal").onclick=show;$("open-page").onclick=openPage;$("self-correct").onclick=()=>assess(true);$("self-wrong").onclick=()=>assess(false);$("manual-review").onclick=manualCheck;$("download-audit").onclick=auditCSV;$("save-correction").onclick=storeCorrection;$("export-corrections").onclick=exportCorrections}
 async function start(){bind();try{const b=await get("bank");if(valid(b)){bank=b;stats()}}catch(_){}try{const blob=await get("sourcepdf");if(blob instanceof Blob)bookUrl=URL.createObjectURL(blob)}catch(_){}}
 document.readyState==="loading"?document.addEventListener("DOMContentLoaded",start):start();
