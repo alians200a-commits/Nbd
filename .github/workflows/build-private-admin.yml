@@ -1,0 +1,64 @@
+name: "Build private offline administrator app"
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/admin/**'
+      - 'admin.html'
+      - 'vite.admin.config.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/build-private-admin.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  admin-offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - name: Compile separate private administrator bundle
+        run: npm run build:admin
+      - name: Produce a single offline HTML file without public dependencies
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          root=Path('admin-private-dist')
+          html=(root/'admin.html').read_text(encoding='utf-8')
+          scripts=re.findall(r'<script[^>]+src="([^"]+)"[^>]*></script>',html)
+          styles=re.findall(r'<link[^>]+href="([^"]+\.css)"[^>]*>',html)
+          assert len(scripts)==1,'Expected a single inlined administrator JS bundle'
+          for path in scripts+styles:
+              assert path.startswith('./assets/') and '..' not in path,'Unexpected asset path'
+          for path in scripts:
+              js=(root/path.removeprefix('./')).read_text(encoding='utf-8')
+              assert 'import(' not in js[:80], 'Unexpected dynamic chunk'
+              html=re.sub(r'<script[^>]+src="'+re.escape(path)+'"[^>]*></script>',
+                          lambda _: '<script>'+js.replace('</script','<\\/script')+'</script>',html,count=1)
+          for path in styles:
+              css=(root/path.removeprefix('./')).read_text(encoding='utf-8')
+              html=re.sub(r'<link[^>]+href="'+re.escape(path)+'"[^>]*>',
+                          lambda _: '<style>'+css+'</style>',html,count=1)
+          html=re.sub(r'<link[^>]+rel="modulepreload"[^>]*>', '',html)
+          html=html.replace('href="./nabd-art/brain.svg"','href="data:,"')
+          html=re.sub(r'<link[^>]+rel="manifest"[^>]*>', '',html)
+          html=html.replace('</head>', '<meta name="robots" content="noindex,nofollow"><meta name="referrer" content="no-referrer"></head>')
+          html=html.replace('ما ينحفظ الرمز', 'ما ينحفظ الرمز')
+          assert 'src="./assets/' not in html
+          assert len(html)>100000
+          out=Path('NABD_ADMIN_PRIVATE.html')
+          out.write_text(html,encoding='utf-8')
+          print('Private standalone admin bytes:',out.stat().st_size)
+          PY
+      - name: Save downloadable private admin app only (not published to students)
+        uses: actions/upload-artifact@v4
+        with:
+          name: nabd-private-admin-html
+          path: NABD_ADMIN_PRIVATE.html
+          retention-days: 30
+          if-no-files-found: error
