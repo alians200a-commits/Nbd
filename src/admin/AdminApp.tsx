@@ -11,7 +11,7 @@ type Page = 'home' | 'generate' | 'review' | 'features' | 'settings' | string;
 type PublicClip = { title:string;file:string;voice:string;approved:boolean };
 const GENERATOR='gemini-baghdad-voice.yml';
 const APPROVER='approve-nabd-gemini-voice.yml';
-const voiceBase=import.meta.env.BASE_URL+'nabd-voice/';
+const voiceBase='https://alians200a-commits.github.io/Nbd/nabd-voice/';
 const messages:Record<string,string> = {queued:'بالانتظار',in_progress:'قيد التنفيذ',completed:'مكتمل',success:'نجحت',failure:'فشلت',cancelled:'أُلغيت'};
 
 const fmtDate=(date:string)=>new Date(date).toLocaleString('ar-IQ',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
