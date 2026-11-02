@@ -1,0 +1,137 @@
+/* NABD 9.0: layout + Iraqi Arabic typography only.
+   All buttons, lists, cards, tabs, chips, search and icons are native open-source Ionic / Ionicons UI components.
+   https://github.com/ionic-team/ionic-framework (MIT)
+   https://github.com/ionic-team/ionicons (MIT) */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap');
+:root {
+  --ion-font-family:'Cairo',Tahoma,Arial,sans-serif;
+  --ion-color-primary:#2257ad;
+  --ion-color-primary-rgb:34,87,173;
+  --ion-color-primary-contrast:#ffffff;
+  --ion-color-primary-contrast-rgb:255,255,255;
+  --ion-color-primary-shade:#1e4d98;
+  --ion-color-primary-tint:#3868b5;
+  --ion-color-secondary:#007e79;
+  --ion-color-secondary-rgb:0,126,121;
+  --ion-color-secondary-contrast:#fff;
+  --ion-color-secondary-contrast-rgb:255,255,255;
+  --ion-color-secondary-shade:#006f6a;
+  --ion-color-secondary-tint:#1a918c;
+  --ion-color-tertiary:#835722;
+  --ion-color-tertiary-rgb:131,87,34;
+  --ion-color-tertiary-contrast:#fff;
+  --ion-color-tertiary-contrast-rgb:255,255,255;
+  --ion-background-color:#f5f7fa;
+  --ion-text-color:#162a44;
+  --ion-card-background:#fff;
+  --ion-toolbar-background:#fff;
+  --ion-item-background:#fff;
+  --ion-color-step-150:#e1e8f0;
+}
+html,body {height:100%;margin:0}
+body {background:#f5f7fa; font-size:14px}
+ion-app {--ion-safe-area-top:env(safe-area-inset-top)}
+ion-content {--background:#f5f7fa}
+ion-toolbar {--border-color:#e3e9f0}
+ion-tab-bar {--background:#fff;--border:#e0e8f0}
+ion-tab-button {font-size:11px;min-width:0}
+ion-tab-button ion-icon {font-size:23px;margin-bottom:3px}
+ion-button {font-weight:700;--border-radius:10px;letter-spacing:0;text-transform:none}
+ion-card {box-shadow:none;border:1px solid #e3e8ef;border-radius:15px;margin:0}
+ion-card-title {font-weight:800;font-size:19px}
+ion-item {--background:transparent;--min-height:66px;--padding-start:14px;--inner-padding-end:14px;--border-color:#edf1f6}
+ion-item ion-label h3 {font-weight:700;font-size:14px;line-height:1.5}
+ion-item ion-label p {font-size:11px;line-height:1.7}
+ion-icon {vertical-align:middle}
+ion-searchbar {--border-radius:12px;--box-shadow:none;--background:#fff;--placeholder-color:#66768a;padding:0}
+ion-chip {font-size:11px;height:28px}
+ion-progress-bar {height:6px;border-radius:3px}
+ion-toast {--border-radius:12px}
+.page-body {max-width:1040px;margin:0 auto;padding:18px 17px 95px}
+.top-brand {display:flex;align-items:center;gap:8px;font-weight:800;color:#182f4c}
+.top-brand .mark {display:flex;align-items:center;justify-content:center;color:#fff;background:#2257ad;width:34px;height:34px;border-radius:10px}
+.top-brand strong {font-size:21px}
+.toolbar-small {font-size:12px;color:#64758a}
+.home-heading {padding:12px 2px 16px}
+.kicker {color:#356a88;font-weight:700;font-size:11px;letter-spacing:.15px}
+.home-heading h1,.screen-heading h1 {font-weight:800;font-size:clamp(23px,4vw,30px);line-height:1.6;margin:2px 0 4px}
+.home-heading p,.screen-heading p {color:#61748b;font-size:12px;line-height:1.8;margin:0}
+.feature-card {overflow:hidden}
+.feature-layout {display:grid;grid-template-columns:minmax(0,1.3fr) minmax(135px,.8fr);align-items:stretch;min-height:210px}
+.feature-copy {padding:22px 20px}
+.feature-copy h2 {font-size:20px;font-weight:800;line-height:1.55;margin:12px 0 8px}
+.feature-copy p {font-size:12px;color:#61748b;line-height:1.8;margin:0 0 18px}
+.feature-cover {overflow:hidden;background:#eaf0f5;display:flex;align-items:center;justify-content:center}
+.feature-cover img {display:block;width:100%;height:100%;max-height:280px;object-fit:cover;object-position:center;filter:saturate(.88)}
+.feature-caption {display:block;font-size:10px;color:#78869a;margin-top:7px}
+.section-header {display:flex;justify-content:space-between;align-items:center;margin:26px 1px 12px;gap:12px}
+.section-header h2 {font-size:18px;font-weight:800;margin:0}
+.section-header span {font-size:11px;color:#6b7d91}
+.section-header ion-button {margin:0;font-size:12px}
+.task-card ion-card-content {padding:13px 12px}
+.task-row {display:flex;gap:13px;align-items:center}
+.task-row ion-icon {color:#007e79;font-size:25px;flex-shrink:0}
+.task-row .text {flex:1;min-width:0}
+.task-row .text strong {display:block;font-size:13px;color:#1b314b}
+.task-row .text small {display:block;font-size:11px;color:#6a788e;line-height:1.75}
+.task-row ion-button {font-size:12px}
+.chapter-preview {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.chapter-preview ion-card {cursor:pointer}
+.chapter-preview ion-card-content {padding:16px}
+.chapter-no {font:800 17px/1.3 Cairo,sans-serif;color:#2b639c}
+.chapter-title {font-size:13px;line-height:1.6;font-weight:800;margin-top:11px}
+.chapter-sub {font-size:11px;color:#708198;margin-top:5px}
+.chapter-preview ion-icon {font-size:19px;color:#486a92}
+.screen-heading {padding:10px 0 17px}
+.screen {display:none}
+.screen.is-active {display:block}
+.lesson-list ion-item {cursor:pointer}
+.chapter-num {font-size:16px;font-weight:800;background:#edf3fa;color:#23558d;width:38px;height:38px;border-radius:11px;display:grid;place-items:center}
+.small-help {font-size:11px;color:#718398;line-height:1.8}
+.atlas-viewer {height:min(57vh,460px);min-height:290px;display:block;width:100%;background:#eef2f6}
+.lab-card {overflow:hidden}
+.lab-meta {padding:14px 15px 15px}
+.lab-meta h2 {font-size:20px;font-weight:800;margin:5px 0 5px}
+.lab-meta p {font-size:12px;color:#687a90;margin:4px 0 10px;line-height:1.75}
+.lab-meta ion-select {min-height:47px;--padding-start:0;border-top:1px solid #edf0f4}
+.lab-status {font-size:11px;color:#687b8f;min-height:23px;margin-top:7px}
+.source-line {border-top:1px solid #edf1f4;padding-top:13px;margin-top:10px}
+.source-line a {color:#2257ad;font-size:12px;font-weight:700}
+.quiz-shell {max-width:740px;margin:0 auto}
+.quiz-body {padding:22px 17px}
+.quiz-body h2 {font-size:21px;font-weight:800;line-height:1.7;margin:14px 0 17px}
+.quiz-options {display:grid;gap:10px}
+.quiz-options ion-button {height:auto;min-height:52px;white-space:normal;text-align:start;--padding-top:14px;--padding-bottom:14px}
+.quiz-options ion-button .answer-text {white-space:normal;line-height:1.7}
+.quiz-feedback {margin:17px 0 0;padding:13px;background:#eef6f5;border-inline-start:3px solid #007e79;border-radius:8px;font-size:12px;line-height:1.95}
+.review-row {display:flex;justify-content:space-between;gap:14px;align-items:center;padding:15px;border-bottom:1px solid #ecf0f4}
+.review-row:last-child {border-bottom:0}
+.review-row strong {font-size:13px;line-height:1.6}
+.review-row small {color:#76859b;font-size:11px;display:block}
+.plan-form {display:flex;align-items:flex-end;gap:10px}
+.plan-form ion-item {flex:1;--min-height:58px}
+.plan-form ion-button {flex:0 0 auto}
+.plan-list ion-checkbox {font-size:13px}
+.empty {padding:24px 14px;color:#64778d;text-align:center;font-size:12px;line-height:2}
+.information {font-size:11px;color:#718298;line-height:1.9;margin-top:14px}
+ion-note {font-size:11px;line-height:1.7}
+.more-sheet ion-item {--min-height:60px}
+.desktop-links {display:none}
+#main-content {--padding-bottom:env(safe-area-inset-bottom)}
+.footer-border {border-top:1px solid #e4eaf0}
+[hidden] {display:none!important}
+@media(min-width:850px) {
+ .page-body {padding:28px 34px 60px}
+ .feature-layout {min-height:265px}
+ .feature-copy {padding:30px 28px}
+ .feature-copy h2 {font-size:27px}
+ .chapter-preview {grid-template-columns:repeat(4,minmax(0,1fr))}
+ .desktop-links {display:flex;gap:6px}
+ .home-heading {padding-top:16px}
+ .atlas-viewer {height:480px}
+ .screen-heading {padding:14px 0 20px}
+ .feature-cover img {max-height:310px}
+ ion-tab-bar {max-width:680px;margin:0 auto}
+}
+@media(max-width:390px) {.feature-copy {padding:16px}.feature-layout{grid-template-columns:minmax(0,1.3fr) minmax(108px,.65fr)}.feature-copy h2{font-size:17px}.chapter-preview ion-card-content{padding:12px}.page-body{padding-left:12px;padding-right:12px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
