@@ -18,7 +18,7 @@ const chapters=[
 ];
 const models=[
  ["brain","الدماغ",1,"nerve"],["spinal-cord","الحبل الشوكي",1,"nerve"],
- ["skeleton","الهيكل العظمي",2,"skeleton"],["joints","المفاصل",2,"joints"],
+ ["skeleton","الهيكل العظمي",2,"skeleton"],
  ["muscles","العضلات",3,"arm"],["stomach","المعدة",4,"stomach"],
  ["liver","الكبد",4,"liver"],["heart","القلب",5,"blood-vessel"],
  ["lungs","الرئتان",6,"lungs"],["kidneys","الكليتان",7,"kidneys"],
