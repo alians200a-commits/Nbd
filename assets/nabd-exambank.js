@@ -9,10 +9,41 @@ async function get(k){const db=await initDb();return new Promise((ok,bad)=>{let 
 function valid(b){return b&&b.format==="NABD_PRIVATE_QUESTION_BANK_V1"&&b.version===1&&b.source_total_pages===143&&Array.isArray(b.questions)&&Array.isArray(b.page_audit)&&b.questions.length>300&&b.questions.every(q=>typeof q.id==="string"&&Number.isInteger(q.pdf_page)&&q.pdf_page>=1&&q.pdf_page<=143&&typeof q.question==="string"&&typeof q.source_segment_normalized==="string"&&typeof q.review_status==="string")}
 function drawFilters(){const menu=$("chapter-filter");menu.replaceChildren();const all=document.createElement("ion-select-option");all.value="all";all.textContent="جميع الفصول";menu.append(all);for(let i=1;i<=11;i++){const e=document.createElement("ion-select-option");e.value=String(i);e.textContent="الفصل "+i;menu.append(e)}menu.value="all"}
 function filter(){if(!bank)return;let ch=$("chapter-filter").value||"all",q=String($("question-search").value||"").trim(),status=$("question-filter").value||"all";filtered=bank.questions.filter(x=>(ch==="all"||x.chapter===Number(ch))&&(!q||x.question.includes(q)||x.source_segment_normalized.includes(q))&&(status==="all"||(status==="marked"&&x.page_years_mentioned.length)||(status==="needs"&&(x.v4_source_audit?.priority==="HIGH"||(!x.v4_source_audit&&(!x.answer_draft?.trim()||x.review_status!=="auto_split_needs_review"))))));cursor=0;render()}
+function renderInlineParts(q){
+ const panel=$("inline-practice"),area=$("inline-practice-items");
+ panel.classList.add("hidden");area.replaceChildren();
+ const parts=q?.practice_parts;
+ if(!Array.isArray(parts)||!parts.length)return;
+ panel.classList.remove("hidden");
+ let successes=0;
+ for(const p of parts){
+  const row=document.createElement("article");row.className="section";
+  row.style.margin="8px 0";row.style.padding="12px";
+  const label=document.createElement("strong");label.textContent=(q.practice_parent_prompt||"سؤال من المصدر")+" — "+p.prompt_label;
+  row.append(label);
+  const answer=document.createElement("p");answer.className="answer hidden";answer.textContent=p.answer_from_page;answer.style.margin="10px 0";
+  const controls=document.createElement("div");controls.className="controls";
+  const show=document.createElement("ion-button");show.fill="outline";show.size="small";show.textContent="أظهر الجواب المطبوعة بالملزمة";
+  show.onclick=()=>{answer.classList.toggle("hidden");show.textContent=answer.classList.contains("hidden")?"أظهر الجواب المطبوعة بالملزمة":"إخفاء الجواب"};
+  const got=document.createElement("ion-button");got.fill="clear";got.color="success";got.size="small";got.textContent="عرفته";
+  const missed=document.createElement("ion-button");missed.fill="clear";missed.color="warning";missed.size="small";missed.textContent="أعيد مراجعته";
+  const key="source-part:"+p.part_id;
+  const check=value=>{self[key]=value;try{localStorage.setItem(PROGRESS,JSON.stringify(self))}catch(_){}
+    got.color=value==="correct"?"success":"medium";missed.color=value==="review"?"danger":"medium";drawCount();say("حفظنا تقييمك الذاتي للفقرة "+p.part_id)};
+  got.onclick=()=>check("correct");missed.onclick=()=>check("review");
+  if(self[key]==="correct")successes++;
+  controls.append(show,got,missed);row.append(controls,answer);
+  const note=document.createElement("small");note.textContent="مصدر الفقرة: صفحة PDF "+p.source_pdf_page+" · السنة والدور غير مثبتين لهذا الفرع.";row.append(note);
+  area.append(row);
+ }
+ function drawCount(){const n=parts.filter(x=>self["source-part:"+x.part_id]==="correct").length;
+ $("inline-practice-progress").textContent=n+" / "+parts.length+" فروع تعرف جوابها — من دون زيادة العدد الأصلي للأسئلة."}
+ drawCount();
+}
 function render(){if(!bank)return;const q=filtered[cursor];$("quiz-panel").classList.remove("hidden");$("prev").disabled=cursor===0;$("next").disabled=cursor>=filtered.length-1;$("reveal").disabled=!q;$("open-page").disabled=!q;$("self-correct").disabled=!q;$("self-wrong").disabled=!q;$("open-topic-lab").disabled=!q;
 $("answer").classList.add("hidden");$("reveal").textContent="أظهر الجواب المستخرج";
-if(!q){$("save-correction").disabled=true;$("manual-review").disabled=true; $("question-text").textContent="لا توجد أسئلة مطابقة للبحث.";$("question-page").textContent="";$("question-number").textContent="";$("question-chapter").textContent="";$("years-note").textContent="";$("review-warning").textContent="";$("score-note").textContent="لا توجد نتائج.";return}
-$("save-correction").disabled=false;$("manual-review").disabled=false;$("manual-review").textContent=manual[q.id]?"✓ سبق قارنت هذا السؤال بالأصل":"علّم السؤال: قارنته بالأصل";$("manual-review-note").textContent=manual[q.id]?"مراجعة شخصية بتاريخ "+new Date(manual[q.id]).toLocaleDateString("ar-IQ")+"؛ لا تعني التدقيق الوزاري المعتمد.":"ما زال يحتاج مقارنة حرفية بصفحة الملزمة، بما فيها الرسوم أو الأجزاء المقطوعة.";$("question-number").textContent=q.id;$("question-page").textContent="PDF ص "+q.pdf_page;$("question-chapter").textContent="الفصل "+q.chapter;$("progress").textContent=(cursor+1)+" / "+filtered.length;$("question-text").textContent=corrections[q.id]?.question||q.question;
+if(!q){$("inline-practice").classList.add("hidden");$("save-correction").disabled=true;$("manual-review").disabled=true; $("question-text").textContent="لا توجد أسئلة مطابقة للبحث.";$("question-page").textContent="";$("question-number").textContent="";$("question-chapter").textContent="";$("years-note").textContent="";$("review-warning").textContent="";$("score-note").textContent="لا توجد نتائج.";return}
+$("save-correction").disabled=false;$("manual-review").disabled=false;$("manual-review").textContent=manual[q.id]?"✓ سبق قارنت هذا السؤال بالأصل":"علّم السؤال: قارنته بالأصل";$("manual-review-note").textContent=manual[q.id]?"مراجعة شخصية بتاريخ "+new Date(manual[q.id]).toLocaleDateString("ar-IQ")+"؛ لا تعني التدقيق الوزاري المعتمد.":"ما زال يحتاج مقارنة حرفية بصفحة الملزمة، بما فيها الرسوم أو الأجزاء المقطوعة.";$("question-number").textContent=q.id;$("question-page").textContent="PDF ص "+q.pdf_page;$("question-chapter").textContent="الفصل "+q.chapter;$("progress").textContent=(cursor+1)+" / "+filtered.length;$("question-text").textContent=q.practice_parts?.length?(q.practice_parent_prompt+" — "+q.practice_parts.length+" فروع منفصلة للمراجعة دون إظهار أجوبتها ضمن السؤال"):(corrections[q.id]?.question||q.question);renderInlineParts(q);
 $("years-note").textContent=q.page_years_mentioned.length?"السنوات الظاهرة بهذه الصفحة (ربطها بالسؤال غير موثق): "+q.page_years_mentioned.join("، "):"لا توجد سنة وزارية موثقة لهذا السؤال.";
 $("review-warning").textContent=q.review_status==="auto_split_needs_review"?"استخراج السؤال والجواب آلي؛ قارن كلاهما بالصفحة قبل الاعتماد.":"فصل الإجابة عن السؤال لم يُحسم آلياً؛ قد يتضمن النص إجابات أو فقرات أخرى. راجع صورة الصفحة الأصلية.";
 $("answer").textContent=corrections[q.id]?.answer||q.answer_draft||q.source_segment_normalized;$("edited-question").value=corrections[q.id]?.question||q.question;$("edited-answer").value=corrections[q.id]?.answer||q.answer_draft||"";$("edited-ministerial-year").value=corrections[q.id]?.year||"";$("edited-ministerial-round").value=corrections[q.id]?.round||"";$("edit-status").textContent=corrections[q.id]?"تصحيح محفوظ محلياً: راجع المصدر قبل الاعتماد.":"لا يوجد تصحيح يدوي محفوظ لهذا السؤال.";$("score-note").textContent="حالة التقييم الذاتي: "+(self[q.id]==="correct"?"أعرف الجواب":self[q.id]==="review"?"أحتاج مراجعة":"لم يُقيّم")+" · هذه ليست درجة امتحان مصححة آلياً.";
