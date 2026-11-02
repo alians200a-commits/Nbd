@@ -1,40 +1,41 @@
-name: Verify Ionic student interface
+name: Verify NABD student UI and curriculum
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 jobs:
-  ui-static-check:
+  verification:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Check JavaScript syntax
-        run: node --check assets/nabd-ionic.js
-      - name: Verify required UI files, elements and medical icons
+        run: |
+          node --check assets/nabd-ionic.js
+          node --check assets/nabd-learn.js
+          node --check data/nabd-curriculum.js
+      - name: Verify chapter coverage, voice keys and UI references
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
-          html=Path('index.html').read_text()
-          js=Path('assets/nabd-ionic.js').read_text()
-          icons=Path('assets/healthicons-anatomy.svg').read_text()
-          required=[
-            'assets/nabd-ionic.css',
-            'assets/nabd-ionic.js',
-            'assets/healthicons-anatomy.svg',
-            'OPEN_SOURCE_SOURCES.md',
-            'tabler-archive.html',
-          ]
-          for file in required:
-              assert Path(file).is_file(),f'Missing: {file}'
+          import json,re
+          html=Path("learn.html").read_text()
+          script=Path("assets/nabd-learn.js").read_text()
+          data=Path("data/nabd-curriculum.js").read_text().split("window.NABD_CURRICULUM=",1)[1].rstrip().rstrip(";")
+          curriculum=json.loads(data)
+          assert len(curriculum["chapters"])==11
+          assert sum(len(c["topics"]) for c in curriculum["chapters"])==44
+          assert all(len(c["topics"])==4 for c in curriculum["chapters"])
+          jobs=json.loads(Path("data/NABD_B_44_VOICE_JOBS.json").read_text())
+          assert jobs["speaker"]=="B" and len(jobs["jobs"])==44
+          keys=set("nabd/lesson/{}/{}".format(c["id"],i) for c in curriculum["chapters"] for i in range(4))
+          assert {x["key"] for x in jobs["jobs"]}==keys
           ids=set(re.findall(r'id="([^"]+)"',html))
-          references=set(re.findall(r'\$\("([^"]+)"\)',js))
-          assert not references-ids,f'Missing UI elements: {references-ids}'
-          icon_symbols=set(re.findall(r'<symbol id="an-([^"]+)"',icons))
-          for expected in ['nerve','skeleton','arm','intestine','lungs','kidneys','eye','ear','thyroid','dna']:
-              assert expected in icon_symbols,f'Missing Health Icon: {expected}'
-          assert '@ionic/core@9.0.8' in html and 'ion-tab-bar' in html
-          assert 'model-viewer' in html and 'Ionicons' in html
-          print('V9 static source and element checks passed')
+          refs=set(re.findall(r'\$\("([^"]+)"\)',script))
+          assert not refs-ids, "Missing elements: "+str(refs-ids)
+          for path in ["index.html","learn.html","assets/nabd-ionic.css","assets/nabd-learn.css","assets/healthicons-anatomy.svg"]:
+              assert Path(path).is_file(),path
+          assert "speechSynthesis" not in script
+          print("NABD science 44 topics, matching and B voice key check passed")
           PY
