@@ -132,6 +132,9 @@ function showAuditPage(){
  $("audit-page-description").textContent=pg?
    "صفحة PDF "+page+" — "+count+" سؤال مرشح — "+(pg.markers_found?"وجد الاستخراج علامة سؤال":"لم يستخرج النظام علامة سؤال مستقلة")+" — "+(record?"راجعتها شخصياً بتاريخ "+new Date(record.checkedAt).toLocaleDateString("ar-IQ"):"تحتاج مقارنة الصورة الأصلية"):
    "تعذّر تحديد بيانات الصفحة";
+ const extracted=Array.isArray(bank.source_pages_text)?bank.source_pages_text.find(p=>Number(p.page)===page):null;
+ $("source-page-text").textContent=extracted&&typeof extracted.text==="string"?extracted.text:"لا يتوفر نص مستخرج لهذه الصفحة؛ راجع ملف PDF الأصلي مباشرة.";
+ $("source-extracted-details").open=false;
  $("audit-page-note").value=record?.note||"";
  $("audit-page-counter").textContent=Object.keys(pageReview).length+" من "+bank.page_audit.length+" صفحة تمت مراجعتها شخصياً (ليست شهادة تدقيق حرفي).";
 }
