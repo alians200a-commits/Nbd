@@ -135,3 +135,15 @@ ion-note {font-size:11px;line-height:1.7}
 }
 @media(max-width:390px) {.feature-copy {padding:16px}.feature-layout{grid-template-columns:minmax(0,1.3fr) minmax(108px,.65fr)}.feature-copy h2{font-size:17px}.chapter-preview ion-card-content{padding:12px}.page-body{padding-left:12px;padding-right:12px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Actual CC0 medical pictograms: https://github.com/resolvetosavelives/healthicons */
+.anatomy-figure{width:53px;height:53px;display:grid;place-items:center;flex:0 0 auto;border-radius:14px;background:#eaf4f3;border:1px solid #d7e9e6}
+.anatomy-pictogram{display:block;width:38px;height:38px;overflow:visible}
+.chapter-preview .anatomy-figure{width:61px;height:61px;border-radius:15px;background:#e6eff4}
+.chapter-preview .anatomy-pictogram{width:46px;height:46px}
+.lesson-list ion-item .anatomy-figure{width:44px;height:44px}
+.lesson-list ion-item .anatomy-pictogram{width:32px;height:32px}
+.anatomy-small{display:block;width:24px;height:24px;vertical-align:middle}
+.anatomy-icon-tab{width:23px;height:23px;display:block;fill:#617c97;overflow:visible}
+ion-tab-button.tab-selected .anatomy-icon-tab,ion-tab-button[selected] .anatomy-icon-tab{fill:var(--ion-color-primary)}
+.model-reference{margin-bottom:8px;font-size:11px;color:#667a8e}
