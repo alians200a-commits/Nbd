@@ -1,0 +1,67 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ffffff"><title>نَبْض | بنك أسئلة الملزمة</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/css/ionic.bundle.css">
+<link rel="stylesheet" href="assets/nabd-ionic.css"><script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.esm.js"></script>
+<script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core@9.0.8/dist/ionic/ionic.js"></script>
+<style>main{max-width:900px;margin:auto;padding:15px 13px 70px}.section{background:white;border:1px solid #dfe7f0;border-radius:14px;padding:18px;margin-bottom:15px}.section h2{font-size:19px}.help{font-size:12px;color:#62768d;line-height:1.9}.warn{background:#fff3e5;border:1px solid #f0dabb;color:#76521f;border-radius:10px;padding:13px;margin:12px 0;font-size:12px;line-height:1.85}.question{font-size:20px;line-height:2;font-weight:700;white-space:pre-wrap;margin:15px 0}.answer{font-size:14px;line-height:2;white-space:pre-wrap;color:#324b62;border-right:3px solid #219b91;padding:9px 13px;background:#eff8f7;border-radius:8px;max-height:420px;overflow:auto}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.controls ion-button{margin:0}.meta{display:flex;flex-wrap:wrap;gap:9px;font-size:11px;color:#667f92}.badge{display:inline-block;background:#ebf2fb;color:#285786;padding:4px 9px;border-radius:8px}.quiz-score{color:#266e60;font-weight:700}.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px}.question-nav{display:flex;align-items:center;justify-content:space-between;gap:9px;margin:20px 0}.pdf-area{width:100%;height:65vh;border:1px solid #dfe6ef;background:#f4f7fc;border-radius:10px}input[type=file]{max-width:100%;font-size:12px}.readiness{border:1px solid #cedceb;background:#f5f8fd;padding:11px 12px;border-radius:8px;margin:12px 0;font-size:12px}.hidden{display:none!important}@media(max-width:500px){.filters{grid-template-columns:1fr}.question{font-size:17px}}</style>
+<script defer src="data/nabd-curriculum.js"></script><script defer src="assets/nabd-exambank.js"></script></head><body><ion-app mode="md"><ion-header class="ion-no-border"><ion-toolbar><ion-buttons slot="start"><ion-button href="learn.html" aria-label="العودة إلى مكتبة الدروس"><ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon></ion-button></ion-buttons><ion-title>بنك أسئلة الملزمة</ion-title></ion-toolbar></ion-header><ion-content><main>
+<section class="section"><ion-chip color="secondary" outline><ion-icon name="book-outline"></ion-icon><ion-label>بنك مصدرّي قابل للتدقيق</ion-label></ion-chip><h1>كل الأسئلة المكتشفة من الملزمة</h1><p class="help">استورد ملف البنك الخاص المرفق داخل حزمة الأسئلة، ثم حل الأسئلة المستخرجة من جميع صفحات الملزمة. سنعرض موضع كل سؤال وسنة الامتحان المذكورة بالصفحة دون الادعاء بأنها تخص السؤال نفسه.</p>
+<div class="warn">تنبيه الجودة: الأسئلة المستخرجة آلياً تحتاج تدقيقاً حرفياً ومقارنة بالأصل، خاصة الفراغات والجداول والرسوم والأسئلة الوزارية المؤشرة. لن تُحتسب إجابة تلقائياً على أنها صحيحة ما لم يراجع الطالب المصدر.</div>
+<label for="bank-input">ملف الأسئلة الخاص — NABD_PRIVATE_QBANK_V1.json</label><input type="file" id="bank-input" accept=".json,application/json" aria-label="استيراد بنك الأسئلة"><div id="bank-status" class="readiness" role="status">لم يتم استيراد بنك الأسئلة بعد.</div>
+<label for="pdf-input">الملزمة الأصلية PDF (للمقارنة الحرفية)</label><input type="file" id="pdf-input" accept=".pdf,application/pdf" aria-label="استيراد الملزمة الأصلية"><p class="help">تُحفظ البيانات على جهازك؛ لا تُرسل إلى GitHub أو لأي خادم من التطبيق.</p></section>
+<section id="quiz-panel" class="section hidden"><div class="meta"><span class="badge" id="question-number"></span><span class="badge" id="question-page"></span><span class="badge" id="question-chapter"></span></div>
+<div class="filters"><ion-select id="chapter-filter" interface="popover" label="اختر الفصل" label-placement="stacked" value="all"><ion-select-option value="all">جميع الفصول</ion-select-option></ion-select><ion-searchbar id="question-search" placeholder="ابحث في السؤال" debounce="150"></ion-searchbar></div>
+<ion-segment value="all" id="question-filter" scrollable><ion-segment-button value="all"><ion-label>كل الأسئلة</ion-label></ion-segment-button><ion-segment-button value="marked"><ion-label>صفحات فيها سنوات</ion-label></ion-segment-button><ion-segment-button value="needs"><ion-label>أولوية التدقيق</ion-label></ion-segment-button><ion-segment-button value="inline"><ion-label>فروع السؤال المركب</ion-label></ion-segment-button><ion-segment-button value="unsafe"><ion-label>سؤال قد يكشف جوابه</ion-label></ion-segment-button><ion-segment-button value="inline"><ion-label>فروع السؤال المركب</ion-label></ion-segment-button></ion-segment>
+<div class="question-nav"><ion-button id="prev" fill="outline"><ion-icon name="arrow-forward-outline" slot="start"></ion-icon>السابق</ion-button><span id="progress" class="quiz-score"></span><ion-button id="next" fill="outline">التالي<ion-icon name="arrow-back-outline" slot="end"></ion-icon></ion-button></div>
+<div id="question-text" class="question" aria-live="polite"></div><div id="unsafe-source-review" class="warn hidden">
+ هذه الفقرة طويلة ويُحتمل أن يكون الجواب مطبوعاً داخل نص السؤال؛ لذلك لم نعرضها كاختبار آلي.
+ <ion-button id="show-raw-question" fill="outline" size="small" color="tertiary">اعرض نص السؤال الخام للمراجعة فقط</ion-button>
+ <p id="raw-question-text" class="answer hidden" style="white-space:pre-wrap"></p>
+</div>
+<div id="inline-practice" class="section hidden" aria-label="فروع السؤال التي يتضمن مصدرها الإجابات">
+ <h3 style="font-size:17px">تدريب الفروع الأصلية للسؤال المركب</h3>
+ <p class="help">المصدر يطبع بعض الأجوبة داخل فروع السؤال نفسه. أخفينا الأجوبة هنا لتختبر معلوماتك، وما غيّرنا العدد الأصلي للأسئلة. هذه تدريبات ذاتية وليست تصحيحاً وزارياً.</p>
+ <div id="inline-practice-items"></div>
+ <span id="inline-practice-progress" class="quiz-score"></span>
+</div><p id="years-note" class="help"></p><div class="controls"><ion-button id="reveal" color="secondary">أظهر الجواب المستخرج</ion-button><ion-button id="open-page" fill="outline">صفحة المصدر PDF</ion-button><ion-button id="open-topic-lab" fill="outline">شاهد المختبر المرتبط بالفصل</ion-button></div>
+<div class="answer hidden" id="answer"></div><div id="review-warning" class="warn"></div>
+<div class="controls"><ion-button id="self-correct" fill="outline" color="success"><ion-icon name="checkmark-outline" slot="start"></ion-icon>عرفت جوابه</ion-button><ion-button id="self-wrong" fill="outline" color="danger"><ion-icon name="bookmark-outline" slot="start"></ion-icon>أعيد مراجعته</ion-button></div>
+<p class="help" id="score-note">هذا تقييم ذاتي، وليس تصحيحاً وزارياً آلياً.</p><div class="controls"><ion-button id="manual-review" color="secondary" fill="outline">علّم السؤال: قارنته بالأصل</ion-button><ion-button id="download-audit" fill="clear">صدّر قائمة التدقيق</ion-button></div><p class="help" id="manual-review-note">العلامة شخصية للتنظيم فقط، وليست شهادة تدقيق معتمدة.</p>
+<ion-accordion-group style="margin-top:16px">
+  <ion-accordion value="edit">
+    <ion-item slot="header" color="light"><ion-label><strong>تدقيق نص السؤال والجواب من صفحة المصدر</strong></ion-label></ion-item>
+    <div slot="content" style="padding:16px 10px">
+      <div class="warn">لا تكتب جواباً من الذاكرة. افتح صفحة PDF وقارن النص كاملاً قبل الحفظ. لا يتحول السؤال إلى وزاري موثّق أو تصحيح آلي بمجرد تسجيل هذه الملاحظة.</div>
+      <ion-textarea id="edited-question" auto-grow="true" rows="3" label="نص السؤال بعد المطابقة" label-placement="stacked" fill="outline"></ion-textarea>
+      <ion-textarea id="edited-answer" auto-grow="true" rows="5" label="نص الجواب بعد المطابقة" label-placement="stacked" fill="outline"></ion-textarea>
+      <ion-input id="edited-ministerial-year" type="number" min="1990" max="2035" label="سنة وزارية مطبوعة بجوار هذا السؤال (اختياري)" label-placement="stacked" fill="outline"></ion-input>
+      <ion-input id="edited-ministerial-round" label="الدور الوزاري المطبوع بجوار السؤال (اختياري)" label-placement="stacked" fill="outline"></ion-input>
+      <div class="controls"><ion-button id="save-correction" color="secondary">احفظ التدقيق على الجهاز</ion-button><ion-button id="export-corrections" fill="outline">صدّر تصحيحاتي</ion-button></div>
+      <p id="edit-status" class="help">أي تعديل هنا محلي فقط، وتظهر الإجابة المنقحة بعد الحفظ. لا يُعدّ توثيقاً وزارياً رسمياً.</p>
+    </div>
+  </ion-accordion>
+</ion-accordion-group></section>
+<section class="section"><h2>تدقيق السنوات الوزارية</h2><p class="help">الملزمة تذكر سنوات امتحانية بجانب الأسئلة. استخراج الصفحة لا يثبت وحده ارتباط سنة محددة بسؤال، لذا تظهر الحالة «غير موثّق» إلى أن يُفحص موضعها في PDF الأصلي.</p><div id="audit" class="help">أرفق المصدر لعرض فهرس التدقيق.</div><div class="section" id="page-audit-panel" style="margin:14px 0 0">
+ <h3 style="font-size:17px;margin:0 0 10px">مراجعة كل صفحات الملزمة الـ143</h3>
+ <p class="help">راجع حتى الصفحات التي لا يظهر فيها سؤال مستقل؛ قد تحتوي على فروع أو صور. فحصك هنا **شخصي** ولا يمنح إجابات أو سنوات وزارية اعتماداً رسمياً.</p>
+ <div class="filters">
+  <ion-select id="audit-page" interface="popover" label="اختر صفحة PDF" label-placement="stacked" value="1" aria-label="الصفحة المراد تدقيقها"></ion-select>
+  <ion-select id="audit-page-filter" interface="popover" label="تصفية الصفحات" label-placement="stacked" value="all" aria-label="تصفية سجل تغطية الصفحات">
+   <ion-select-option value="all">كل الصفحات</ion-select-option>
+   <ion-select-option value="without">صفحات لم يُستخرج منها سؤال</ion-select-option>
+   <ion-select-option value="unchecked">صفحات لم تُراجع يدوياً</ion-select-option>
+  </ion-select>
+ </div>
+ <div id="audit-page-description" class="readiness" role="status">استورد ملف بنك الأسئلة لعرض تغطية الصفحات.</div><details id="source-extracted-details" style="margin:13px 0">
+ <summary style="cursor:pointer;color:#2257ad;font-size:13px;font-weight:700">اقرأ النص المستخرج كاملاً من الصفحة (غير مدقّق حرفياً)</summary>
+ <pre id="source-page-text" style="white-space:pre-wrap;overflow-wrap:anywhere;direction:rtl;font-size:12px;line-height:1.8;max-height:360px;overflow:auto;padding:12px;background:#f3f7fb;border:1px solid #dce5f0;border-radius:9px"></pre>
+ <p class="help">النص المستخرج قد لا يحافظ على ترتيب الجداول أو الرسوم. صورة PDF الأصلية هي المرجع للتحقق من الحروف والسنوات.</p>
+ </details>
+ <ion-textarea id="audit-page-note" fill="outline" label="ملاحظتك على الصفحة" label-placement="stacked" auto-grow="true" rows="2" placeholder="هل يوجد سؤال ناقص أو صورة أو جدول يجب تفريغه؟"></ion-textarea>
+ <div class="controls">
+  <ion-button id="audit-open-source" fill="outline">افتح صفحة PDF</ion-button>
+  <ion-button id="audit-mark-page" color="secondary" fill="outline">سجّل مراجعة الصفحة</ion-button>
+  <ion-button id="audit-export-pages" fill="clear">صدّر سجل الصفحات</ion-button>
+ </div>
+ <p id="audit-page-counter" class="help">لم تُسجَّل أي مراجعة حتى الآن.</p>
+</div></section>
+</main></ion-content><ion-toast id="exam-toast" duration="2500" position="bottom"></ion-toast></ion-app></body></html>

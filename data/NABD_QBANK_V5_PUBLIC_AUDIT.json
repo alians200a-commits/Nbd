@@ -1,0 +1,35 @@
+{
+  "format": "NABD_QBANK_SOURCE_AUDIT_METADATA_V5",
+  "revision": "V5_SOURCE_INLINE_ANSWER_SUBPARTS",
+  "source_pdf_pages": 143,
+  "parent_candidate_question_records": 491,
+  "source_image_reviewed_parent_questions_for_inline_answers": 3,
+  "inline_answer_subparts_in_existing_parent_records": 13,
+  "subparts_by_parent": {
+    "B007-Q01": 6,
+    "B007-Q02": 4,
+    "B010-Q04": 3
+  },
+  "pdf_page_numbers_for_new_subparts": [
+    7,
+    10
+  ],
+  "pages_with_candidate_records": 127,
+  "pages_without_candidate_records": 16,
+  "pages_without_candidate_preview_checked": true,
+  "all_pages_fully_character_checked": false,
+  "answer_extraction_missing_count": 79,
+  "high_priority_review_count": 115,
+  "ministerial_year_and_round_question_links_verified": 0,
+  "official_auto_grading_approved": 0,
+  "preserves_original_question_count": true,
+  "notes": "The 13 study parts are components of three existing source questions, not 13 additional independent ministerial questions. The private workbook original and audio are not committed. Text spacing normalized for exercises; no character-by-character certification.",
+  "version_patch": "V5.1_mobile_page_review",
+  "source_inline_practice_importable": true,
+  "page_by_page_user_audit_available": true,
+  "page_by_page_user_audit_count": 143,
+  "page_audit_notes_local_only": true,
+  "private_v5_json_exported_to_user": true,
+  "private_v5_json_published_to_github": false,
+  "public_certification_status": "NOT_CERTIFIED"
+}

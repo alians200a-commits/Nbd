@@ -1,0 +1,176 @@
+{
+  "author": "Vijay Verma, 3dicons V1",
+  "license": "CC0-1.0",
+  "repository": "https://github.com/realvjy/3dicons",
+  "description": "Original free Blender renders, converted to small transparent WebP. Motion uses CSS. No paid assets.",
+  "assets": [
+    {
+      "name": "notebook",
+      "file": "notebook.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/notebook-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 12750
+    },
+    {
+      "name": "lab",
+      "file": "lab.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/lab-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 16296
+    },
+    {
+      "name": "file-text",
+      "file": "file-text.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/file-text-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 13368
+    },
+    {
+      "name": "file-fav",
+      "file": "file-fav.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/file-fav-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 12030
+    },
+    {
+      "name": "headphone",
+      "file": "headphone.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/headphone-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 15818
+    },
+    {
+      "name": "puzzle",
+      "file": "puzzle.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/puzzle-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 15482
+    },
+    {
+      "name": "trophy",
+      "file": "trophy.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/trophy-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 14230
+    },
+    {
+      "name": "calender",
+      "file": "calender.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/calender-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 14910
+    },
+    {
+      "name": "chart",
+      "file": "chart.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/chart-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 19064
+    },
+    {
+      "name": "bookmark-fav",
+      "file": "bookmark-fav.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/bookmark-fav-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 9286
+    },
+    {
+      "name": "folder",
+      "file": "folder.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/folder-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 11010
+    },
+    {
+      "name": "target",
+      "file": "target.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/target-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 15814
+    },
+    {
+      "name": "tick",
+      "file": "tick.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/tick-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 8570
+    },
+    {
+      "name": "bulb",
+      "file": "bulb.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/bulb-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 15718
+    },
+    {
+      "name": "medal",
+      "file": "medal.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/medal-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 14624
+    },
+    {
+      "name": "setting",
+      "file": "setting.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/setting-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 17602
+    },
+    {
+      "name": "chat",
+      "file": "chat.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/chat-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 9022
+    },
+    {
+      "name": "heart",
+      "file": "heart.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/heart-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 9786
+    },
+    {
+      "name": "mic",
+      "file": "mic.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/mic-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 21396
+    },
+    {
+      "name": "computer",
+      "file": "computer.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/computer-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 9064
+    },
+    {
+      "name": "rocket",
+      "file": "rocket.webp",
+      "source": "https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/rocket-dynamic-color.png",
+      "width": 384,
+      "height": 384,
+      "bytes": 14820
+    }
+  ]
+}\n

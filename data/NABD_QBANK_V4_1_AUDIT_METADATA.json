@@ -1,0 +1,18 @@
+{
+  "format": "NABD_QBANK_PUBLIC_AUDIT_METADATA",
+  "version": "V4.1",
+  "source_sha256": "a8439096ba21b74f5e35927687616d0d23bb9bb2ce42000dcb638c59e527e2b6",
+  "source_pdf_pages": 143,
+  "question_candidates": 491,
+  "question_candidates_exact_normalized_in_extracted_page": 486,
+  "contiguous_extracted_segments": 491,
+  "unanswered_extraction_candidates": 82,
+  "high_priority_editorial_review": 118,
+  "question_answer_content_visually_cross_checked": 5,
+  "question_answer_character_for_character_certified": 0,
+  "ministerial_year_and_round_exact_question_links_certified": 0,
+  "automatic_official_grading_approved": 0,
+  "questions_page_zero_candidate": 16,
+  "notable_warning": "Extracted text matching alone is not faithful text certification. Only 5 answer contents were cross-checked visually against images. Ministerial year link remains unverified. Private workbook and audio are not published.",
+  "source_files_private": true
+}

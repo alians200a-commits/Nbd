@@ -1,0 +1,26 @@
+{
+  "format": "NABD_QBANK_AUDIT_METADATA_V3",
+  "version": 3,
+  "source_pdf_sha256": "a8439096ba21b74f5e35927687616d0d23bb9bb2ce42000dcb638c59e527e2b6",
+  "private_file": "NABD_PRIVATE_QBANK_V3_491_CANDIDATES.json",
+  "pdf_pages": 143,
+  "previous_candidates": 486,
+  "candidates_after_review": 491,
+  "visually_checked_question_boundaries_pages": [
+    5,
+    41,
+    47,
+    52
+  ],
+  "recovered_records": [
+    "B005-Q02",
+    "B005-Q03",
+    "B041-Q05",
+    "B047-Q01",
+    "B052-Q02"
+  ],
+  "manual_char_accurate_complete": 0,
+  "exact_year_and_round_links_certified": 0,
+  "automatically_graded_questions_certified": 0,
+  "notes": "Counts are candidates, not certified complete question coverage. Source PDF and user-supplied voices remain private."
+}

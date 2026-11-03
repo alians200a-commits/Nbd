@@ -1,0 +1,24 @@
+{
+  "format": "NABD_QBANK_SOURCE_AUDIT_METADATA_V5_2",
+  "revision": "V5_2_25_INTERACTIVE_SOURCE_SUBPARTS",
+  "source_pdf_pages": 143,
+  "original_candidate_records": 491,
+  "source_image_reviewed_compound_questions": 6,
+  "interactive_subparts_in_original_parent_records": 25,
+  "new_this_revision": 12,
+  "new_source_page_numbers": [
+    18,
+    63,
+    65
+  ],
+  "pages_with_candidates": 127,
+  "pages_without_candidates": 16,
+  "records_without_extracted_answer_or_visual_subparts": 76,
+  "high_priority_records_pending_manual_audit": 115,
+  "suspicious_long_question_prompts_with_possible_embedded_answers": 54,
+  "ministerial_year_and_round_question_links_certified": 0,
+  "verbatim_full_page_and_answer_certified": 0,
+  "official_auto_grading_approved": 0,
+  "source_assets_published_to_github": false,
+  "notes": "Private V5.2 workbook and B audio stay outside public GitHub. The 25 subparts across 6 parent questions are visually crossread educational transcriptions, NOT exact character-certified or additional official ministry questions. Long questions are concealed in student quiz mode pending source separation."
+}
