@@ -38,6 +38,10 @@ export const TablerSourcesView: React.FC = () => {
           ))}
         </div>
 
+        <section className="bg-[#f6f5ff] rounded-2xl p-4 text-xs leading-loose border border-[#e6e1f6]" aria-label="توثيق الرسومات التشريحية">
+          <h3 className="font-extrabold text-sm text-[#392f6e] mb-2">مصادر رسومات أعضاء الجسم</h3>
+          <p>الرسومات الطبية المستخدمة لعرض الفصول من <a className="font-bold underline" href="https://smart.servier.com/" target="_blank" rel="noopener noreferrer">Servier Medical Art</a>، بإذن الاستخدام التعليمي والتجاري وفق <a className="font-bold underline" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>. التعديلات: قصّ المساحات الفارغة وتوحيد القياس والتحويل إلى صور شفافة خفيفة. أسماء الملفات وروابط كل أصل محفوظة في ملف توثيق الصور داخل المشروع. بعض الفصول تحتفظ برسوماتها السابقة لتفادي صورة غير دقيقة.</p>
+        </section>
         <div className="alert alert-warning bg-[#fff9db] border border-[#ffe066] text-[#7c5e10] p-4 rounded-2xl text-xs leading-relaxed">
           <b>تنبيه بخصوص المجسمات التشريحية:</b> المجسمات تُستدعى من مستودعات GitHub المفتوحة عند الاستعراض وليست مخزنة في المستودع العام. تحقق من الترخيص الأصلي لكل نموذج قبل إطلاق أي خدمة تجارياً أو إعادة توزيع الملفات.
         </div>
