@@ -51,8 +51,8 @@ def fetch_gif() -> bytes:
     raise RuntimeError("Unable to fetch CC-BY-SA real heart: " + " | ".join(failures))
 
 def main() -> None:
-    if not features.check("webp_anim"):
-        raise RuntimeError("Pillow in this runner lacks animated WebP support")
+    if not features.check("webp"):
+        raise RuntimeError("Pillow in this runner lacks WebP support")
     data = fetch_gif()
     with Image.open(io.BytesIO(data)) as gif:
         if gif.format != "GIF" or gif.n_frames < 10:
