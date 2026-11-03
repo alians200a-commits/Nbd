@@ -39,7 +39,8 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
   const maxCount = Math.max(1, ...weekly.map(x => x.count));
   const anyActivity = weekly.some(x => x.count > 0);
   const studyMinutes = sessions.reduce((sum, s) => sum + Math.max(0, s.durationMinutes || 0), 0);
-  const recentCourses = TABLER_CHAPTERS.slice(0, 3);
+  const recentCourses = TABLER_CHAPTERS.filter(chapter=>chapter.id!==next.id).slice(0, 2);
+  const hasRecordedProgress = completed>0 || tests.length>0 || sessions.length>0;
 
   return <div className="nabd-journey" dir="rtl">
     {managed.announcements.filter(a=>a.visible).sort((a,b)=>a.order-b.order).map(a=><aside className="nabd-managed-announcement" key={a.id}>
@@ -57,10 +58,10 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         </div>
         <div className="nabd-welcome-copy">
           <span className="nabd-welcome-eyebrow">نَبْض · رفيقك في الأحياء</span>
-          <h1>تعلّم الأحياء<br/><em>بطريقة ممتعة!</em></h1>
-          <p>افهم المعلومة، شاهدها في المختبر، اختبر نفسك، ثم راجعها حتى تتذكرها.</p>
+          <h1>كمّل رحلتك<br/><em>{next.name}</em></h1>
+          <p>افهم الدرس، وشاهد التطبيق العملي، وبعدها اختبر فهمك.</p>
           <button type="button" className="nabd-start-button" onClick={()=>onNavigateTab('curriculum',{chapter:next.id})}>
-            <span>ابدأ التعلّم</span><span className="nabd-arrow-circle"><ArrowLeft size={21}/></span>
+            <span>افتح الدرس</span><span className="nabd-arrow-circle"><ArrowLeft size={21}/></span>
           </button>
           <button type="button" className="nabd-welcome-secondary" onClick={()=>onNavigateTab('chapters')}>تصفّح الفصول الأحد عشر <ChevronLeft size={16}/></button>
         </div>
@@ -72,7 +73,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
           <div><strong>مرحباً بك في نَبْض!</strong><small>كل درس خطوة نحو فهم أفضل</small></div>
           <button type="button" className="nabd-circle-utility" title="مراجعة الأخطاء" aria-label="مراجعة أخطائك" onClick={()=>onNavigateTab('vault')}><RotateCcw size={21}/></button>
         </div>
-        <div className="nabd-today-heading"><div><span>رحلتك العلمية</span><h2 id="today-heading">تقدّمك اليوم</h2></div><span className="nabd-heading-star"><Sparkles size={20}/></span></div>
+        <div className="nabd-today-heading"><div><span>استكشف المنهج</span><h2 id="today-heading">فصول أخرى</h2></div><span className="nabd-heading-star"><Sparkles size={20}/></span></div>
         <div className="nabd-course-list">
           {recentCourses.map((chapter, i)=>{
             const lastTest = tests.find(t=>t.chapter===chapter.id);
@@ -94,7 +95,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         <button className="nabd-view-all" type="button" onClick={()=>onNavigateTab('chapters')}>اكتشف جميع الفصول <ChevronLeft size={19}/></button>
       </section>
 
-      <section className="nabd-tracker-panel" aria-labelledby="tracker-heading">
+      {hasRecordedProgress&&<section className="nabd-tracker-panel" aria-labelledby="tracker-heading">
         <header className="nabd-tracker-head"><span className="nabd-tracker-label">متابعة التعلّم</span><button aria-label="خطة الدراسة" className="nabd-circle-utility" onClick={()=>onNavigateTab('planner')}><CalendarDays size={19}/></button></header>
         <div className="nabd-tracker-mascot"><img src={artBase+'open-book.svg'} alt="" aria-hidden="true"/><h2 id="tracker-heading">إنجازاتك<br/>خطوة بخطوة</h2><span>استمرّ في التعلّم</span></div>
         <div className="nabd-tracker-stats">
@@ -115,8 +116,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
           <span><strong>{mistakes?'خطوتك القادمة: راجع أخطاءك':'أحسنت! البداية تصنع الفرق'}</strong><small>{mistakes?mistakes+' أسئلة تنتظر مراجعتك':'ابدأ درساً جديداً اليوم'}</small></span><ChevronLeft size={18}/>
         </button>
         <p className="nabd-tracker-note"><CheckCircle2 size={14}/> الأرقام من نشاطك المحفوظ فقط. {studyMinutes? 'مدة جلساتك المسجلة: '+studyMinutes+' دقيقة.':''}</p>
-      </section>
-    </div>
+      </section>}
 
     <section className="nabd-quick-section" aria-labelledby="quick-title">
       <div className="nabd-quick-heading"><div><span>تعلّم بطريقتك</span><h2 id="quick-title">ماذا تريد أن تفعل الآن؟</h2></div></div>
@@ -127,7 +127,8 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><img src={artBase+'review-search.svg'} alt=""/></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
       </div>
       <div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html')}><Headphones size={19}/> استمع إلى شرح الخلية العصبية</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
-      <p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية التي لم تُراجع بعد تُعرض بحسب حالتها الفعلية؛ لا تُحتسب ميزة غير مكتملة إنجازاً دراسياً.</p>
+      <p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية تُعرض بحسب جاهزيتها الفعلية.</p>
     </section>
+    </div>
   </div>;
 };
