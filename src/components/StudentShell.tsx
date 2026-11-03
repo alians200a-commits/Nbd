@@ -3,6 +3,7 @@ import { BookOpen, BookOpenText, Brain, CalendarDays, ChevronLeft, ClipboardChec
 import type { TabType } from './Sidebar';
 import type { LucideIcon } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { ThreeDIcon } from './ThreeDIcon';
 
 interface Props {
   currentTab: TabType;
@@ -10,22 +11,22 @@ interface Props {
   children: React.ReactNode;
 }
 const artBase = import.meta.env.BASE_URL + 'nabd-art/';
-const primary: { id: TabType; name: string; icon: LucideIcon; art: string }[] = [
-  { id:'home',name:'الرئيسية',icon:Home,art:'home-house' },
-  { id:'chapters',name:'دروسي',icon:BookOpenText,art:'books' },
-  { id:'lab',name:'المختبر',icon:Microscope,art:'microscope' },
-  { id:'quiz',name:'اختبرني',icon:ClipboardCheck,art:'quiz-memo' },
-  { id:'vault',name:'المراجعة',icon:RotateCcw,art:'review-search' },
+const primary: { id: TabType; name: string; icon: LucideIcon; art: string; threeD:string }[] = [
+  { id:'home',name:'الرئيسية',icon:Home,art:'home-house',threeD:'heart' },
+  { id:'chapters',name:'دروسي',icon:BookOpenText,art:'books',threeD:'notebook' },
+  { id:'lab',name:'المختبر',icon:Microscope,art:'microscope',threeD:'lab' },
+  { id:'quiz',name:'اختبرني',icon:ClipboardCheck,art:'quiz-memo',threeD:'file-text' },
+  { id:'vault',name:'المراجعة',icon:RotateCcw,art:'review-search',threeD:'file-fav' },
 ];
-const extras: {label:string;detail:string;icon: LucideIcon; art:string; tab?:TabType;href?:string}[] = [
-  {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,art:'open-book',tab:'curriculum'},
-  {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,art:'microscope',href:'simulations.html'},
-  {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,art:'quiz-memo',href:'exam-bank.html'},
-  {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,art:'game-controller',tab:'games'},
-  {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,art:'study-calendar',tab:'planner'},
-  {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,art:'family-group',tab:'parents'},
-  {label:'المنعكس العصبي',detail:'نشاط تفاعلي لفهم الاستجابة',icon:Brain,art:'brain',tab:'reflex'},
-  {label:'المصادر',detail:'المراجع والمشاريع المجانية',icon:LibraryBig,art:'notebook',tab:'sources'},
+const extras: {label:string;detail:string;icon: LucideIcon; art:string; threeD:string; tab?:TabType;href?:string}[] = [
+  {label:'الكتاب والدرس',detail:'تصفح الدروس والملخصات',icon:BookOpen,art:'open-book',threeD:'notebook',tab:'curriculum'},
+  {label:'مختبر كل فقرة',detail:'تجارب فهم مرتبطة بالفصول',icon:FlaskConical,art:'microscope',threeD:'lab',href:'simulations.html'},
+  {label:'بنك أسئلة الملزمة',detail:'أسئلة مستخرجة تحتاج تدقيق المصدر',icon:ClipboardCheck,art:'quiz-memo',threeD:'file-text',href:'exam-bank.html'},
+  {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,art:'game-controller',threeD:'puzzle',tab:'games'},
+  {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,art:'study-calendar',threeD:'calender',tab:'planner'},
+  {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,art:'family-group',threeD:'chat',tab:'parents'},
+  {label:'المنعكس العصبي',detail:'نشاط تفاعلي لفهم الاستجابة',icon:Brain,art:'brain',threeD:'target',tab:'reflex'},
+  {label:'المصادر',detail:'المراجع والمشاريع المجانية',icon:LibraryBig,art:'notebook',threeD:'folder',tab:'sources'},
 ];
 export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children}) => {
   const {state}=useApp();
@@ -43,11 +44,11 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
     <header className="student-topbar">
       <div className="student-topbar-inner">
         <button type="button" className="student-brand" onClick={()=>navigate('home')} aria-label="العودة إلى الرئيسية">
-          <span className="student-brand-mark"><HeartPulse size={23} strokeWidth={2.5}/></span>
+          <span className="student-brand-mark"><ThreeDIcon name="heart" fallback="heart" className="nabd-brand-3d" priority /></span>
           <span><strong>نَبْض</strong><small>مختبر الأحياء الذكي</small></span>
         </button>
         <nav className="student-desktop-nav" aria-label="الأقسام الرئيسية">
-          {primary.map(n=><button type="button" key={n.id} className={active(n.id)?'is-current':''} aria-current={active(n.id)?'page':undefined} onClick={()=>navigate(n.id)}><img className="nabd-nav-illustration" src={artBase+n.art+'.svg'} alt="" aria-hidden="true"/>{n.name}</button>)}
+          {primary.map(n=><button type="button" key={n.id} className={active(n.id)?'is-current':''} aria-current={active(n.id)?'page':undefined} onClick={()=>navigate(n.id)}><ThreeDIcon name={n.threeD} fallback={n.art} className="nabd-nav-illustration" />{n.name}</button>)}
         </nav>
         <div className="student-topbar-actions">
           <button type="button" className="student-reminder-button" onClick={()=>navigate('vault')} aria-label={'الأسئلة التي تحتاج مراجعة: '+due}>
@@ -62,7 +63,7 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
     <main id="main" className="student-page" role="main">{children}</main>
     <nav className="student-mobile-nav" aria-label="القائمة السفلية">
       {primary.map(n=><button type="button" key={n.id} onClick={()=>navigate(n.id)} className={active(n.id)?'is-current':''} aria-current={active(n.id)?'page':undefined}>
-        <span className="student-nav-symbol"><img className="nabd-nav-illustration" src={artBase+n.art+'.svg'} alt="" aria-hidden="true"/></span><span>{n.name}</span>
+        <span className="student-nav-symbol"><ThreeDIcon name={n.threeD} fallback={n.art} className="nabd-nav-illustration" /></span><span>{n.name}</span>
       </button>)}
     </nav>
     {open&&<div className="student-menu-backdrop" onClick={()=>setOpen(false)}>
@@ -71,7 +72,7 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
           <button type="button" aria-label="إغلاق القائمة" onClick={()=>setOpen(false)}><X size={23}/></button>
         </div>
         <div className="student-more-grid">{extras.map(item=><button key={item.label} type="button" onClick={()=>launch(item)}>
-          <span className="student-more-icon"><img className="nabd-menu-illustration" src={artBase+item.art+'.svg'} alt="" aria-hidden="true"/></span><span><strong>{item.label}</strong><small>{item.detail}</small></span><ChevronLeft size={18}/></button>)}</div>
+          <span className="student-more-icon"><ThreeDIcon name={item.threeD} fallback={item.art} className="nabd-menu-illustration" /></span><span><strong>{item.label}</strong><small>{item.detail}</small></span></button>)}</div>
       </section>
     </div>}
   </div>;
