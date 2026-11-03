@@ -1,0 +1,42 @@
+name: Import Servier anatomy art for NABD chapters
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/import_nabd_anatomy.py'
+      - '.github/workflows/import-nabd-anatomy.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nabd-anatomy-art-import
+  cancel-in-progress: true
+jobs:
+  import-anatomy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install open source Pillow
+        run: python -m pip install --quiet --disable-pip-version-check Pillow
+      - name: Download verified official CC BY 4.0 teaching imagery and build transparent WebP assets
+        run: python scripts/import_nabd_anatomy.py
+      - name: Publish approved artwork and keep license records
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/nabd-anatomy
+          if ! git diff --cached --quiet; then
+            git commit -m "Bundle curated Servier anatomical chapter illustrations with required attribution"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
+      - name: Keep independent review artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nabd-anatomy-review
+          path: public/nabd-anatomy
+          retention-days: 30
