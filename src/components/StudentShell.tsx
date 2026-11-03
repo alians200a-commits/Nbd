@@ -25,7 +25,7 @@ const extras: {label:string;detail:string;icon: LucideIcon; art:string; threeD:s
   {label:'ألعاب الأحياء',detail:'اختبر معلوماتك بطرق مختلفة',icon:Gamepad2,art:'game-controller',threeD:'puzzle',tab:'games'},
   {label:'جدول دراستي',detail:'وزّع مراجعتك حسب وقتك',icon:CalendarDays,art:'study-calendar',threeD:'calender',tab:'planner'},
   {label:'متابعة الأهل',detail:'عرض التقدم على الجهاز',icon:Users,art:'family-group',threeD:'chat',tab:'parents'},
-  {label:'المنعكس العصبي',detail:'نشاط تفاعلي لفهم الاستجابة',icon:Brain,art:'brain',threeD:'target',tab:'reflex'},
+  {label:'المنعكس العصبي',detail:'نشاط تفاعلي لفهم الاستجابة',icon:Brain,art:'brain',threeD:'brain',tab:'reflex'},
   {label:'المصادر',detail:'المراجع والمشاريع المجانية',icon:LibraryBig,art:'notebook',threeD:'folder',tab:'sources'},
 ];
 export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children}) => {
