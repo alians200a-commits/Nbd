@@ -125,3 +125,56 @@
 @media(prefers-reduced-motion:reduce){
   .nabd-anatomical-brand-heart{animation:none!important;transform:none!important}
 }
+
+/* Curated chapter anatomy artwork, Servier Medical Art (CC BY 4.0).
+   Subtle refinement only: keep approved colors, type, spacing, RTL and branding. */
+.student-chapter-figure img.nabd-servier-art,
+.nabd-learning-art img.nabd-servier-art{
+  display:block;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  background:transparent!important;
+  filter:drop-shadow(0 5px 5px rgba(56,42,78,.13)) saturate(1.07)!important;
+  image-rendering:auto;
+}
+.student-chapter-figure:has(.nabd-servier-art){
+  align-self:center;
+  overflow:visible;
+}
+.nabd-learning-art:has(.nabd-servier-art){
+  align-self:center;
+  overflow:visible;
+}
+.student-chapter-row:hover img.nabd-servier-art,
+.nabd-learning-card:hover img.nabd-servier-art{
+  transform:translate3d(0,-2px,0) scale(1.035);
+}
+.student-trust-note a{
+  text-decoration:underline;
+  text-underline-offset:2px;
+  color:#6241a8;
+}
+@media (max-width:720px){
+  .student-chapter-figure:has(.nabd-servier-art){
+    flex:0 0 82px;
+    width:82px;
+    height:91px;
+  }
+  .student-chapter-figure img.nabd-servier-art{
+    width:82px!important;
+    height:91px!important;
+  }
+  .nabd-learning-art img.nabd-servier-art{
+    max-width:100%!important;
+    max-height:100%!important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .student-chapter-row:hover img.nabd-servier-art,
+  .nabd-learning-card:hover img.nabd-servier-art{
+    transform:none!important;
+  }
+}
