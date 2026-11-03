@@ -1,0 +1,177 @@
+/* NABD v15 — layout-only refinement of the approved pastel illustration design.
+   Preserve the existing palette, transparent illustrations, navigation icons and content. */
+.nabd-journey-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  grid-template-areas:
+    "welcome welcome"
+    "quick chapters"
+    "tracker tracker";
+  gap:18px;
+  align-items:start;
+}
+.nabd-journey-grid>section{min-width:0}
+.nabd-welcome-phone{
+  grid-area:welcome;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 235px;
+  grid-template-areas:"copy illustration";
+  min-height:220px;
+  align-items:stretch;
+  border-radius:25px;
+}
+.nabd-welcome-illustration{
+  grid-area:illustration;
+  min-height:220px;
+  border-radius:0;
+}
+.nabd-welcome-glow{width:148px;height:148px;top:24px}
+.nabd-hero-books{width:135px;height:135px;bottom:8px}
+.nabd-hero-brain{width:105px;height:105px;top:17px}
+.nabd-welcome-copy{
+  grid-area:copy;
+  border-radius:0;
+  margin:0;
+  padding:20px 28px;
+  text-align:right;
+  align-items:flex-start;
+  justify-content:center;
+}
+.nabd-welcome-copy h1{font-size:clamp(22px,2.2vw,29px);margin:9px 0 5px;line-height:1.5}
+.nabd-welcome-copy p{max-width:510px;margin:0 0 12px;font-size:13px;line-height:1.75}
+.nabd-welcome-eyebrow{font-size:11px}
+.nabd-start-button{max-width:220px;min-height:45px;font-size:13px;box-shadow:0 4px 10px rgba(110,72,212,.14)}
+.nabd-arrow-circle{width:32px;height:32px}
+.nabd-welcome-secondary{display:none}
+.nabd-quick-section{
+  grid-area:quick;
+  min-width:0;
+  margin:0;
+  padding:19px 20px 16px;
+  background:#fff;
+  border:1px solid #eee7f5;
+  border-radius:24px;
+  box-shadow:0 10px 28px rgba(89,57,142,.055);
+}
+.nabd-quick-heading h2{font-size:20px;margin:4px 0 14px;line-height:1.5}
+.nabd-quick-heading>div>span{font-size:11px}
+.nabd-quick-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.nabd-quick-action{
+  min-height:143px;
+  padding:13px 15px;
+  border-radius:19px;
+  gap:3px;
+}
+.nabd-quick-art{width:62px;height:64px}
+.nabd-quick-art img{width:62px;height:62px;max-width:62px;max-height:62px}
+.nabd-quick-action strong{font-size:15px}
+.nabd-quick-action small{font-size:11px;line-height:1.5}
+.nabd-more-details{margin:14px 1px 0}
+.nabd-more-details>summary{
+  display:inline-flex;align-items:center;min-height:38px;padding:7px 10px;
+  font-weight:800;font-size:12px;color:#6040ad;cursor:pointer;border-radius:10px;
+  outline-offset:3px;
+}
+.nabd-more-details[open]>summary{background:#f5f0fe}
+.nabd-more-shortcuts{margin-top:7px}
+.nabd-more-shortcuts button{font-size:11px}
+.nabd-study-disclaimer{font-size:10px;margin-top:10px;line-height:1.65}
+.nabd-today-panel{
+  grid-area:chapters;
+  padding:21px 19px 15px;
+  border-radius:24px;
+  box-shadow:0 10px 28px rgba(89,57,142,.055);
+}
+.nabd-today-topline{display:none}
+.nabd-today-heading{margin:0 0 14px;align-items:center}
+.nabd-today-heading h2{font-size:21px;margin-top:2px}
+.nabd-heading-star{width:35px;height:35px}
+.nabd-course-list{gap:10px}
+.nabd-learning-card{min-height:123px;padding:11px 13px;gap:11px;border-radius:18px}
+.nabd-learning-art{flex:0 0 74px;width:74px;height:83px}
+.nabd-learning-art img{max-width:74px;max-height:83px;width:100%;height:100%}
+.nabd-learning-card h3{font-size:15px;margin:8px 0 3px}
+.nabd-learning-card p{font-size:11px}
+.nabd-learning-page{font-size:10px}
+.nabd-view-all{margin-top:3px}
+.nabd-tracker-panel{
+  grid-area:tracker;
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  column-gap:18px;
+  row-gap:11px;
+  padding:19px 20px;
+  align-items:start;
+  border-radius:24px;
+}
+.nabd-tracker-head{grid-column:1/-1;grid-row:auto}
+.nabd-tracker-mascot{grid-column:1;grid-row:auto;height:118px;margin:0}
+.nabd-tracker-mascot img{width:110px;height:110px}
+.nabd-tracker-mascot h2{font-size:19px}
+.nabd-tracker-stats{grid-column:2;grid-row:auto}
+.nabd-stat-tile{min-height:113px}
+.nabd-chart-head{grid-column:1/-1;grid-row:auto;margin:5px 0 0}
+.nabd-activity-chart{grid-column:1/-1;grid-row:auto;height:122px}
+.nabd-achievement{grid-column:1/-1;grid-row:auto;margin:0}
+.nabd-tracker-note{grid-column:1/-1;grid-row:auto;margin:0}
+@media(max-width:900px){
+  .nabd-journey-grid{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-areas:"welcome" "quick" "chapters" "tracker";
+    gap:15px;
+  }
+  .nabd-tracker-panel{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+}
+@media(max-width:600px){
+  .student-page{padding:13px 13px 95px}
+  .nabd-journey-grid{display:grid;gap:13px}
+  .nabd-welcome-phone{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 122px;
+    grid-template-areas:"copy illustration";
+    min-height:184px;
+    border-radius:20px;
+  }
+  .nabd-welcome-illustration{min-height:184px}
+  .nabd-welcome-glow{width:90px;height:90px;top:26px}
+  .nabd-hero-books{width:98px;height:98px;bottom:7px}
+  .nabd-hero-brain{width:82px;height:82px;top:19px}
+  .nabd-hero-sparkle{font-size:15px}
+  .nabd-welcome-copy{padding:14px 11px 14px 6px;justify-content:center;text-align:right;align-items:flex-start}
+  .nabd-welcome-copy h1{font-size:19px;line-height:1.48;margin:7px 0 5px;letter-spacing:0}
+  .nabd-welcome-copy p{font-size:11px;line-height:1.55;margin:0 0 9px}
+  .nabd-welcome-eyebrow{font-size:9px;padding:4px 7px}
+  .nabd-start-button{max-width:180px;min-height:42px;font-size:12px}
+  .nabd-arrow-circle{width:30px;height:30px}
+  .nabd-quick-section{margin:0;padding:15px 13px 13px;border-radius:20px}
+  .nabd-quick-heading h2{font-size:19px;margin:3px 0 12px}
+  .nabd-quick-actions{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .nabd-quick-action{min-height:126px;padding:11px 12px;border-radius:17px;gap:2px}
+  .nabd-quick-art{width:55px;height:55px}
+  .nabd-quick-art img{width:54px;height:54px;max-width:54px;max-height:54px}
+  .nabd-quick-action strong{font-size:14px}
+  .nabd-quick-action small{font-size:11px}
+  .nabd-today-panel{padding:17px 13px 11px;border-radius:20px}
+  .nabd-today-heading{margin:0 0 12px}
+  .nabd-today-heading h2{font-size:19px}
+  .nabd-learning-card{min-height:119px;padding:10px 10px;gap:8px}
+  .nabd-learning-art{flex-basis:66px;width:66px;height:78px}
+  .nabd-learning-art img{max-width:66px;max-height:76px}
+  .nabd-learning-card h3{font-size:14px}
+  .nabd-learning-level{font-size:10px}
+  .nabd-course-go{width:32px;height:32px;flex-basis:32px}
+  .nabd-tracker-panel{display:flex;flex-direction:column;gap:12px;padding:14px;border-radius:20px}
+  .nabd-tracker-head,.nabd-tracker-mascot,.nabd-tracker-stats,.nabd-chart-head,.nabd-activity-chart,.nabd-achievement,.nabd-tracker-note{grid-column:auto;grid-row:auto}
+  .nabd-tracker-mascot{height:115px;width:100%;margin:0}
+  .nabd-tracker-stats{width:100%}
+  .nabd-chart-head{width:100%}
+  .nabd-activity-chart{width:100%;height:120px}
+}
+@media(max-width:360px){
+  .nabd-welcome-phone{grid-template-columns:minmax(0,1fr) 105px}
+  .nabd-welcome-copy h1{font-size:17px}
+  .nabd-welcome-copy p{font-size:10.5px}
+  .nabd-learning-art{width:55px;flex-basis:55px}
+  .nabd-learning-art img{max-width:55px}
+}
+@media(prefers-reduced-motion:reduce){.nabd-quick-action:hover{transform:none}}
