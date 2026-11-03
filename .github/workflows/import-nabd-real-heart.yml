@@ -1,0 +1,38 @@
+name: Import genuine animated human heart logo
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/import-nabd-real-heart.yml'
+      - 'scripts/import_real_anatomical_heart.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nabd-real-heart-import
+  cancel-in-progress: true
+jobs:
+  import-heart:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install open source image processor
+        run: python -m pip install --disable-pip-version-check --quiet Pillow
+      - name: Download real heartbeat, create optimized transparent animation and credit author
+        run: python scripts/import_real_anatomical_heart.py
+      - name: Commit animation to the same repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/nabd-3d/heart-anatomical-motion.webp public/nabd-3d/heart-anatomical-still.webp public/nabd-3d/heart-anatomical-credits.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Add real beating anatomical human heart logo and required CC BY-SA attribution"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
