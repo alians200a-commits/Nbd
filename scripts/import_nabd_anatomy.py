@@ -81,6 +81,38 @@ def process(im:Image.Image,slug:str) -> tuple[int,int,int]:
     bbox=im.getchannel("A").getbbox()
     if not bbox: raise ValueError("No visible image pixels")
     im=im.crop(bbox)
+    # The original full-body diagrams are too tiny at chapter-card size.
+    # Crop to the scientifically recognizable upper-body anatomy; no labels altered.
+    if slug in ("muscles","skeleton"):
+        height=round(im.height * (0.60 if slug=="muscles" else 0.67))
+        im=im.crop((0,0,im.width,height))
+    elif slug=="digestive":
+        im=im.crop((0,round(im.height*.36),im.width,im.height))
+
+    # Eye drawing has a solid light-beige rectangular canvas, unlike the other
+    # transparent Servier PNGs. Remove only the border-connected flat color.
+    if slug=="eye":
+        import collections
+        im=im.convert("RGBA")
+        px=im.load()
+        width,height=im.size
+        corner=px[0,0][:3]
+        visited=bytearray(width*height)
+        q=collections.deque()
+        for x in range(width):
+            q.extend(((x,0),(x,height-1)))
+        for y in range(height):
+            q.extend(((0,y),(width-1,y)))
+        while q:
+            x,y=q.popleft()
+            if x<0 or x>=width or y<0 or y>=height: continue
+            pos=y*width+x
+            if visited[pos]:continue
+            visited[pos]=1
+            r,g,b,a=px[x,y]
+            if a<10 or max(abs(r-corner[0]),abs(g-corner[1]),abs(b-corner[2]))>14:continue
+            px[x,y]=(r,g,b,0)
+            q.extend(((x-1,y),(x+1,y),(x,y-1),(x,y+1)))
     im.thumbnail((472,472),Image.Resampling.LANCZOS)
     # Transparent square canvas lets every chapter image align consistently in the same cards.
     square=Image.new("RGBA",(512,512),(0,0,0,0))
