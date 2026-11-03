@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { TABLER_CHAPTERS } from '../data/tablerData';
 import { useManagedContent,safeMediaUrl } from '../content/useManagedContent';
 import type { TabType } from '../components/Sidebar';
+import { ThreeDIcon } from '../components/ThreeDIcon';
 
 interface Props { onNavigateTab: (tab: TabType, params?: { chapter?: number }) => void }
 const artBase = import.meta.env.BASE_URL + 'nabd-art/';
@@ -50,20 +51,16 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
     <div className="nabd-journey-grid">
       <section className="nabd-welcome-phone" aria-label="ابدأ رحلة الأحياء">
         <div className="nabd-welcome-illustration" aria-hidden="true">
-          <span className="nabd-welcome-glow"/>
-          <img className="nabd-hero-books" src={artBase + 'books.svg'} alt=""/>
-          <img className="nabd-hero-brain" src={artBase + 'brain.svg'} alt=""/>
-          <span className="nabd-hero-sparkle sparkle-one">✦</span>
-          <span className="nabd-hero-sparkle sparkle-two">✦</span>
+          <ThreeDIcon name="notebook" fallback="books" className="nabd-hero-main-icon" animated priority />
         </div>
         <div className="nabd-welcome-copy">
           <span className="nabd-welcome-eyebrow">نَبْض · رفيقك في الأحياء</span>
           <h1>كمّل رحلتك<br/><em>{next.name}</em></h1>
           <p>افهم الدرس، وشاهد التطبيق العملي، وبعدها اختبر فهمك.</p>
           <button type="button" className="nabd-start-button" onClick={()=>onNavigateTab('curriculum',{chapter:next.id})}>
-            <span>افتح الدرس</span><span className="nabd-arrow-circle"><ArrowLeft size={21}/></span>
+            <span>افتح الدرس</span>
           </button>
-          <button type="button" className="nabd-welcome-secondary" onClick={()=>onNavigateTab('chapters')}>تصفّح الفصول الأحد عشر <ChevronLeft size={16}/></button>
+          <button type="button" className="nabd-welcome-secondary" onClick={()=>onNavigateTab('chapters')}>تصفّح الفصول الأحد عشر</button>
         </div>
       </section>
 
@@ -81,23 +78,23 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
             const pct = markedComplete ? 100 : (lastTest && lastTest.total>0 ? Math.round(lastTest.score/lastTest.total*100) : 0);
             const measured = markedComplete || Boolean(lastTest && lastTest.total>0);
             return <article key={chapter.id} className={'nabd-learning-card nabd-tone-'+courseTones[i]}>
-              <div className="nabd-learning-art"><img src={artBase+artMap[chapter.id-1]+'.svg'} alt={chapter.name}/></div>
+              <div className="nabd-learning-art"><img className="nabd-organ-art" src={artBase+artMap[chapter.id-1]+'.svg'} alt={chapter.name}/></div>
               <div className="nabd-learning-card-info">
                 <div className="nabd-learning-badges"><span className="nabd-learning-level">{markedComplete?'تمت مراجعته':lastTest?'اختبار سابق':'جاهز للتعلّم'}</span><span className="nabd-learning-page"><BookOpenText size={13}/> ص {chapter.page}</span></div>
                 <h3>{chapter.name}</h3><p>{chapter.desc}</p>
                 <div className="nabd-learning-bottom"><div className="nabd-learning-track" role="progressbar" aria-label={'تقدم '+chapter.name} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}><span style={{width:pct+'%'}}/></div><small>{measured?pct+'٪':'ابدأ الآن'}</small></div>
                 <small className="nabd-progress-meaning">{lastTest&&!markedComplete?'نتيجة الاختبار الأخير':'حالة مراجعة الفصل'}</small>
               </div>
-              <button type="button" className="nabd-course-go" onClick={()=>onNavigateTab('curriculum',{chapter:chapter.id})} aria-label={'افتح درس '+chapter.name}><ArrowLeft size={19}/></button>
+              <button type="button" className="nabd-course-go" onClick={()=>onNavigateTab('curriculum',{chapter:chapter.id})} aria-label={'افتح درس '+chapter.name}>افتح</button>
             </article>;
           })}
         </div>
-        <button className="nabd-view-all" type="button" onClick={()=>onNavigateTab('chapters')}>اكتشف جميع الفصول <ChevronLeft size={19}/></button>
+        <button className="nabd-view-all" type="button" onClick={()=>onNavigateTab('chapters')}>اكتشف جميع الفصول</button>
       </section>
 
       {hasRecordedProgress&&<section className="nabd-tracker-panel" aria-labelledby="tracker-heading">
         <header className="nabd-tracker-head"><span className="nabd-tracker-label">متابعة التعلّم</span><button aria-label="خطة الدراسة" className="nabd-circle-utility" onClick={()=>onNavigateTab('planner')}><CalendarDays size={19}/></button></header>
-        <div className="nabd-tracker-mascot"><img src={artBase+'open-book.svg'} alt="" aria-hidden="true"/><h2 id="tracker-heading">إنجازاتك<br/>خطوة بخطوة</h2><span>استمرّ في التعلّم</span></div>
+        <div className="nabd-tracker-mascot"><ThreeDIcon name="chart" fallback="open-book" animated /><h2 id="tracker-heading">إنجازاتك<br/>خطوة بخطوة</h2><span>استمرّ في التعلّم</span></div>
         <div className="nabd-tracker-stats">
           <button type="button" className="nabd-stat-tile nabd-stat-violet" onClick={()=>onNavigateTab('chapters')}><BookOpenText size={23}/><strong>{completed}</strong><span>دروس راجعتها</span></button>
           <button type="button" className="nabd-stat-tile nabd-stat-honey" onClick={()=>onNavigateTab('quiz')}><ClipboardCheck size={23}/><strong>{tests.length}</strong><span>اختبارات أنجزتها</span></button>
@@ -111,8 +108,8 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
           </div>)}
         </div>}
         <button type="button" className="nabd-achievement" onClick={()=>onNavigateTab(mistakes?'vault':'planner')}>
-          <span className="nabd-achievement-art"><img src={artBase+'trophy.svg'} alt=""/></span>
-          <span><strong>{mistakes?'خطوتك القادمة: راجع أخطاءك':'أحسنت! البداية تصنع الفرق'}</strong><small>{mistakes?mistakes+' أسئلة تنتظر مراجعتك':'ابدأ درساً جديداً اليوم'}</small></span><ChevronLeft size={18}/>
+          <span className="nabd-achievement-art"><ThreeDIcon name="trophy" fallback="trophy" animated /></span>
+          <span><strong>{mistakes?'خطوتك القادمة: راجع أخطاءك':'أحسنت! البداية تصنع الفرق'}</strong><small>{mistakes?mistakes+' أسئلة تنتظر مراجعتك':'ابدأ درساً جديداً اليوم'}</small></span>
         </button>
         <p className="nabd-tracker-note"><CheckCircle2 size={14}/> الأرقام من نشاطك المحفوظ فقط. {studyMinutes? 'مدة جلساتك المسجلة: '+studyMinutes+' دقيقة.':''}</p>
       </section>}
@@ -120,12 +117,12 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
     <section className="nabd-quick-section" aria-labelledby="quick-title">
       <div className="nabd-quick-heading"><div><span>تعلّم بطريقتك</span><h2 id="quick-title">ماذا تريد أن تفعل الآن؟</h2></div></div>
       <div className="nabd-quick-actions">
-        <button type="button" className="nabd-quick-action qa-violet" onClick={()=>onNavigateTab('chapters')}><span className="nabd-quick-art"><img src={artBase+'books.svg'} alt=""/></span><strong>دروسي</strong><small>شرح واضح خطوة بخطوة</small></button>
-        <button type="button" className="nabd-quick-action qa-mint" onClick={()=>onNavigateTab('lab')}><span className="nabd-quick-art"><img src={artBase+'microscope.svg'} alt=""/></span><strong>المختبر</strong><small>شاهد الأعضاء وتفاعل معها</small></button>
-        <button type="button" className="nabd-quick-action qa-honey" onClick={()=>onNavigateTab('quiz')}><span className="nabd-quick-art"><img src={artBase+'quiz-memo.svg'} alt=""/></span><strong>اختبر نفسك</strong><small>أسئلة لتثبيت المعلومة</small></button>
-        <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><img src={artBase+'review-search.svg'} alt=""/></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
+        <button type="button" className="nabd-quick-action qa-violet" onClick={()=>onNavigateTab('chapters')}><span className="nabd-quick-art"><ThreeDIcon name="notebook" fallback="books" animated /></span><strong>دروسي</strong><small>شرح واضح خطوة بخطوة</small></button>
+        <button type="button" className="nabd-quick-action qa-mint" onClick={()=>onNavigateTab('lab')}><span className="nabd-quick-art"><ThreeDIcon name="lab" fallback="microscope" animated /></span><strong>المختبر</strong><small>شاهد الأعضاء وتفاعل معها</small></button>
+        <button type="button" className="nabd-quick-action qa-honey" onClick={()=>onNavigateTab('quiz')}><span className="nabd-quick-art"><ThreeDIcon name="file-text" fallback="quiz-memo" animated /></span><strong>اختبر نفسك</strong><small>أسئلة لتثبيت المعلومة</small></button>
+        <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><ThreeDIcon name="file-fav" fallback="review-search" animated /></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
       </div>
-      <details className="nabd-more-details"><summary>أدوات إضافية</summary><div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html')}><Headphones size={19}/> استمع إلى شرح الخلية العصبية</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
+      <details className="nabd-more-details"><summary>أدوات إضافية</summary><div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html')}><ThreeDIcon name="headphone" fallback="headphones" className="nabd-mini-3d" animated/> استمع إلى شرح الخلية العصبية</button><button type="button" onClick={()=>onNavigateTab('planner')}><ThreeDIcon name="calender" fallback="study-calendar" className="nabd-mini-3d" animated/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><ThreeDIcon name="medal" fallback="trophy" className="nabd-mini-3d" animated/> التدريب الوزاري</button></div>
       </details><p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية تُعرض بحسب جاهزيتها الفعلية.</p>
     </section>
     </div>
