@@ -5,10 +5,10 @@ import { TABLER_CHAPTERS } from '../data/tablerData';
 import { useManagedContent,safeMediaUrl } from '../content/useManagedContent';
 import type { TabType } from '../components/Sidebar';
 import { ThreeDIcon } from '../components/ThreeDIcon';
+import { AnatomyArt } from '../components/AnatomyArt';
 
 interface Props { onNavigateTab: (tab: TabType, params?: { chapter?: number }) => void }
 const artBase = import.meta.env.BASE_URL + 'nabd-art/';
-const artMap = ['brain','bone','arm','intestine','heart','lungs','kidneys','dna-fluent','eye','thyroid','antibody'];
 const courseTones = ['violet','honey','mint'] as const;
 const days = ['سبت','أحد','إثن','ثلا','أرب','خمي','جمع'];
 
@@ -78,7 +78,7 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
             const pct = markedComplete ? 100 : (lastTest && lastTest.total>0 ? Math.round(lastTest.score/lastTest.total*100) : 0);
             const measured = markedComplete || Boolean(lastTest && lastTest.total>0);
             return <article key={chapter.id} className={'nabd-learning-card nabd-tone-'+courseTones[i]}>
-              <div className="nabd-learning-art"><img className="nabd-organ-art" src={artBase+artMap[chapter.id-1]+'.svg'} alt={chapter.name}/></div>
+              <div className="nabd-learning-art"><AnatomyArt chapter={chapter.id} alt={'رسم تعليمي: '+chapter.name} override={safeMediaUrl(managed.chapters.find(c=>c.id===chapter.id)?.image||'')||undefined}/></div>
               <div className="nabd-learning-card-info">
                 <div className="nabd-learning-badges"><span className="nabd-learning-level">{markedComplete?'تمت مراجعته':lastTest?'اختبار سابق':'جاهز للتعلّم'}</span><span className="nabd-learning-page"><BookOpenText size={13}/> ص {chapter.page}</span></div>
                 <h3>{chapter.name}</h3><p>{chapter.desc}</p>
