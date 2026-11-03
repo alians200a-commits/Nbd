@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ArrowLeft, BookOpen, FlaskConical, Search, Sparkles } from 'lucide-react';
+import { BookOpen, FlaskConical, Search, Sparkles } from 'lucide-react';
 import { TABLER_CHAPTERS } from '../data/tablerData';
 import { useApp } from '../context/AppContext';
 import { useManagedContent,safeMediaUrl } from '../content/useManagedContent';
@@ -35,7 +35,7 @@ export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
       {chapters.map(c=>{
         const complete=Boolean(state.finishedTopics[String(c.id)]);
         return <article key={c.id} className={'student-chapter-row student-tint-'+colors[c.id-1]}>
-          <div className="student-chapter-figure"><img src={safeMediaUrl(c.image)||artBase+artFor[c.id-1]+'.svg'} alt="" loading="lazy"/></div>
+          <div className="student-chapter-figure"><img className="nabd-organ-art" src={safeMediaUrl(c.image)||artBase+artFor[c.id-1]+'.svg'} alt="" loading="lazy"/></div>
           <div className="student-chapter-copy">
             <div className="student-chapter-meta"><span>الفصل {c.id} · صفحة {c.page}</span>{complete&&<span className="student-chapter-complete">تمّت مراجعته</span>}</div>
             <h2>{c.name}</h2>
@@ -55,7 +55,6 @@ export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
               </section>)}
             </details>}
           </div>
-          <ArrowLeft size={18} className="student-row-arrow" aria-hidden="true"/>
         </article>
       })}
     </div>
