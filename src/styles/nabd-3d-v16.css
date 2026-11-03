@@ -1,0 +1,88 @@
+/*
+  NABD — Real 3Dicons V1, CC0 by Vijay Verma, Blender originals.
+  No gradient filters or fake 3D shapes. Motion is CSS-only and respects
+  prefers-reduced-motion. Existing card colors, Arabic typography and RTL remain.
+*/
+.nabd-3d-asset{display:block;object-fit:contain;object-position:center;background:transparent!important;border:0!important;box-shadow:none!important;user-select:none;pointer-events:none;filter:drop-shadow(0 5px 5px rgba(36,28,68,.10))}
+@keyframes nabd-object-float{
+  0%,100%{transform:translate3d(0,0,0) rotate(-1.3deg)}
+  50%{transform:translate3d(0,-4px,0) rotate(1.3deg)}
+}
+@keyframes nabd-hero-float{
+  0%,100%{transform:translate(-50%,-50%) rotate(-3deg)}
+  50%{transform:translate(-50%,-54%) rotate(2deg)}
+}
+.nabd-3d-animate{animation:nabd-object-float 5s ease-in-out infinite}
+.nabd-quick-action:nth-child(2) .nabd-3d-animate{animation-delay:-1.25s}
+.nabd-quick-action:nth-child(3) .nabd-3d-animate{animation-delay:-2.5s}
+.nabd-quick-action:nth-child(4) .nabd-3d-animate{animation-delay:-3.75s}
+.nabd-welcome-illustration{isolation:isolate;overflow:hidden}
+.nabd-welcome-illustration .nabd-hero-main-icon{
+  position:absolute;width:195px;height:195px;max-width:150%;max-height:120%;
+  top:50%;left:50%;z-index:2;
+  transform:translate(-50%,-50%);
+  animation:nabd-hero-float 6s ease-in-out infinite;
+  filter:drop-shadow(0 13px 12px rgba(67,42,117,.12));
+}
+.nabd-start-button{
+  justify-content:center!important;
+  flex-direction:row!important;
+  text-align:center;
+  gap:0;
+}
+.nabd-start-button span{margin:0 auto}
+.nabd-arrow-circle,.student-row-arrow{display:none!important}
+.nabd-course-go{
+  width:auto!important;min-width:57px;height:34px!important;flex:0 0 auto!important;
+  padding:7px 10px!important;border-radius:999px!important;
+  font-size:11px;font-weight:850;line-height:1;
+  align-self:center!important;
+}
+.nabd-quick-art{height:68px;width:82px;display:flex;align-items:center;justify-content:flex-start}
+.nabd-quick-art .nabd-3d-asset{width:86px;height:86px;max-width:none;max-height:none;object-fit:contain}
+.nabd-quick-action{direction:rtl;text-align:right;align-items:flex-start}
+.nabd-quick-action strong,.nabd-quick-action small{display:block;text-align:right}
+.nabd-quick-action:focus-visible,.student-more-grid>button:focus-visible{outline:3px solid #7048D4;outline-offset:3px}
+.nabd-tracker-mascot .nabd-3d-asset{position:absolute;left:7px;bottom:0;width:130px;height:130px;max-height:none}
+.nabd-achievement-art .nabd-3d-asset{width:59px;height:59px;max-height:none;max-width:none}
+.nabd-mini-3d{width:29px;height:29px;flex:0 0 29px}
+.nabd-more-shortcuts{direction:rtl}
+.nabd-more-shortcuts button{gap:8px;text-align:right}
+.student-brand-mark .nabd-brand-3d{width:41px;height:41px;object-fit:contain;filter:drop-shadow(0 2px 4px #4e326b2b)}
+.student-desktop-nav .nabd-nav-illustration,
+.student-mobile-nav .nabd-nav-illustration{object-fit:contain;filter:none}
+.student-desktop-nav .nabd-nav-illustration{height:34px;width:34px}
+.student-mobile-nav .nabd-nav-illustration{height:35px;width:35px}
+.student-mobile-nav .student-nav-symbol{width:42px;height:38px}
+.student-mobile-nav button.is-current .nabd-nav-illustration{transform:scale(1.08)}
+.student-more-grid{direction:rtl}
+.student-more-grid>button{direction:rtl;text-align:right;gap:9px;justify-content:flex-start;align-items:center}
+.student-more-grid>button>span:nth-child(2){text-align:right}
+.student-more-grid .student-more-icon{width:54px;height:54px;flex:0 0 54px}
+.student-more-grid .student-more-icon img.nabd-menu-illustration{width:51px;height:51px;max-height:none;max-width:none;object-fit:contain}
+.student-more-grid>button:hover .nabd-3d-asset,
+.student-desktop-nav button:hover .nabd-3d-asset,
+.student-mobile-nav button:active .nabd-3d-asset{transform:translateY(-2px) rotate(-3deg)}
+.nabd-organ-art{transition:transform .32s ease;transform-origin:center center}
+.student-chapter-row:hover .nabd-organ-art,
+.nabd-learning-card:hover .nabd-organ-art{transform:translateY(-3px) rotate(-2deg)}
+.student-chapter-row{direction:rtl;grid-template-columns:auto minmax(0,1fr)!important}
+.student-chapter-copy{text-align:right}
+.student-chapter-buttons{direction:rtl;justify-content:flex-start}
+@media(max-width:720px){
+  .nabd-quick-art{height:63px;width:78px}
+  .nabd-quick-art .nabd-3d-asset{width:76px;height:76px}
+  .nabd-welcome-illustration .nabd-hero-main-icon{width:155px;height:155px}
+  .nabd-course-go{font-size:11px;min-width:53px;height:32px!important}
+  .student-mobile-nav .nabd-nav-illustration{width:32px;height:32px}
+  .student-more-grid .student-more-icon img.nabd-menu-illustration{width:46px;height:46px}
+}
+@media(max-width:400px){
+  .nabd-welcome-illustration .nabd-hero-main-icon{width:130px;height:130px}
+  .nabd-quick-art .nabd-3d-asset{width:73px;height:73px}
+}
+@media(prefers-reduced-motion:reduce){
+  .nabd-3d-animate,.nabd-welcome-illustration .nabd-hero-main-icon{animation:none!important}
+  .nabd-welcome-illustration .nabd-hero-main-icon{transform:translate(-50%,-50%)}
+  .nabd-organ-art,.nabd-3d-asset{transition:none!important}
+}
