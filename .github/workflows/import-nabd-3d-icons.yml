@@ -1,0 +1,63 @@
+name: Import licensed CC0 3D icons for NABD student UI
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/import-nabd-3d-icons.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import-icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Fetch real CC0 Blender-rendered icon art from original upstream
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import urllib.request, struct, json, time
+          base='https://3dicons.sgp1.cdn.digitaloceanspaces.com/v1/dynamic/color/'
+          names=['notebook','lab','file-text','file-fav','headphone','puzzle','trophy','calender','chart','bookmark-fav','folder','target','tick','play','bulb','medal','setting','chat','heart','file','music','mic','computer','rocket','explorer']
+          root=Path('public/nabd-3d')
+          root.mkdir(parents=True,exist_ok=True)
+          verified=[]
+          for name in names:
+              url=base+name+'-dynamic-color.png'
+              request=urllib.request.Request(url,headers={'User-Agent':'NABD-CC0-asset-sync/1.0'})
+              failure=None
+              for n in range(3):
+                  try:
+                      with urllib.request.urlopen(request,timeout=35) as res:
+                          content=res.read(3000001)
+                          mime=res.headers.get('Content-Type','')
+                      if not content.startswith(b'\\x89PNG\\r\\n\\x1a\\n') or len(content)>3000000 or len(content)<500:
+                          raise ValueError('Invalid, empty or oversized PNG: '+str(len(content)))
+                      width,height=struct.unpack('>II',content[16:24])
+                      if not (64<=width<=4096 and 64<=height<=4096):
+                          raise ValueError('Unexpected dimensions')
+                      path=root/(name+'.png')
+                      path.write_bytes(content)
+                      print(name, width,'x',height, len(content), 'bytes',mime)
+                      verified.append({'name':name,'file':path.name,'source':url,'width':width,'height':height})
+                      break
+                  except Exception as e:
+                      failure=e
+                      time.sleep(2+n*2)
+              else:
+                  print('Missing',name,'-',failure)
+          minimum=['notebook','lab','file-text','file-fav','headphone','puzzle','trophy','calender','chart']
+          absent=[x for x in minimum if x not in [r['name'] for r in verified]]
+          if absent: raise SystemExit('Missing required CC0 asset(s): '+','.join(absent))
+          (root/'sources.json').write_text(json.dumps({'author':'Vijay Verma / 3dicons','license':'CC0-1.0','repository':'https://github.com/realvjy/3dicons','description':'Free pre-rendered 3D icons; not AI-generated. Motion applied locally in CSS.','assets':verified},ensure_ascii=False,indent=2)+'\\n',encoding='utf-8')
+          PY
+      - name: Commit free raster artwork inside repo (no hotlink dependencies)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/nabd-3d
+          if ! git diff --cached --quiet; then
+            git commit -m "Add original CC0 Blender-rendered 3Dicons for semantic student navigation"
+            git push origin HEAD:main
+          fi
