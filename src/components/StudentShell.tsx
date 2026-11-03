@@ -44,7 +44,7 @@ export const StudentShell: React.FC<Props> = ({currentTab,onNavigateTab,children
     <header className="student-topbar">
       <div className="student-topbar-inner">
         <button type="button" className="student-brand" onClick={()=>navigate('home')} aria-label="العودة إلى الرئيسية">
-          <span className="student-brand-mark"><ThreeDIcon name="heart" fallback="heart" className="nabd-brand-3d" priority /></span>
+          <span className="student-brand-mark nabd-anatomical-brand-mark" aria-hidden="true"><img className="nabd-anatomical-brand-heart" src={artBase+'heart.svg'} alt="" draggable={false}/></span>
           <span><strong>نَبْض</strong><small>مختبر الأحياء الذكي</small></span>
         </button>
         <nav className="student-desktop-nav" aria-label="الأقسام الرئيسية">

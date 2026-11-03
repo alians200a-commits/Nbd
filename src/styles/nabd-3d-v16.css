@@ -86,3 +86,42 @@
   .nabd-welcome-illustration .nabd-hero-main-icon{transform:translate(-50%,-50%)}
   .nabd-organ-art,.nabd-3d-asset{transition:none!important}
 }
+
+/* NABD logo: friendly illustrated anatomical heart, not a photo-real human organ.
+   Uses the pre-existing freely licensed Fluent anatomical heart in nabd-art/heart.svg.
+   The name stays real Arabic text, never baked into a raster image. */
+.student-brand-mark.nabd-anatomical-brand-mark{
+  width:45px!important;
+  height:47px!important;
+  flex:0 0 45px;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible;
+}
+.nabd-anatomical-brand-heart{
+  width:45px;
+  height:45px;
+  max-width:100%;
+  max-height:100%;
+  display:block;
+  object-fit:contain;
+  transform-origin:50% 58%;
+  filter:drop-shadow(0 3px 4px rgba(117,49,93,.14));
+  animation:nabd-friendly-heartbeat 1.75s cubic-bezier(.28,.03,.26,1) infinite;
+}
+@keyframes nabd-friendly-heartbeat{
+  0%,12%,28%,100%{transform:scale(1) rotate(-1deg)}
+  7%{transform:scale(1.085) rotate(-.3deg)}
+  21%{transform:scale(1.04) rotate(.2deg)}
+}
+@media(max-width:600px){
+  .student-brand-mark.nabd-anatomical-brand-mark{
+    width:41px!important;height:43px!important;flex-basis:41px;
+  }
+  .nabd-anatomical-brand-heart{width:41px;height:41px}
+}
+@media(prefers-reduced-motion:reduce){
+  .nabd-anatomical-brand-heart{animation:none!important;transform:none!important}
+}
