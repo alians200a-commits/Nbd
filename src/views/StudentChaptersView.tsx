@@ -4,10 +4,9 @@ import { TABLER_CHAPTERS } from '../data/tablerData';
 import { useApp } from '../context/AppContext';
 import { useManagedContent,safeMediaUrl } from '../content/useManagedContent';
 import type { TabType } from '../components/Sidebar';
+import { AnatomyArt } from '../components/AnatomyArt';
 
 interface Props { onNavigateTab: (tab: TabType, params?: {chapter?: number}) => void }
-const artBase=import.meta.env.BASE_URL + 'nabd-art/';
-const artFor=['brain','bone','arm','intestine','heart','lungs','kidneys','dna-fluent','eye','thyroid','antibody'];
 const colors=['lilac','peach','mint','sky','peach','lilac','sky','mint','lilac','peach','mint'];
 
 export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
@@ -35,7 +34,7 @@ export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
       {chapters.map(c=>{
         const complete=Boolean(state.finishedTopics[String(c.id)]);
         return <article key={c.id} className={'student-chapter-row student-tint-'+colors[c.id-1]}>
-          <div className="student-chapter-figure"><img className="nabd-organ-art" src={safeMediaUrl(c.image)||artBase+artFor[c.id-1]+'.svg'} alt="" loading="lazy"/></div>
+          <div className="student-chapter-figure"><AnatomyArt chapter={c.id} alt={'رسم تعليمي: '+c.name} override={safeMediaUrl(c.image)||undefined}/></div>
           <div className="student-chapter-copy">
             <div className="student-chapter-meta"><span>الفصل {c.id} · صفحة {c.page}</span>{complete&&<span className="student-chapter-complete">تمّت مراجعته</span>}</div>
             <h2>{c.name}</h2>
@@ -58,6 +57,6 @@ export const StudentChaptersView: React.FC<Props> = ({ onNavigateTab }) => {
         </article>
       })}
     </div>
-    <p className="student-trust-note">المجسمات المرجعية تختلف حسب توفر الملفات العلمية، وبعض الفقرات تحتاج نماذج أدق.</p>
+    <p className="student-trust-note">الرسومات التشريحية من <a href="https://smart.servier.com/" target="_blank" rel="noopener noreferrer">Servier Medical Art</a> بترخيص <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>، وقد جرى تكييف أحجامها للواجهة. رسومات أخرى من مكتباتها المفتوحة السابقة. المجسمات ثلاثية الأبعاد لها مصادر وتراخيص مستقلة.</p>
   </div>;
 };
