@@ -102,15 +102,14 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
           <button type="button" className="nabd-stat-tile nabd-stat-violet" onClick={()=>onNavigateTab('chapters')}><BookOpenText size={23}/><strong>{completed}</strong><span>دروس راجعتها</span></button>
           <button type="button" className="nabd-stat-tile nabd-stat-honey" onClick={()=>onNavigateTab('quiz')}><ClipboardCheck size={23}/><strong>{tests.length}</strong><span>اختبارات أنجزتها</span></button>
         </div>
-        <div className="nabd-chart-head"><h3>نشاطك هذا الأسبوع</h3><span>جلسات واختبارات</span></div>
-        <div className="nabd-activity-chart" role="img" aria-label={anyActivity?'مخطط النشاط الحقيقي للأسبوع':'لا توجد جلسات أو اختبارات محفوظة لهذا الأسبوع'}>
+        {anyActivity&&<div className="nabd-chart-head"><h3>نشاطك هذا الأسبوع</h3><span>جلسات واختبارات</span></div>}
+        {anyActivity&&<div className="nabd-activity-chart" role="img" aria-label={anyActivity?'مخطط النشاط الحقيقي للأسبوع':'لا توجد جلسات أو اختبارات محفوظة لهذا الأسبوع'}>
           {weekly.map((day,i)=><div key={day.date} className={'nabd-activity-day'+(day.today?' is-today':'')}>
             <span className="nabd-activity-count">{day.count?day.count:''}</span>
             <span className={'nabd-activity-bar nabd-bar-'+(i%4)} style={{height:day.count? Math.max(18,Math.round(day.count/maxCount*100))+'%':'12%'}}/>
             <span className="nabd-day-label">{day.label}</span>
           </div>)}
-        </div>
-        {!anyActivity&&<p className="nabd-empty-activity">لا يوجد نشاط مسجّل هذا الأسبوع بعد. ابدأ باختبار قصير!</p>}
+        </div>}
         <button type="button" className="nabd-achievement" onClick={()=>onNavigateTab(mistakes?'vault':'planner')}>
           <span className="nabd-achievement-art"><img src={artBase+'trophy.svg'} alt=""/></span>
           <span><strong>{mistakes?'خطوتك القادمة: راجع أخطاءك':'أحسنت! البداية تصنع الفرق'}</strong><small>{mistakes?mistakes+' أسئلة تنتظر مراجعتك':'ابدأ درساً جديداً اليوم'}</small></span><ChevronLeft size={18}/>
@@ -126,8 +125,8 @@ export const StudentHomeView: React.FC<Props> = ({ onNavigateTab }) => {
         <button type="button" className="nabd-quick-action qa-honey" onClick={()=>onNavigateTab('quiz')}><span className="nabd-quick-art"><img src={artBase+'quiz-memo.svg'} alt=""/></span><strong>اختبر نفسك</strong><small>أسئلة لتثبيت المعلومة</small></button>
         <button type="button" className="nabd-quick-action qa-pink" onClick={()=>onNavigateTab('vault')}><span className="nabd-quick-art"><img src={artBase+'review-search.svg'} alt=""/></span><strong>مراجعة الأخطاء</strong><small>ارجع لما يحتاج تقوية</small></button>
       </div>
-      <div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html')}><Headphones size={19}/> استمع إلى شرح الخلية العصبية</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
-      <p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية تُعرض بحسب جاهزيتها الفعلية.</p>
+      <details className="nabd-more-details"><summary>أدوات إضافية</summary><div className="nabd-more-shortcuts"><button type="button" onClick={()=>window.location.assign(import.meta.env.BASE_URL+'learn.html')}><Headphones size={19}/> استمع إلى شرح الخلية العصبية</button><button type="button" onClick={()=>onNavigateTab('planner')}><Clock3 size={19}/> خطة المراجعة</button><button type="button" onClick={()=>onNavigateTab('ministryExam')}><Trophy size={19}/> التدريب الوزاري</button></div>
+      </details><p className="nabd-study-disclaimer">المجسمات والتسجيلات والأسئلة الوزارية تُعرض بحسب جاهزيتها الفعلية.</p>
     </section>
     </div>
   </div>;
