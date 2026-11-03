@@ -29,10 +29,10 @@
       "page": "https://smart.servier.com/smart_image/skeleton-face/",
       "original": "https://smart.servier.com/wp-content/uploads/2016/10/squelette_03.png",
       "dimensions": [
-        198,
+        295,
         472
       ],
-      "size": 38770,
+      "size": 53682,
       "credit": "Servier Medical Art",
       "license": "CC BY 4.0"
     },
@@ -44,10 +44,10 @@
       "page": "https://smart.servier.com/smart_image/musculature-front/",
       "original": "https://smart.servier.com/wp-content/uploads/2016/10/Monsieur_muscles_face.png",
       "dimensions": [
-        180,
+        299,
         472
       ],
-      "size": 26656,
+      "size": 37664,
       "credit": "Servier Medical Art",
       "license": "CC BY 4.0"
     },
@@ -59,10 +59,10 @@
       "page": "https://smart.servier.com/smart_image/complete-digestive-apparatus/",
       "original": "https://smart.servier.com/wp-content/uploads/2016/10/syst_dig_complet.png",
       "dimensions": [
-        127,
+        198,
         472
       ],
-      "size": 19840,
+      "size": 27200,
       "credit": "Servier Medical Art",
       "license": "CC BY 4.0"
     },
@@ -122,7 +122,7 @@
         256,
         188
       ],
-      "size": 9450,
+      "size": 10346,
       "credit": "Servier Medical Art",
       "license": "CC BY 4.0"
     },
