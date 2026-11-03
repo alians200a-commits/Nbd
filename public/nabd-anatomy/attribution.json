@@ -1,0 +1,160 @@
+{
+  "source": "Servier Medical Art (Les Laboratoires Servier)",
+  "website": "https://smart.servier.com/",
+  "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "modifications": "Resized, externally cropped and optimized as transparent WebP without changing anatomy",
+  "usage": "Educational chapter art; not branding or logos",
+  "entries": [
+    {
+      "id": 1,
+      "name": "الجهاز العصبي",
+      "file": "nabd-anatomy/brain.webp",
+      "slug": "brain",
+      "page": "https://smart.servier.com/smart_image/smart-brain/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/cerveau_tronc.png",
+      "dimensions": [
+        472,
+        422
+      ],
+      "size": 23082,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 2,
+      "name": "الجهاز الهيكلي",
+      "file": "nabd-anatomy/skeleton.webp",
+      "slug": "skeleton",
+      "page": "https://smart.servier.com/smart_image/skeleton-face/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/squelette_03.png",
+      "dimensions": [
+        198,
+        472
+      ],
+      "size": 38770,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 3,
+      "name": "الجهاز العضلي",
+      "file": "nabd-anatomy/muscles.webp",
+      "slug": "muscles",
+      "page": "https://smart.servier.com/smart_image/musculature-front/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/Monsieur_muscles_face.png",
+      "dimensions": [
+        180,
+        472
+      ],
+      "size": 26656,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 4,
+      "name": "الجهاز الهضمي",
+      "file": "nabd-anatomy/digestive.webp",
+      "slug": "digestive",
+      "page": "https://smart.servier.com/smart_image/complete-digestive-apparatus/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/syst_dig_complet.png",
+      "dimensions": [
+        127,
+        472
+      ],
+      "size": 19840,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 5,
+      "name": "جهاز الدوران",
+      "file": "nabd-anatomy/circulation.webp",
+      "slug": "circulation",
+      "page": "https://smart.servier.com/smart_image/heart/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/coeur.png",
+      "dimensions": [
+        360,
+        472
+      ],
+      "size": 28626,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 6,
+      "name": "جهاز التنفس",
+      "file": "nabd-anatomy/lungs.webp",
+      "slug": "lungs",
+      "page": "https://smart.servier.com/smart_image/lungs-11/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/poumons_01.png",
+      "dimensions": [
+        408,
+        363
+      ],
+      "size": 21192,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 7,
+      "name": "الجهاز البولي والإخراج",
+      "file": "nabd-anatomy/kidney.webp",
+      "slug": "kidney",
+      "page": "https://smart.servier.com/smart_image/smart-kidney/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/rein_02.png",
+      "dimensions": [
+        289,
+        389
+      ],
+      "size": 8092,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 9,
+      "name": "أعضاء الحس",
+      "file": "nabd-anatomy/eye.webp",
+      "slug": "eye",
+      "page": "https://smart.servier.com/smart_image/eye-view/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/oeil_02.png",
+      "dimensions": [
+        256,
+        188
+      ],
+      "size": 9450,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 10,
+      "name": "الإفراز",
+      "file": "nabd-anatomy/thyroid.webp",
+      "slug": "thyroid",
+      "page": "https://smart.servier.com/smart_image/thyroid/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/thyroide_face.png",
+      "dimensions": [
+        286,
+        270
+      ],
+      "size": 12354,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    },
+    {
+      "id": 0,
+      "name": "السن - صورة داعمة للجهاز الهضمي",
+      "file": "nabd-anatomy/tooth.webp",
+      "slug": "tooth",
+      "page": "https://smart.servier.com/smart_image/tooth/",
+      "original": "https://smart.servier.com/wp-content/uploads/2016/10/dent.png",
+      "dimensions": [
+        274,
+        472
+      ],
+      "size": 31064,
+      "credit": "Servier Medical Art",
+      "license": "CC BY 4.0"
+    }
+  ]
+}
